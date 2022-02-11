@@ -1,0 +1,63 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlightCenterWeb", "FlightCenterWeb\FlightCenterWeb.csproj", "{647CC1B1-1E09-4FE8-8328-9ECD20B6F901}"
+	ProjectSection(ProjectDependencies) = postProject
+		{72725617-1BDA-4276-8403-F0FF1F142D7E} = {72725617-1BDA-4276-8403-F0FF1F142D7E}
+		{EC41A97D-E09F-447F-9B49-3E3A18F163C8} = {EC41A97D-E09F-447F-9B49-3E3A18F163C8}
+		{EC68A183-1D25-4637-8271-C185D1E724B4} = {EC68A183-1D25-4637-8271-C185D1E724B4}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlightCenterWebTests", "FlightCenterWebTests\FlightCenterWebTests.csproj", "{E4D662A0-6582-485B-AAAA-5650B4F0A126}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5382B9E9-47DF-4DB1-8159-0E6736DBF413}"
+	ProjectSection(SolutionItems) = preProject
+		FlightCenterWeb.vsmdi = FlightCenterWeb.vsmdi
+		Local.testsettings = Local.testsettings
+		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlightCenterData", "FlightCenterData\FlightCenterData.csproj", "{EC68A183-1D25-4637-8271-C185D1E724B4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlightCenterBusiness", "FlightCenterBusiness\FlightCenterBusiness.csproj", "{EC41A97D-E09F-447F-9B49-3E3A18F163C8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{72725617-1BDA-4276-8403-F0FF1F142D7E} = {72725617-1BDA-4276-8403-F0FF1F142D7E}
+		{EC68A183-1D25-4637-8271-C185D1E724B4} = {EC68A183-1D25-4637-8271-C185D1E724B4}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlightCenterModels", "FlightCenterModels\FlightCenterModels.csproj", "{72725617-1BDA-4276-8403-F0FF1F142D7E}"
+EndProject
+Global
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = FlightCenterWeb.vsmdi
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{647CC1B1-1E09-4FE8-8328-9ECD20B6F901}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{647CC1B1-1E09-4FE8-8328-9ECD20B6F901}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{647CC1B1-1E09-4FE8-8328-9ECD20B6F901}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{647CC1B1-1E09-4FE8-8328-9ECD20B6F901}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E4D662A0-6582-485B-AAAA-5650B4F0A126}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4D662A0-6582-485B-AAAA-5650B4F0A126}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4D662A0-6582-485B-AAAA-5650B4F0A126}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4D662A0-6582-485B-AAAA-5650B4F0A126}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC68A183-1D25-4637-8271-C185D1E724B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC68A183-1D25-4637-8271-C185D1E724B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC68A183-1D25-4637-8271-C185D1E724B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC68A183-1D25-4637-8271-C185D1E724B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC41A97D-E09F-447F-9B49-3E3A18F163C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC41A97D-E09F-447F-9B49-3E3A18F163C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC41A97D-E09F-447F-9B49-3E3A18F163C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC41A97D-E09F-447F-9B49-3E3A18F163C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72725617-1BDA-4276-8403-F0FF1F142D7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72725617-1BDA-4276-8403-F0FF1F142D7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72725617-1BDA-4276-8403-F0FF1F142D7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72725617-1BDA-4276-8403-F0FF1F142D7E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

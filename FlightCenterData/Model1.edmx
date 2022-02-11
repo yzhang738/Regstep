@@ -1,0 +1,434 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="FlightCenterModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityContainer Name="FlightCenterModelStoreContainer">
+          <EntitySet Name="Airline" EntityType="FlightCenterModel.Store.Airline" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="CruiseSupplier" EntityType="FlightCenterModel.Store.CruiseSupplier" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Destination" EntityType="FlightCenterModel.Store.Destination" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="InsuranceSupplier" EntityType="FlightCenterModel.Store.InsuranceSupplier" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="LandSupplier" EntityType="FlightCenterModel.Store.LandSupplier" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="SaleLocation" EntityType="FlightCenterModel.Store.SaleLocation" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Sales" EntityType="FlightCenterModel.Store.Sales" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="SalesSupplier" EntityType="FlightCenterModel.Store.SalesSupplier" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Shop" EntityType="FlightCenterModel.Store.Shop" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="SourceType" EntityType="FlightCenterModel.Store.SourceType" store:Type="Tables" Schema="dbo" />
+        </EntityContainer>
+        <EntityType Name="Airline">
+          <Key>
+            <PropertyRef Name="AirlineID" />
+          </Key>
+          <Property Name="AirlineID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="CruiseSupplier">
+          <Key>
+            <PropertyRef Name="CruiseSupplierID" />
+          </Key>
+          <Property Name="CruiseSupplierID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Destination">
+          <Key>
+            <PropertyRef Name="DestinationID" />
+          </Key>
+          <Property Name="DestinationID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="InsuranceSupplier">
+          <Key>
+            <PropertyRef Name="InsuranceSupplierID" />
+          </Key>
+          <Property Name="InsuranceSupplierID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="LandSupplier">
+          <Key>
+            <PropertyRef Name="LandSupplierID" />
+          </Key>
+          <Property Name="LandSupplierID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="SaleLocation">
+          <Key>
+            <PropertyRef Name="SaleLocationID" />
+          </Key>
+          <Property Name="SaleLocationID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Sales">
+          <Key>
+            <PropertyRef Name="SalesID" />
+          </Key>
+          <Property Name="SalesID" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="varchar" MaxLength="100" />
+          <Property Name="UserID" Type="varchar" MaxLength="50" />
+          <Property Name="Shop" Type="varchar" MaxLength="50" />
+          <Property Name="CreatedDateTime" Type="datetime" />
+          <Property Name="BookingDate" Type="datetime" />
+          <Property Name="PassengerName" Type="varchar" MaxLength="50" />
+          <Property Name="Destination" Type="varchar" MaxLength="50" />
+          <Property Name="Deposit" Type="decimal" Precision="8" Scale="2" />
+          <Property Name="SaleLocation" Type="varchar" MaxLength="50" />
+          <Property Name="IsDeleted" Type="bit" />
+          <Property Name="Passengers" Type="int" />
+          <Property Name="Comments" Type="varchar(max)" />
+          <Property Name="LastUpdatedDateTime" Type="datetime" />
+        </EntityType>
+        <EntityType Name="SalesSupplier">
+          <Key>
+            <PropertyRef Name="SalesSupplierID" />
+            <PropertyRef Name="SalesID" />
+          </Key>
+          <Property Name="SalesSupplierID" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="SalesID" Type="bigint" Nullable="false" />
+          <Property Name="SourceType" Type="varchar" MaxLength="50" />
+          <Property Name="Supplier" Type="varchar" MaxLength="50" />
+          <Property Name="SaleValue" Type="decimal" Precision="8" Scale="2" />
+          <Property Name="IsDeleted" Type="bit" />
+        </EntityType>
+        <EntityType Name="Shop">
+          <Key>
+            <PropertyRef Name="ShopID" />
+          </Key>
+          <Property Name="ShopID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="SourceType">
+          <Key>
+            <PropertyRef Name="SourceTypeID" />
+          </Key>
+          <Property Name="SourceTypeID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <Function Name="uspAddSales" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Name" Type="varchar" Mode="In" />
+          <Parameter Name="UserID" Type="varchar" Mode="In" />
+          <Parameter Name="Shop" Type="varchar" Mode="In" />
+          <Parameter Name="CreatedDateTime" Type="datetime" Mode="In" />
+          <Parameter Name="BookingDate" Type="datetime" Mode="In" />
+          <Parameter Name="PassengerName" Type="varchar" Mode="In" />
+          <Parameter Name="Destination" Type="varchar" Mode="In" />
+          <Parameter Name="Deposit" Type="decimal" Mode="In" />
+          <Parameter Name="SaleLocation" Type="varchar" Mode="In" />
+          <Parameter Name="NumPassengers" Type="int" Mode="In" />
+          <Parameter Name="Comments" Type="varchar(max)" Mode="In" />
+        </Function>
+        <Function Name="uspAddSalesSupplier" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="SalesID" Type="int" Mode="In" />
+          <Parameter Name="SourceType" Type="varchar" Mode="In" />
+          <Parameter Name="Supplier" Type="varchar" Mode="In" />
+          <Parameter Name="SaleValue" Type="decimal" Mode="In" />
+        </Function>
+        <Function Name="uspDeleteSales" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="SalesID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="uspDeleteSalesAndSalesSupplier" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="SalesID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="uspDeleteSalesSupplier" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="SalesID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="uspUpdateSales" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="SalesID" Type="int" Mode="In" />
+          <Parameter Name="UserID" Type="varchar" Mode="In" />
+          <Parameter Name="Shop" Type="varchar" Mode="In" />
+          <Parameter Name="UpdatedDateTime" Type="datetime" Mode="In" />
+          <Parameter Name="BookingDate" Type="datetime" Mode="In" />
+          <Parameter Name="PassengerName" Type="varchar" Mode="In" />
+          <Parameter Name="Destination" Type="varchar" Mode="In" />
+          <Parameter Name="Deposit" Type="decimal" Mode="In" />
+          <Parameter Name="SaleLocation" Type="varchar" Mode="In" />
+          <Parameter Name="NumPassengers" Type="int" Mode="In" />
+          <Parameter Name="Comments" Type="varchar(max)" Mode="In" />
+        </Function>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="FlightCenterModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="FlightCenterEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Airlines" EntityType="FlightCenterModel.Airline" />
+          <EntitySet Name="CruiseSuppliers" EntityType="FlightCenterModel.CruiseSupplier" />
+          <EntitySet Name="Destinations" EntityType="FlightCenterModel.Destination" />
+          <EntitySet Name="InsuranceSuppliers" EntityType="FlightCenterModel.InsuranceSupplier" />
+          <EntitySet Name="LandSuppliers" EntityType="FlightCenterModel.LandSupplier" />
+          <EntitySet Name="SaleLocations" EntityType="FlightCenterModel.SaleLocation" />
+          <EntitySet Name="Sales" EntityType="FlightCenterModel.Sale" />
+          <EntitySet Name="Shops" EntityType="FlightCenterModel.Shop" />
+          <EntitySet Name="SourceTypes" EntityType="FlightCenterModel.SourceType" />
+          <FunctionImport Name="uspAddSales" ReturnType="Collection(Int32)">
+            <Parameter Name="Name" Mode="In" Type="String" />
+            <Parameter Name="UserID" Mode="In" Type="String" />
+            <Parameter Name="Shop" Mode="In" Type="String" />
+            <Parameter Name="CreatedDateTime" Mode="In" Type="DateTime" />
+            <Parameter Name="BookingDate" Mode="In" Type="DateTime" />
+            <Parameter Name="PassengerName" Mode="In" Type="String" />
+            <Parameter Name="Destination" Mode="In" Type="String" />
+            <Parameter Name="Deposit" Mode="In" Type="Decimal" />
+            <Parameter Name="SaleLocation" Mode="In" Type="String" />
+            <Parameter Name="NumPassengers" Mode="In" Type="Int32" />
+            <Parameter Name="Comments" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="uspDeleteSales" ReturnType="Collection(Int32)">
+          <Parameter Name="SalesID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="uspAddSalesSupplier" ReturnType="Collection(Int32)">
+            <Parameter Name="SalesID" Mode="In" Type="Int32" />
+            <Parameter Name="SourceType" Mode="In" Type="String" />
+            <Parameter Name="Supplier" Mode="In" Type="String" />
+            <Parameter Name="SaleValue" Mode="In" Type="Decimal" />
+          </FunctionImport>
+          <FunctionImport Name="uspUpdateSales" ReturnType="Collection(Int32)">
+            <Parameter Name="SalesID" Mode="In" Type="Int32" />
+            <Parameter Name="UserID" Mode="In" Type="String" />
+            <Parameter Name="Shop" Mode="In" Type="String" />
+            <Parameter Name="UpdatedDateTime" Mode="In" Type="DateTime" />
+            <Parameter Name="BookingDate" Mode="In" Type="DateTime" />
+            <Parameter Name="PassengerName" Mode="In" Type="String" />
+            <Parameter Name="Destination" Mode="In" Type="String" />
+            <Parameter Name="Deposit" Mode="In" Type="Decimal" />
+            <Parameter Name="SaleLocation" Mode="In" Type="String" />
+            <Parameter Name="NumPassengers" Mode="In" Type="Int32" />
+            <Parameter Name="Comments" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="uspDeleteSalesSupplier" ReturnType="Collection(Int32)">
+          <Parameter Name="SalesID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <EntitySet Name="SalesSuppliers" EntityType="FlightCenterModel.SalesSupplier" />
+          <FunctionImport Name="uspDeleteSalesAndSalesSupplier" ReturnType="Collection(Int32)">
+          <Parameter Name="SalesID" Mode="In" Type="Int32" />
+          </FunctionImport>
+        </EntityContainer>
+        <EntityType Name="Airline">
+          <Key>
+            <PropertyRef Name="AirlineID" />
+          </Key>
+          <Property Name="AirlineID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="CruiseSupplier">
+          <Key>
+            <PropertyRef Name="CruiseSupplierID" />
+          </Key>
+          <Property Name="CruiseSupplierID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Destination">
+          <Key>
+            <PropertyRef Name="DestinationID" />
+          </Key>
+          <Property Name="DestinationID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="InsuranceSupplier">
+          <Key>
+            <PropertyRef Name="InsuranceSupplierID" />
+          </Key>
+          <Property Name="InsuranceSupplierID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="LandSupplier">
+          <Key>
+            <PropertyRef Name="LandSupplierID" />
+          </Key>
+          <Property Name="LandSupplierID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="SaleLocation">
+          <Key>
+            <PropertyRef Name="SaleLocationID" />
+          </Key>
+          <Property Name="SaleLocationID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Sale">
+          <Key>
+            <PropertyRef Name="SalesID" />
+          </Key>
+          <Property Name="SalesID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="UserID" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="Shop" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="CreatedDateTime" Type="DateTime" />
+          <Property Name="BookingDate" Type="DateTime" />
+          <Property Name="PassengerName" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="Destination" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="Deposit" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="SaleLocation" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <Property Type="Int32" Name="Passengers" />
+          <Property Type="String" Name="Comments" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="LastUpdatedDateTime" />
+        </EntityType>
+        <EntityType Name="Shop">
+          <Key>
+            <PropertyRef Name="ShopID" />
+          </Key>
+          <Property Name="ShopID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="SourceType">
+          <Key>
+            <PropertyRef Name="SourceTypeID" />
+          </Key>
+          <Property Name="SourceTypeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="SalesSupplier">
+          <Key>
+            <PropertyRef Name="SalesSupplierID" />
+            <PropertyRef Name="SalesID" />
+          </Key>
+          <Property Type="Int64" Name="SalesSupplierID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int64" Name="SalesID" Nullable="false" />
+          <Property Type="String" Name="SourceType" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Supplier" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="SaleValue" Precision="8" Scale="2" />
+          <Property Type="Boolean" Name="IsDeleted" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="FlightCenterModelStoreContainer" CdmEntityContainer="FlightCenterEntities">
+          <EntitySetMapping Name="Airlines">
+            <EntityTypeMapping TypeName="FlightCenterModel.Airline">
+              <MappingFragment StoreEntitySet="Airline">
+                <ScalarProperty Name="AirlineID" ColumnName="AirlineID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CruiseSuppliers">
+            <EntityTypeMapping TypeName="FlightCenterModel.CruiseSupplier">
+              <MappingFragment StoreEntitySet="CruiseSupplier">
+                <ScalarProperty Name="CruiseSupplierID" ColumnName="CruiseSupplierID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Destinations">
+            <EntityTypeMapping TypeName="FlightCenterModel.Destination">
+              <MappingFragment StoreEntitySet="Destination">
+                <ScalarProperty Name="DestinationID" ColumnName="DestinationID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="InsuranceSuppliers">
+            <EntityTypeMapping TypeName="FlightCenterModel.InsuranceSupplier">
+              <MappingFragment StoreEntitySet="InsuranceSupplier">
+                <ScalarProperty Name="InsuranceSupplierID" ColumnName="InsuranceSupplierID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LandSuppliers">
+            <EntityTypeMapping TypeName="FlightCenterModel.LandSupplier">
+              <MappingFragment StoreEntitySet="LandSupplier">
+                <ScalarProperty Name="LandSupplierID" ColumnName="LandSupplierID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SaleLocations">
+            <EntityTypeMapping TypeName="FlightCenterModel.SaleLocation">
+              <MappingFragment StoreEntitySet="SaleLocation">
+                <ScalarProperty Name="SaleLocationID" ColumnName="SaleLocationID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sales">
+            <EntityTypeMapping TypeName="FlightCenterModel.Sale">
+              <MappingFragment StoreEntitySet="Sales">
+                <ScalarProperty Name="LastUpdatedDateTime" ColumnName="LastUpdatedDateTime" />
+                <ScalarProperty Name="Comments" ColumnName="Comments" />
+                <ScalarProperty Name="Passengers" ColumnName="Passengers" />
+                <ScalarProperty Name="SalesID" ColumnName="SalesID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Shop" ColumnName="Shop" />
+                <ScalarProperty Name="CreatedDateTime" ColumnName="CreatedDateTime" />
+                <ScalarProperty Name="BookingDate" ColumnName="BookingDate" />
+                <ScalarProperty Name="PassengerName" ColumnName="PassengerName" />
+                <ScalarProperty Name="Destination" ColumnName="Destination" />
+                <ScalarProperty Name="Deposit" ColumnName="Deposit" />
+                <ScalarProperty Name="SaleLocation" ColumnName="SaleLocation" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Shops">
+            <EntityTypeMapping TypeName="FlightCenterModel.Shop">
+              <MappingFragment StoreEntitySet="Shop">
+                <ScalarProperty Name="ShopID" ColumnName="ShopID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SourceTypes">
+            <EntityTypeMapping TypeName="FlightCenterModel.SourceType">
+              <MappingFragment StoreEntitySet="SourceType">
+                <ScalarProperty Name="SourceTypeID" ColumnName="SourceTypeID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="uspAddSales" FunctionName="FlightCenterModel.Store.uspAddSales" />
+          <FunctionImportMapping FunctionImportName="uspDeleteSales" FunctionName="FlightCenterModel.Store.uspDeleteSales" />
+          <FunctionImportMapping FunctionImportName="uspAddSalesSupplier" FunctionName="FlightCenterModel.Store.uspAddSalesSupplier" />
+          <FunctionImportMapping FunctionImportName="uspUpdateSales" FunctionName="FlightCenterModel.Store.uspUpdateSales" />
+          <FunctionImportMapping FunctionImportName="uspDeleteSalesSupplier" FunctionName="FlightCenterModel.Store.uspDeleteSalesSupplier" />
+          <EntitySetMapping Name="SalesSuppliers">
+            <EntityTypeMapping TypeName="FlightCenterModel.SalesSupplier">
+              <MappingFragment StoreEntitySet="SalesSupplier">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="SaleValue" ColumnName="SaleValue" />
+                <ScalarProperty Name="Supplier" ColumnName="Supplier" />
+                <ScalarProperty Name="SourceType" ColumnName="SourceType" />
+                <ScalarProperty Name="SalesID" ColumnName="SalesID" />
+                <ScalarProperty Name="SalesSupplierID" ColumnName="SalesSupplierID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="uspDeleteSalesAndSalesSupplier" FunctionName="FlightCenterModel.Store.uspDeleteSalesAndSalesSupplier" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram Name="Model1">
+        <EntityTypeShape EntityType="FlightCenterModel.Airline" Width="1.5" PointX="0.75" PointY="0.75" Height="1.4174719544251757" IsExpanded="true" />
+        <EntityTypeShape EntityType="FlightCenterModel.CruiseSupplier" Width="1.5" PointX="2.75" PointY="0.75" Height="1.4174719544251762" IsExpanded="true" />
+        <EntityTypeShape EntityType="FlightCenterModel.Destination" Width="1.5" PointX="0.75" PointY="3.75" Height="1.4174719544251748" IsExpanded="true" />
+        <EntityTypeShape EntityType="FlightCenterModel.InsuranceSupplier" Width="1.5" PointX="2.75" PointY="3.75" Height="1.4174719544251762" IsExpanded="true" />
+        <EntityTypeShape EntityType="FlightCenterModel.LandSupplier" Width="1.5" PointX="4.75" PointY="0.75" Height="1.4174719544251744" IsExpanded="true" />
+        <EntityTypeShape EntityType="FlightCenterModel.SaleLocation" Width="1.5" PointX="4.75" PointY="3.75" Height="1.4174719544251748" IsExpanded="true" />
+        <EntityTypeShape EntityType="FlightCenterModel.Sale" Width="1.5" PointX="6.75" PointY="0.75" Height="3.1735464723904911" IsExpanded="true" />
+        <EntityTypeShape EntityType="FlightCenterModel.Shop" Width="1.5" PointX="2.75" PointY="6.75" Height="1.4174719544251744" IsExpanded="true" />
+        <EntityTypeShape EntityType="FlightCenterModel.SourceType" Width="1.5" PointX="6.75" PointY="4.75" Height="1.4174719544251744" IsExpanded="true" />
+        <EntityTypeShape EntityType="FlightCenterModel.SalesSupplier" Width="1.5" PointX="5" PointY="6.625" Height="2.19794951796532" />
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>
