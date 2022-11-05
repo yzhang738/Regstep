@@ -1,0 +1,57 @@
+﻿@using RSToolKit.Domain.Entities;
+@model List<NodeType>
+@{
+    Layout = "~/Views/Shared/_Layout_FormBuilder.cshtml";
+}
+@section scripts
+{
+    <script type="text/javascript">
+    </script>
+}
+@section styles
+{
+}
+@section title {
+    Types
+}
+@section breadcrumbs {
+    @Html.ActionLink("Forms", "Index", "FormBuilder")
+    <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span> Types
+}
+@section modals
+{
+}
+@Html.AntiForgeryToken()
+    <div class="col-xs-12">
+
+        <div class="add-padding-bottom-5 text-medium text-color-2">
+            Form Types
+        </div>
+
+        <div class="row add-padding-vertical-5 color-grey-2">
+            <!--Add Panel-->
+            <div class="col-xs-12">
+                <span class="modal-link">
+                    <a href="@Url.Action("Type", "FormBuilder", null, Request.Url.Scheme)" data-xhr-method="post"><span class="glyphicon glyphicon-plus"></span> New Type</a>
+                </span>
+            </div>
+        </div>
+
+        <div class="row">
+            <table id="ItemList" class="table table-striped audience-table">
+                <tbody>
+                    @for (var i = 0; i < Model.Count; i++)
+                    {
+                        var type = Model[i];
+                        <tr>
+
+                            <td>@type.Name</td>
+                            <td><span class="glyphicon glyphicon-edit"></span> @Html.ActionLink("Edit", "Type", "FormBuilder", new { id = type.UId }, null)</td>
+                            <td><a href="@Url.Action("Type", "FormBuilder", null, Request.Url.Scheme)" data-xhr-method="delete" data-xhr-options='{ "id": "@type.UId" }' data-xhr-oncomplete="refresh"></a><span class="glyphicon glyphicon-trash"></span> Delete</td>
+                            <td class="Fill"></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>

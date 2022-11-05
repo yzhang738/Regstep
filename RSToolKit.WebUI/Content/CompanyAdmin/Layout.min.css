@@ -1,0 +1,1 @@
+﻿.comma-after>.comma:not(:last-child)::after{content:','}table.table-company-users{display:block;overflow-x:auto !important}nav.navbar-utility li.admin>a{background:#fff !important;color:#3e3e3e !important}nav.navbar-utility ul>li.admin>ul{background:#fff}@media screen and (max-width:767px){nav.navbar-utility li.admin>a{background:transparent !important;color:#fff !important}}

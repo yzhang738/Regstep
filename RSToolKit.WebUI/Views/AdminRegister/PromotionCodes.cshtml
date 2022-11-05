@@ -1,0 +1,105 @@
+﻿@using RSToolKit.WebUI.Models.Views.Register;
+@model PromotionsView
+@{
+    Layout = "~/Views/Shared/_L_AdminRegister.cshtml";
+}
+@section pageNumber
+{
+    Promotion Codes
+}
+@section scripts
+{
+    <script src="~/Scripts/AdminRegister/promotions.js"></script>
+}
+@section shoppingCart
+{
+    @Model.ShoppingCart
+}
+@section header
+{
+    @Model.Header
+}
+@section footer
+{
+    @Model.Footer
+}
+@section styles
+{
+    @Model.Styles
+}
+@Model.HiddenInputs
+<div style="position: fixed; top: 0; left: 0; width: 100%; background-color: rgba(0, 0, 0, .5); color: #fc3333; font-size: 14pt;" class="text-center">Admin Registration</div>
+<div class="row form-panel">
+    <div class="col-xs-12">
+        <div class="row">
+            <div class="col-xs-12 form-component">
+                <h2>
+                    Promotion Codes
+                </h2>
+
+                <p>
+                    If you have received any promotion codes, you may enter them here. Please enter one code at a time, and click update after each one.
+                </p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 form-component">
+                <label>Code: </label>
+                <input class="form-control input-sm form-text-input type=" text" name="Code" id="code" />
+            </div>
+        </div>
+
+        <div class="row form-btn-panel">
+            <div class="col-sm-4 col-md-3 col-lg-2 form-btn">
+                <a class="btn-rs btn-navigation pseudo-link" id="codeEnter">Update</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row form-panel">
+    <div class="col-xs-12">
+        <div class="row">
+            <div class="col-xs-12 form-component">
+
+                <h2>
+                    Accepted Promotion Codes
+                </h2>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <td>Code</td>
+                            <td>Description</td>
+                            <td class="fill"></td>
+                        </tr>
+                    </thead>
+                    <tbody id="codes">
+                        @Model.Codes
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row form-btn-panel">
+    <div class="col-xs-12">
+        <div class="row">
+            @if (!Model.SkipPayment)
+            {
+                <div class="col-sm-4 col-md-3 col-lg-2 form-btn">
+                    @Html.ActionLink("Continue", "Page", "AdminRegister", new { id = Model.RegistrantId, page = -3 }, new { @class = "btn-rs btn-navigation" })
+                </div>
+            }
+            else
+            {
+                <div class="col-sm-4 col-md-3 col-lg-2 form-btn">
+                    @Html.ActionLink("Continue", "Confirmation", "AdminRegister", new { id = Model.RegistrantId }, new { @class = "btn-rs btn-navigation" })
+                </div>
+            }
+        </div>
+    </div>
+</div>

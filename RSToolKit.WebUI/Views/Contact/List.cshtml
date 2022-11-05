@@ -1,0 +1,276 @@
+﻿@using RSToolKit.WebUI.Models.Views.Contact;
+@model ListView
+@{
+    Layout = "~/Views/Shared/_L_Cloud.cshtml";
+}
+@section scripts {
+<script src="~/Scripts/toolkit/JsonSorting.js"></script>
+<script src="~/Scripts/toolkit/JsonFilter.js"></script>
+<script src="~/Scripts/Contact/list.js"></script>
+}
+@section title {
+    <span class="pagedReport_tableName">@Model.Name</span>
+}
+@section crumbs {
+}
+@section styles {
+<style type="text/css">
+    .report-qty-container {
+        padding: 5px 0;
+    }
+
+    .report-qty {
+        text-align: right;
+        font-size: 12px;
+    }
+
+    @@media screen and (max-width: 991px) {
+        .report-qty {
+            text-align: left;
+        }
+    }
+
+    .report-nav-container {
+        background: #8e2828;
+        padding-top: 2px;
+        padding-left: 2px;
+    }
+
+    nav#report-nav {
+        background: transparent;
+    }
+
+        nav#report-nav li.menu-header {
+            font-weight: bold;
+            text-decoration: underline;
+            padding-left: 5px;
+        }
+
+        nav#report-nav ul > li > a {
+            font-size: 1em;
+        }
+
+    .header-selection-window {
+        padding: 0;
+        font-size: 12px;
+        margin-bottom: 15px;
+    }
+
+    .headers-container {
+        margin-bottom: 0;
+    }
+
+    .headers-container-selected, .headers-container-available {
+        padding: 5px;
+        height: 500px;
+        overflow-y: scroll;
+    }
+
+    .header-selection-buttons {
+        padding-top: 200px;
+        text-align: center;
+    }
+
+    @@media screen and (max-width: 991px) {
+        .header-selection-window {
+            margin-bottom: 0;
+        }
+
+        .headers-container-selected, .headers-container-available {
+            height: auto;
+            min-height: 50px;
+            overflow-y: visible;
+        }
+
+        .header-selection-buttons {
+            padding-top: 15px;
+            padding-bottom: 15px;
+        }
+    }
+
+    #m_save_files {
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 15px;
+        margin-bottom: 15px;
+    }
+
+    .report-file {
+        cursor: pointer;
+        padding: 5px;
+    }
+
+        .report-file:hover {
+            background-color: rgba(128, 128, 128, .4);
+        }
+
+    .form-messagebox {
+        color: red;
+    }
+
+    th.placeholder {
+        background-color: transparent;
+        color: red;
+        position: relative;
+        height: 100%;
+        border: none;
+    }
+
+        th.placeholder:before {
+            content: "∇";
+            position: absolute;
+            border: none;
+        }
+
+    #jTable_headerContext {
+        background-color: white;
+        padding: 5px;
+        border: 1px solid #000;
+        box-shadow: 10px 10px 5px #888888;
+    }
+
+    .labeled-chart-container {
+        padding-right: 10px;
+        border-right: 1px solid #ddd;
+        min-height: 350px;
+    }
+
+    .canvas-holder {
+        padding: 0 0;
+        margin: 0 0;
+    }
+
+    canvas {
+        width: 350px !important;
+    }
+
+    .legend {
+        font-size: 12px;
+    }
+
+        .legend ul.pie-legend {
+            padding-left: 0;
+            margin-bottom: 0;
+        }
+
+        .legend li {
+            display: block;
+            position: relative;
+            cursor: default;
+            line-height: 16px;
+            padding-left: 18px;
+            margin: 3px 0;
+            -webkit-transition: background-color 200ms ease-in-out;
+            -moz-transition: background-color 200ms ease-in-out;
+            -o-transition: background-color 200ms ease-in-out;
+            transition: background-color 200ms ease-in-out;
+        }
+
+            .legend li:hover {
+                background-color: #fafafa;
+            }
+
+            .legend li span {
+                display: block;
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 16px;
+                height: 100%;
+                border-radius: 4px;
+            }
+</style>
+}
+<input type="hidden" id="report_id" value="@Model.TokenRequestKey.ToString()" />
+<!--#region Report Navigation-->
+<div class="report-nav-container">
+    <nav class="navbar navbar-utility" id="report-nav">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapse" data-toggle="collapse" data-target="#fileNav">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="collapse navbar-collapse" id="fileNav">
+                <ul class="nav navbar-nav">
+                    <!--#region File Actions-->
+                    <li>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Reports<span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li class="menu-header">Open</li>
+                            <li><a href="@Url.Action("Get", "Contact", null, Request.Url.Scheme)"><span class="glyphicon glyphicon-folder-open glyphicon-small"></span> Standard Report</a></li>
+                            <li><a href="#" id="downloadReport"><span class="glyphicon glyphicon-cloud-download glyphicon-small"></span> Download</a></li>
+                        </ul>
+                    </li>
+                    <!--#endregion-->
+                    <!--#region Headers-->
+                    <li>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Fields<span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#" id="headers_edit" class="jTable_headers-edit"><span class="glyphicon glyphicon-edit glyphicon-small"></span> Edit</a></li>
+                            <li><a href="#" id="headers_clearall" class="jTable_headers-clearAll"><span class="glyphicon glyphicon-remove glyphicon-small"></span> Clear All</a></li>
+                            <li><a href="#" id="headers_addall" class="jTable_headers-addAll"><span class="glyphicon glyphicon-plus glyphicon-small"></span> Add All</a></li>
+                        </ul>
+                    </li>
+                    <!--#endregion-->
+                    <!--#region Sorting-->
+                    <li>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Sort By<span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#" id="sortings_edit" class="jTable_sortings-edit"><span class="glyphicon glyphicon-edit glyphicon-small"></span> Edit</a></li>
+                            <li><a href="#" id="sortings_clearall" class="jTable_sortings-clearAll"><span class="glyphicon glyphicon-remove glyphicon-small"></span> Clear All</a></li>
+                        </ul>
+                    </li>
+                    <!--#endregion-->
+                    <!--#region Filters-->
+                    <li>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Filters<span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#" id="filters_edit" class="jTable_filters-edit"><span class="glyphicon glyphicon-edit glyphicon-small"></span> Edit</a></li>
+                            <li><a href="#" id="filters_clearall" class="jTable_filters-clearAll"><span class="glyphicon glyphicon-remove glyphicon-small"></span> Clear All</a></li>
+                        </ul>
+                    </li>
+                    <!--#endregion-->
+                    <!--#region Areas-->
+                    <li>
+                        <a href="@Url.Action("List", "ContactStaticList", null, Request.Url.Scheme)"><span class="glyphicon glyphicon-list glyphicon-small"></span> Static Lists</a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("List", "ContactDynamicList", null, Request.Url.Scheme)"><span class="glyphicon glyphicon-list glyphicon-small"></span> Dynamic Lists</a>
+                    </li>
+                    <!--#endregion-->
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+<!--#endregion-->
+<!--#region Report Options-->
+<div class="row add-padding-vertical-5 color-grey-2" id="report-options">
+    <div class="col-md-2 col-md-offset-4 add-padding-vertical-5">
+        <label class="control-label">Records Per Page:</label>
+        <input type="text" id="pageSize" class="form-control input-sm" data-form-validation="number" />
+    </div>
+    <div class="col-md-2 add-padding-vertical-5">
+        <label class="control-label">Page:</label>
+        <div class="input-group input-group-sm">
+            <!--
+            <span class="input-group-btn"><button id="pageLeft" class="btn btn-default jTable_pageLeft"><span class="glyphicon glyphicon-arrow-left"></span></button></span>
+            -->
+            <select class="form-control input-sm" id="pageSelect"></select>
+            <!--
+            <span class="input-group-btn"><button id="pageRight" class="btn btn-default jTable_pageRight"><span class="glyphicon glyphicon-arrow-right"></span></button></span>
+            -->
+        </div>
+    </div>
+</div>
+<!--#endregion-->
+<!--#region Report Data-->
+<div id="mainHolder" class="row">
+    <div class="col-xs-12 text-small">
+        <section id="list">
+        </section>
+    </div>
+</div>
+<!--#endregion-->

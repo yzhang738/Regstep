@@ -1,0 +1,22 @@
+﻿@using RSTool.Code.Errors;
+@{
+    Layout = "~/Views/Shared/_ToolLayout.cshtml";
+}
+@section layoutScripts {
+    @RenderSection("scripts", required: false)
+}
+@section layoutStyles {
+    @RenderSection("styles", required: false)
+}
+@section commandSide {
+    <nav id="LaftNavBar" class="QuickCommands">
+        <header class="RSGreyBackground TextWhite TextBold">
+            Quick Commands
+        </header>
+        <section>
+            <div>@Html.ActionLink("Database Commands", "DatabaseCommands")</div>
+            <div>@Html.ActionLink("Errors", "OpenErrors", "Programmer", new { page = 1, pageSize = 25 }, null)<span class="ErrorBubble">@Logging.ErrorCount()</span></div>
+        </section>
+    </nav>
+}
+@RenderBody()

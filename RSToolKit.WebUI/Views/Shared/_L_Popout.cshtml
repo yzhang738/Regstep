@@ -1,0 +1,104 @@
+﻿@using Microsoft.AspNet.Identity.Owin;
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="shortcut icon" href="~/favicon.ico">
+    <title>@ViewBag.Title</title>
+    <!--#region meta-->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <meta name="author" content="RegStep Technologies" />
+    <!--#endregion-->
+    <!--#region styles-->
+    <link href="~/Content/toolkit/b_toolkit.min.css" rel="stylesheet" />
+    @RenderSection("styles", required: false)
+    <!--#endregion-->
+    <!--#region scripts-->
+    <!--#region IE fixes-->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <![endif]-->
+    <!--#endregion-->
+    <!--#endregion-->
+</head>
+<body>
+    <input type="hidden" id="toolkitGlobal_jsonAntiForgeryToken" value="@Html.JsonAntiforgeryToken()">
+    <input type="hidden" id="toolkitGlobal_companyId" value="@(ViewBag.CompanyId != null ? (long)ViewBag.CompanyId : -1L)" />
+    <div class="container-fluid" style="">
+        <!--#region header-->
+        <header>
+            <div class="container-fluid color-white">
+                <div class="row add-padding-vertical-5">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <h4>
+                                <a href="#" onclick="window.close();"><span class="glyphicon glyphicon-remove-sign"></span> Close</a>
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="row add-padding-bottom" id="page-title">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <h2 class="text-color-1">
+                                @RenderSection("title", required: false)
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!--#endregion-->
+        <!--#region body-->
+        <div class="container-fluid color-white add-padding-vertical" style="">
+            <div class="row">
+                <div class="col-xs-12">
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+        <!--#endregion-->
+        <!--#region footer-->
+        <footer>
+            <div class="container-fluid text-align-center add-padding-vertical-5 text-small text-color-white">
+                &copy; 2013-@DateTime.UtcNow.Year RegStep Technologies
+            </div>
+        </footer>
+        <!--#endregion-->
+    </div>
+    <!--#region modals-->
+    <div class="modal fade" style="z-index: 9999 !important" id="processingModal" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-processing">
+            <div class="modal-header">
+                <h3>Processing...</h3>
+            </div>
+            <div class="modal-body">
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                        <span class="sr-only">Processing</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @RenderSection("modals", required: false)
+    <!--#endregion-->
+    <div class="hidden">
+        @RenderSection("crumbs", required: false)
+    </div>
+    <script type="text/javascript">
+        //window.resizeTo(window.outerWidth, 830);
+    </script>
+    @Scripts.Render("~/bundles/scripts/jquery")
+    @Scripts.Render("~/bundles/scripts/bootstrap")
+    @Scripts.Render("~/bundles/scripts/extensions")
+    @Scripts.Render("~/bundles/scripts/toolkit")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

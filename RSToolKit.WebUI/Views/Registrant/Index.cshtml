@@ -1,0 +1,744 @@
+﻿@using System.Collections;
+@using RSToolKit.Domain.Entities;
+@using RSToolKit.Domain;
+@using System.Text.RegularExpressions;
+@using RSToolKit.Domain.Entities.Email;
+@using RSToolKit.Domain.Entities.MerchantAccount;
+@using Microsoft.AspNet.Identity;
+@using RSToolKit.Domain.Identity;
+@model Registrant
+@{
+    Layout = "~/Views/Shared/_L_Cloud.cshtml";
+    var phone = Model.Data.Where(d => d.Component.Variable != null && d.Component.Variable.Value.ToLower() == "phone").FirstOrDefault();
+    var modifierName = "registrant";
+    var user = (User)ViewBag.User;
+    var total = Model.TotalOwed;
+    var financeList = new List<IFinanceAmmount>();
+    financeList.AddRange(Model.Adjustments);
+    financeList.AddRange(Model.TransactionRequests);
+    var userManager = (AppUserManager)ViewBag.UserManager;
+    var modRegUser = userManager.FindById(Model.ModifiedBy.ToString());
+    if (modRegUser != null)
+    {
+        modifierName = modRegUser.UserName;
+    }
+}
+@section scripts
+{
+    <script src="~/Scripts/Cloud/EmailSendInformation.js"></script>
+    <script src="~/Scripts/Registrant/registrant.js"></script>
+}
+@section styles
+{
+}
+@section title
+{
+    @Model.LastNameFirst
+}
+@section crumbs
+{
+    @Html.Raw(((User)ViewBag.User).BreadCrumbs.GetBreadTrail(Url))
+}
+<input type="hidden" id="registrant_registrantId" value="@Model.SortingId" />
+<input type="hidden" id="registrant_registrantUId" value="@Model.UId" />
+<input type="hidden" id="registrant_formId" value="@Model.FormKey" />
+<input type="hidden" id="registrant_registrantLive" value="@(Model.Type == RegistrationType.Live)" />
+<div class="row registrant-data">
+    <div class="col-xs-12">
+        @if (ViewBag.CanEdit)
+        {
+            <div class="add-padding-bottom-5 text-medium text-color-2">
+                Options
+            </div>
+            <div class="row add-padding-vertical-5 color-grey-2">
+                <!--Email and Links-->
+                <div class="col-sm-6 col-md-3">
+                    <div class="add-padding-vertical-5">
+                        <a class="modal-link" data-toggle="modal" data-target="#send-email">
+                            <span class="glyphicon glyphicon-envelope"></span> Send Email
+                        </a>
+                    </div>
+                    <div class="add-padding-vertical-5">
+                        <a class="modal-link registrant-incomplete" data-toggle="modal" data-target="#link">
+                            <span class="glyphicon glyphicon-link"></span> Registration Link
+                        </a>
+                    </div>
+                </div>
+                <!--End Email and Links-->
+                <!--Cancel Delete Reg-->
+                <div class="col-sm-6 col-md-3">
+                    @if (Model.Status != RegistrationStatus.Deleted)
+                    {
+                        <div class="add-padding-vertical-5">
+                            <a id="registrant_delete" class="modal-link" href="@Url.Action("MarkRegistrant", "Registrant", null, Request.Url.Scheme)">
+                                <span class="glyphicon glyphicon-trash"></span> Delete Registration
+                            </a>
+                        </div>
+                        <div class="add-padding-vertical-5 registrant">
+                            @if (Model.Status == RegistrationStatus.Submitted)
+                            {
+                                <a id="registrant_deactivate" class="modal-link" href="@Url.Action("Deactivate", "Registrant", null, Request.Url.Scheme)">
+                                    <span class="glyphicon glyphicon-ban-circle"></span> Cancel Registration
+                                </a>
+                            }
+                            @if ((int)Model.Status >= 2 && (int)Model.Status <= 4)
+                            {
+                                <a id="registrant_activate" class="modal-link" href="@Url.Action("Activate", "Registrant", null, Request.Url.Scheme)">
+                                    <span class="glyphicon glyphicon-check"></span> Activate Registration
+                                </a>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="add-padding-vertical-5 registrant">
+                            <a id="registrant_activate" class="modal-link" href="@Url.Action("Activate", "Registrant", null, Request.Url.Scheme)">
+                                <span class="glyphicon glyphicon-check"></span> Activate Registration
+                            </a>
+                        </div>
+                        <div>
+                            @if (User.HasGlobalPermissions())
+                            {
+                                <a id="registrant_permadelete" class="modal-link" href="@Url.Action("MarkRegistrant", "Registrant", null, Request.Url.Scheme)">
+                                    <span class="glyphicon glyphicon-trash"></span> Permanately Delete
+                                </a>
+                            }
+                        </div>
+                    }
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <div class="add-padding-vertical-5">
+                        <a href="@Url.Action("ChangeSet", new { id = Model.SortingId, popout = true })" onclick="window.open(this.href, 'popupwindow', 'width=1000,height=500,scrollbars,resizable'); return false;">
+                            <span class="glyphicon glyphicon-list"></span> Track Changes
+                        </a>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3 registrant-notincomplete">
+                    <div class="add-padding-vertical-5">
+                        <a class="modal-link" id="registrant_adjustment">
+                            <span class="glyphicon glyphicon-usd"></span> Adjustment
+                        </a>&nbsp;&nbsp;
+                        <a class="modal-link" id="registrant_payment">
+                            <span class="glyphicon glyphicon-usd"></span> Payment
+                        </a>
+                    </div>
+                    <div class="add-padding-vertical-5">
+                        <span class="modal-link">
+                            <a data-toggle="modal" data-target="#processCCModal">
+                                <span class="glyphicon glyphicon-credit-card"></span> Process Credit Card
+                            </a>
+                        </span>
+                    </div>
+                </div>
+                <!--End Billing-->
+            </div>
+        }
+        <!--Data-->
+        <div class="row">
+            <!--Reg Summary-->
+            <div class="col-sm-6 text-small">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th class="registrant-header" colspan="2">
+                                Summary
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>
+                                Field
+                            </th>
+                            <th>
+                                Data
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="registrant-confirmation">
+                            <td>Confirmation:</td>
+                            <td>@Model.Confirmation</td>
+                        </tr>
+                        <tr class="registrant-invoiceNumber">
+                            <td>Invoice Number:</td>
+                            <td>@Model.InvoiceNumber</td>
+                        </tr>
+                        <tr class="registrant-status">
+                            <td>Status:</td>
+                            <td>@Model.Status.GetStringValue()</td>
+                        </tr>
+                        <tr class="registrant-datecreated">
+                            <td>Registration Date:</td>
+                            <td>@Model.DateCreated.UserDateString(user)</td>
+                        </tr>
+                        <tr class="registrant-datemodified">
+                            <td>Last Edit:</td>
+                            <td>@Model.DateModified.UserDateString(user)</td>
+                        </tr>
+                        <tr class="registrant-editedBy">
+                            <td>Edited By:</td>
+                            <td>@modifierName</td>
+                        </tr>
+                        @if (Model.Form.Pages.FirstOrDefault(p => p.Type == PageType.RSVP && p.Enabled) != null)
+                        {
+                            <tr class="registrant-rsvp">
+                                <td>RSVP:</td>
+                                <td>@(Model.RSVP ? Model.Form.RSVPAccept : Model.Form.RSVPDecline)</td>
+                            </tr>
+                        }
+                        @if (Model.Form.Audiences.Count > 0 && Model.Form.Pages.FirstOrDefault(p => p.Type == PageType.Audience && p.Enabled) != null)
+                        {
+                            <tr class="registrant-audience">
+                                <td>Audience:</td>
+                                <td>@(new MvcHtmlString(Model.Audience != null ? Model.Audience.Label : "<i>none</i>"))</td>
+                            </tr>
+                        }
+                        <tr class="registrant-email">
+                            <td>Email:</td>
+                            <td>@Model.Email</td>
+                        </tr>
+                        @if (phone != null && !phone.Empty())
+                        {
+                            <tr class="registrant-phone">
+                                <td>Phone:</td>
+                                <td>@phone.GetPretty()</td>
+                            </tr>
+                        }
+                        <tr class="registrant-seatings">
+                            <td colspan="2">
+                                @foreach (var seating in Model.Seatings)
+                                {
+                                    var componentName = seating.Component.Variable != null ? seating.Component.Variable.Value : seating.Component.LabelText;
+                                    if (seating.Component is IComponentItem)
+                                    {
+                                        var item = seating.Component as IComponentItem;
+                                        componentName = (item.Parent.Variable != null ? item.Parent.Variable.Value : item.Parent.LabelText) + " - " + componentName;
+                                    }
+                                    <div>@(seating.Seated ? "Seated" : "Waiting") on @componentName since @(seating.Seated ? seating.DateSeated.UserDateString(user) : seating.Date.UserDateString(user))</div>
+                                }
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!--End Reg Summary-->
+            <!--Email Summary-->
+            <div class="col-sm-6 text-small">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th class="registrant-header" colspan="3">
+                                Email Activity
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>Date</th>
+                            <th>Type</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody class="registrant-emailactivity">
+                        @foreach (var send in Model.EmailSends)
+                        {
+                            <tr>
+                                <td>@send.DateSent.UserDateString(user)</td>
+                                <td><a href="#" class="email-information" data-id="@send.SortingId">@send.EmailDescription</a></td>
+                                <td>@send.EmailEvents.OrderByDescending(e => e.Date).First().Event</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <!--End Email Summary-->
+            <!--Billing-->
+            <div class="col-xs-12 text-small">
+                <table class="table table-striped text-nowrap">
+                    <thead>
+                        <tr>
+                            <th class="registrant-header" colspan="3">
+                                Billing
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>Date</th>
+                            <th>Transaction</th>
+                            <th style="text-align: right;">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody class="registrant-transactions">
+                        <tr>
+                            <td>@Model.DateModified.UserDateString(user)</td>
+                            <td>Registration Total</td>
+                            <td>@((Model.Fees + Model.Taxes).ToString("c", Model.Form.Currency.GetCulture()))</td>
+                        </tr>
+                        @foreach (var finance in financeList.OrderBy(f => f.DateCreated))
+                        {
+                            <tr id="fin_@finance.SortingId">
+                                <td>
+                                    @finance.DateCreated.UserDateString(user)
+                                </td>
+                                @if (finance is Adjustment)
+                                {
+                                    var adj = finance as Adjustment;
+                                    var voided = false;
+                                    var modifier = "system";
+                                    var voidedBy = "system";
+                                    var voidedUser = userManager.FindById(adj.VoidedBy);
+                                    if (voidedUser != null)
+                                    {
+                                        voidedBy = voidedUser.UserName;
+                                    }
+                                    var modUser = userManager.FindById(adj.ModifiedBy.ToString());
+                                    if (modUser != null)
+                                    {
+                                        modifier = "unknown";
+                                    }
+                                    if (adj.AdjustmentType != "Adjustment")
+                                    {
+                                        <td>
+                                            @adj.AdjustmentType (@adj.TransactionId)<br />
+                                            @adj.Name by @modifier<br />
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        if (adj.Voided)
+                                        {
+                                            voided = true;
+                                            <td>
+                                                @adj.AdjustmentType<br />
+                                                @adj.Name by @modifier<br />
+                                                Voided by @voidedBy
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td>
+                                                @adj.AdjustmentType<br />
+                                                @adj.Name by @modifier<br />
+                                                <a href="~/Adjustment" class="void-adjustment" data-id="@adj.SortingId">[void]</a>
+                                            </td>
+                                        }
+                                    }
+                                    <td>
+                                        @(new MvcHtmlString(!voided ? adj.Amount.ToString("c", Model.Form.Culture) : "<s>" + adj.Amount + "</s>"))
+                                    </td>
+                                }
+                                else
+                                {
+                                    var tran = finance as TransactionRequest;
+                                    var failed = !tran.TotalAmount().HasValue;
+                                    <td><a href="@Url.Action("Get", "Transaction", new { id = tran.SortingId, popout = true })" class="registrant-transaction" id="@tran.SortingId">Credit Card</a></td>
+                                    <td>
+                                        @(new MvcHtmlString(finance.TotalAmount().HasValue ? finance.TotalAmount().Value.ToString("c", Model.Form.Culture) : "<s>failed</s>"))
+                                    </td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+
+                    <tfoot>
+                        <tr class="registrant-balance">
+                            <td style="font-weight: bold;" colspan="2">Balance</td>
+                            <td style="text-align: right; font-weight: bold;">@(Model.TotalOwed.ToString("c", Model.Form.Culture))</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <!--End Billing-->
+        </div>
+        <!--End Data-->
+    </div>
+
+</div>
+@section modals
+{
+    <div class="modal fade" id="adjustment" data-keyboard="false">
+        <div class="modal-dialog modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Record Adjustment / Payment</h3> Balance: <span class="registrant-balanceNow">@Model.TotalOwed</span>
+            </div>
+            <div class="modal-body">
+                <div class="row add-padding-bottom-10 adjustment-payment">
+                    <label class="control-label col-sm-3">Type</label>
+                    <div class="col-sm-9">
+                        <select class="form-control adjustment-type" id="type">
+                            <option value="Wire Payment">Wire Payment</option>
+                            <option class="adjustment-adjustment" value="Adjustment">Adjustment</option>
+                            <option value="Credit Card Payment">Credit Card Payment</option>
+                            <option value="Check Payment">Check Payment</option>
+                            <option value="Cash Payment">Cash Payment</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row add-padding-bottom-10 adjustment-payment">
+                    <label class="col-sm-3" id="transactionIdLabel">Transaction Id</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control adjust-payment-input" id="transactionId" />
+                    </div>
+                </div>
+                <div class="row add-padding-bottom-10">
+                    <label class="col-sm-3">Date</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="adjustmentDate" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="alert alert-warning ammount-warning adjust-warning" style="display: none;">
+                            <span class="glyphicon glyphicon-warning-sign"></span> <span id="ammountError" class="adjustment-error-text"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row add-padding-bottom-10">
+                    <label class="control-label col-sm-3">Amount</label>
+                    <div class="col-sm-9">
+                        <input class="form-control" type="text" id="adjustmentAmount" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="alert alert-warning description-warning adjust-warning" style="display: none;">
+                            <span class="glyphicon glyphicon-warning-sign"></span> <span id="descriptionError" class="adjustment-error-text"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="control-label col-sm-3">Description</label>
+                    <div class="col-sm-9">
+                        <input class="form-control" type="text" id="adjustmentDescription" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#adjustment">Cancel</button>
+                <button type="button" class="btn btn-default" id="adjust">Save</button>
+            </div>
+        </div>
+    </div><!-- /.modal -->
+
+    <div class="modal fade" id="processCCModal" data-keyboard="false">
+        <div class="modal-dialog modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Process Payment</h3> Balance: <span class="registrant-balanceNow">@Model.TotalOwed</span>
+            </div>
+            <div class="modal-body">
+                <div class="row add-padding-bottom-10">
+                    <label class="control-label col-sm-4">Transaction Type</label>
+                    <div class="col-sm-8">
+                        <select class="form-control" id="ccTransactionType">
+                            <option value="0">Authorize and Capture</option>
+                            <option value="2">Authorize Only</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row add-padding-bottom-10">
+                    <label class="col-sm-4">Amount</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" id="ccAmount" />
+                    </div>
+                </div>
+                <div class="row add-padding-bottom-10">
+                    <label class="col-sm-4">Card Number</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" id="ccCardNumber" />
+                    </div>
+                </div>
+                <div class="row add-padding-bottom-10">
+                    <label class="control-label col-sm-4">Name on Card</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" type="text" id="ccNameOnCard" />
+                    </div>
+                </div>
+                <div class="row add-padding-bottom-10">
+                    <label class="control-label col-sm-4">Card Code</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" type="text" id="ccCardCode" />
+                    </div>
+                </div>
+                @if (Model.Form.MerchantAccount != null && Model.Form.MerchantAccount.Descriminator == "paypal")
+                {
+                    <div class="row add-padding-bottom-10">
+                        <label class="control-label col-sm-4">Card Type</label>
+                        <div class="col-sm-5">
+                            <select class="form-control input-sm" data-form-required="true" id="ccCardType">
+                                <option value="visa">Visa</option>
+                                <option value="mastercard">Master Card</option>
+                                <option value="discover">Discover</option>
+                                <option value="amex">American Express</option>
+                            </select>
+                        </div>
+                    </div>
+                }
+                <div class="row add-padding-bottom-10">
+                    <label class="control-label col-sm-4">Expiration</label>
+                    <div class="col-sm-5">
+                        <select class="form-control form-select" id="ccExpMonth">
+                            <option value="01">1 (January)</option>
+                            <option value="02">2 (February)</option>
+                            <option value="03">3 (March)</option>
+                            <option value="04">4 (April)</option>
+                            <option value="05">5 (May)</option>
+                            <option value="06">6 (June)</option>
+                            <option value="07">7 (July)</option>
+                            <option value="08">8 (August)</option>
+                            <option value="09">9 (September)</option>
+                            <option value="10">10 (October)</option>
+                            <option value="11">11 (November)</option>
+                            <option value="12">12 (December)</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-3">
+                        <select class="form-control form-select" id="ccExpYear">
+                            @for (var i = DateTime.Now.Year; i < DateTime.Now.Year + 15; i++)
+                            {
+                                var twoDigit = i % 100;
+                                <option value="@twoDigit">@twoDigit</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                @if (Model.Form.MerchantAccount != null && Model.Form.MerchantAccount.Descriminator == "paypal")
+                {
+                    <div class="row  add-padding-bottom-10">
+                        <label class="control-label col-sm-4"><span class="form-component-label">Address Line 1</span></label>
+                        <div class="col-sm-5">
+                            <input type="text" name="Line1" id="ccAddress1" data-form-required="true" class="form-control input-sm form-text-input" />
+                        </div>
+                    </div>
+                    <div class="row  add-padding-bottom-10">
+                        <label class="control-label col-sm-4"><span class="form-component-label">Address Line 2</span></label>
+                        <div class="col-sm-5">
+                            <input type="text" name="Line2" id="ccAddress2" data-form-required="true" class="form-control input-sm form-text-input" />
+                        </div>
+                    </div>
+                    <div class="row  add-padding-bottom-10">
+                        <label class="control-label col-sm-4"><span class="form-component-label">City</span></label>
+                        <div class="col-sm-5">
+                            <input type="text" name="City" id="ccCity" data-form-required="true" class="form-control input-sm form-text-input" />
+                        </div>
+                    </div>
+                    <div class="row  add-padding-bottom-10">
+                        <label class="control-label col-sm-4"><span class="form-component-label">State</span></label>
+                        <div class="col-sm-5">
+                            <input type="text" name="State" id="ccState" data-form-required="true" class="form-control input-sm form-text-input" />
+                        </div>
+                    </div>
+                }
+                <div class="row add-padding-bottom-10">
+                    <label class="control-label col-sm-4">Zip Code</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" type="text" id="ccZipCode" />
+                    </div>
+                </div>
+                @if (Model.Form.MerchantAccount != null && Model.Form.MerchantAccount.Descriminator == "paypal")
+                {
+                    <div class="row  add-padding-bottom-10">
+                        <label class="control-label col-sm-4"><span class="form-component-label">Country</span></label>
+                        <div class="col-sm-5">
+                            <select name="Country" id="ccCountry" class="form-control input-sm form-select">
+                                <optgroup label="Common">
+                                    <option value="US">USA</option>
+                                </optgroup>
+                                <optgroup label="All">
+                                    @for (var ci = 0; ci < Countries.Names.Length; ci++)
+                                    {
+                                        <option value="@Countries.Abbreviations[ci]">@Countries.Names[ci]</option>;
+                                    }
+                                </optgroup>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row  add-padding-bottom-10">
+                        <label class="control-label col-sm-4"><span class="form-component-label">Phone</span></label>
+                        <div class="col-sm-5">
+                            <input type="text" name="Phone" id="ccPhone" data-form-required="true" class="form-control input-sm form-text-input" />
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#processCCModal">Cancel</button>
+                <button type="button" class="btn btn-default" id="proccessCC">Process Payment</button>
+            </div>
+        </div>
+    </div><!-- /.modal -->
+
+    <div class="modal fade" id="send-email">
+        <div class="modal-dialog modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Resend Emails</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-12 add-padding-vertical-5">
+                        All Emails
+                    </div>
+                    <div class="col-xs-12 add-padding-vertical-5">
+                        @foreach (var email in Model.Form.AllEmails)
+                        {
+                            <div class="checkbox">
+                                <a href="@Url.Action("Email", "Registrant", null)" data-restful-method="post" data-restful-json='{"id":"@Model.SortingId","emailId":"@email.UId"}'><span class="glyphicon glyphicon-envelope"></span> @email.Name</a>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div><!-- /.modal-dialog -->
+
+    <div class="modal fade" id="link" data-keyboard="false">
+        <div class="modal-dialog modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Record Link</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-12 add-padding-vertical">
+                        @if (Model.Status == RegistrationStatus.Incomplete)
+                        { <span class="registrant-incomplete">Continue Registration Link</span> }
+                        @if (Model.Status == RegistrationStatus.Submitted)
+                        { <span class="registrant-notincomplete">Confirmation Link</span> }
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 add-padding-vertical registrant-incomplete">
+                        <code class="registrant-continueLink">
+                            http://toolkit.regstep.com@(Url.Action("SmartLink", "Register", new { formId = Model.Form.SortingId, confNumb = Model.Confirmation }))
+                        </code>
+                    </div>
+                    @if (Model.Status == RegistrationStatus.Incomplete)
+                    {
+                        <div class="col-xs-12 add-padding-vertical registrant-incomplete">
+                            <a href="@Url.Action("Start", "AdminRegister", new { id = Model.FormKey, email = Model.Email.Trim() })" onclick="window.open(this.href, 'popupwindow', 'width=1000,height=500,scrollbars,resizable'); return false;" class="btn btn-default registrant-link-continueLink" target="_blank">Admin Continue</a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-xs-12 add-padding-vertical registrant-notincomplete">
+                            <a href="@Url.Action("Confirmation", "AdminRegister", new { id = Model.UId })" onclick="window.open(this.href, 'popupwindow', 'width=1000,height=500,scrollbars,resizable'); return false;" class="btn btn-default registrant-link-confirmationLink" target="_blank">Admin Confirmation</a>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <div class="modal fade" style="z-index: 10000;" id="m_partialRefund" data-keyboard="false">
+        <div class="modal-dialog modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Partial Refund</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <span id="ammountToRefundError"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="control-label col-sm-3">Amount</label>
+                    <div class="col-sm-9">
+                        <input class="form-control input-sm" type="text" id="ammountToRefund" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#partialRefund">Cancel</button>
+                <button type="button" class="btn btn-default" id="refund">Refund</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="m_transaction">
+        <div class="modal-dialog modal-fill modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Transaction</h3>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="transaction-id" value="" />
+                <div class="add-padding-bottom-5 text-medium text-color-2 tranaction-hasBalance">
+                    Options
+                </div>
+                <div class="row add-padding-vertical-5 color-grey-2 tranaction-hasBalance">
+                    <div class="col-sm-6 col-md-4 col-lg-3">
+                        <div class="add-padding-vertical-5">
+                            <a class="transaction-refundBalance" href="@Url.Action("RefundBalance", "Cloud", null, Request.Url.Scheme)">
+                                <span class="glyphicon glyphicon-usd"></span> Refund Balance
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-4 col-lg-3">
+                        <div class="add-padding-vertical-5">
+                            <a class="modal-link" data-toggle="modal" data-target="#m_partialRefund">
+                                <span class="glyphicon glyphicon-usd"></span> Partial Refund
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-5 col-lg-4 add-padding-bottom text-small">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th class="registrant-header" colspan="2">Original Transaction</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Date:</td>
+                                    <td class="transaction-date"></td>
+                                </tr>
+                                <tr>
+                                    <td>Amount:</td>
+                                    <td class="transaction-amount"></td>
+                                </tr>
+                                <tr>
+                                    <td>Transaction Type:</td>
+                                    <td class="transaction-type"></td>
+                                </tr>
+                                <tr>
+                                    <td>Last Four:</td>
+                                    <td class="transaction-lastfour"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="col-md-7 col-lg-8 text-small">
+                        <table class="table table-striped text-nowrap">
+                            <thead>
+                                <tr>
+                                    <th class="registrant-header" colspan="4">
+                                        Transaction Balance
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Type</th>
+                                    <th>Transaction Id</th>
+                                    <th>Status</th>
+                                    <th style="text-align: right;">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody class="table table-striped transaction-details"></tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="4"><span class="text-bold">Balance:</span></td>
+                                    <td style="text-align: right;"><span class="text-bold transaction-totalamount"></span></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#adjustment">Close</button>
+            </div>
+        </div>
+    </div><!-- /.modal -->
+}

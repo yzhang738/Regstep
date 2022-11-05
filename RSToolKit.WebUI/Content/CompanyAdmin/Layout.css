@@ -1,0 +1,21 @@
+﻿.comma-after > .comma:not(:last-child)::after {
+  content: ',';
+}
+table.table-company-users {
+  display: block;
+  overflow-x: auto !important;
+}
+nav.navbar-utility li.admin > a {
+  background: white !important;
+  color: #3E3E3E !important;
+}
+nav.navbar-utility ul > li.admin > ul {
+  background: white;
+}
+@media screen and (max-width: 767px) {
+  nav.navbar-utility li.admin > a {
+    background: transparent !important;
+    color: white !important;
+  }
+}
+/*# sourceMappingURL=Layout.css.map */

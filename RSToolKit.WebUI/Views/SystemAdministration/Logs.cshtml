@@ -1,0 +1,352 @@
+﻿@using System.Collections;
+@using RSToolKit.Domain.Entities;
+@using RSToolKit.Domain;
+@using RSToolKit.Domain.Entities.Components;
+@{
+    Layout = "~/Views/Shared/_Layout_SystemAdministration.cshtml";
+}
+@section scripts
+{
+    <script src="~/Scripts/SystemAdministration/b_logs.js"></script>
+    <script type="text/javascript">
+        var TABLE_options = {
+            id: null,
+            type: null
+        };
+    </script>
+}
+@section styles
+{
+    <link href="~/Content/Bootstrap/datetimepicker.min.css" rel="stylesheet" />
+    <link href="~/Content/Bootstrap/rating.css" rel="stylesheet" />
+    <link href="~/Content/Tool/jTable.min.css" rel="stylesheet" />
+    <style type="text/css">
+        .report-qty-container {
+            padding: 5px 0;
+        }
+
+        .report-qty {
+            text-align: right;
+            font-size: 12px;
+        }
+
+        @@media screen and (max-width: 991px) {
+            .report-qty {
+                text-align: left;
+            }
+        }
+
+        .report-nav-container {
+            background: #8e2828;
+            padding-top: 2px;
+            padding-left: 2px;
+        }
+
+        nav#report-nav {
+            background: transparent;
+        }
+
+            nav#report-nav li.menu-header {
+                font-weight: bold;
+                text-decoration: underline;
+                padding-left: 5px;
+            }
+
+            nav#report-nav ul > li > a {
+                font-size: 1em;
+            }
+
+        .header-selection-window {
+            padding: 0;
+            font-size: 12px;
+            margin-bottom: 15px;
+        }
+
+        .headers-container {
+            margin-bottom: 0;
+        }
+
+        .headers-container-selected, .headers-container-available {
+            padding: 5px;
+            height: 500px;
+            overflow-y: scroll;
+        }
+
+        .header-selection-buttons {
+            padding-top: 200px;
+            text-align: center;
+        }
+
+        @@media screen and (max-width: 991px) {
+            .header-selection-window {
+                margin-bottom: 0;
+            }
+
+            .headers-container-selected, .headers-container-available {
+                height: auto;
+                min-height: 50px;
+                overflow-y: visible;
+            }
+
+            .header-selection-buttons {
+                padding-top: 15px;
+                padding-bottom: 15px;
+            }
+        }
+
+        #m_save_files {
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+        }
+
+        .report-file {
+            cursor: pointer;
+            padding: 5px;
+        }
+
+            .report-file:hover {
+                background-color: rgba(128, 128, 128, .4);
+            }
+
+        .form-messagebox {
+            color: red;
+        }
+
+        th.placeholder {
+            background-color: transparent;
+            color: red;
+            position: relative;
+            height: 100%;
+            border: none;
+        }
+
+            th.placeholder:before {
+                content: "∇";
+                position: absolute;
+                border: none;
+            }
+
+        #jTable_headerContext {
+            background-color: white;
+            padding: 5px;
+            border: 1px solid #000;
+            box-shadow: 10px 10px 5px #888888;
+        }
+
+        .labeled-chart-container {
+            padding-right: 10px;
+            border-right: 1px solid #ddd;
+            min-height: 350px;
+        }
+
+        .canvas-holder {
+            padding: 0 0;
+            margin: 0 0;
+        }
+
+        canvas {
+            width: 350px !important;
+        }
+
+        .legend {
+            font-size: 12px;
+        }
+
+            .legend ul.pie-legend {
+                padding-left: 0;
+                margin-bottom: 0;
+            }
+
+            .legend li {
+                display: block;
+                position: relative;
+                cursor: default;
+                line-height: 16px;
+                padding-left: 18px;
+                margin: 3px 0;
+                -webkit-transition: background-color 200ms ease-in-out;
+                -moz-transition: background-color 200ms ease-in-out;
+                -o-transition: background-color 200ms ease-in-out;
+                transition: background-color 200ms ease-in-out;
+            }
+
+                .legend li:hover {
+                    background-color: #fafafa;
+                }
+
+                .legend li span {
+                    display: block;
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    width: 16px;
+                    height: 100%;
+                    border-radius: 4px;
+                }
+    </style>
+}
+@section title
+{
+    <span class="jTable_name"></span> (<span class="jTable_parentName"></span>)
+}
+@section breadcrumbs
+{
+    @Html.Raw(((User)ViewBag.User).BreadCrumbs.GetBreadTrail(Url))
+}
+@section modals
+{
+    <div class="modal fade" id="editModal">
+        <div class="modal-dialog">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h3 class="modal-title">Edit Data</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row" style="display: none;" id="editingProgress"><div class="progress"><div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"><span class="sr-only">Processing</span></div></div></div>
+                <div class="row" style="display: none;" id="editingData"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Discard Changes</button>
+                <button type="button" class="btn btn-default" id="saveEdit">Save Changes</button>
+            </div>
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <div class="modal fade" id="m_save">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h3 class="modal-title">Report Files</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-12" id="m_save_files"></div>
+                </div>
+                <div class="row">
+                    <label class="col-xs-4 control-label">File Name: </label>
+                    <div class="col-xs-8"><input type="text" class="form-control" id="m_save_fileInput" /><input type="hidden" class="form-control" id="m_save_fileInputId" /></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-default" id="m_save_button">Save</button>
+            </div>
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <div class="modal fade" id="invoiceModal">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h3 class="modal-title">Invoice Data</h3>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+}
+<div class="col-xs-12">
+    <h3 class="add-padding-bottom-5">
+        Current View: <span class="jTable_name"></span><!--Standard Report, ReportName, EmailReport-->
+    </h3>
+    <!--Report QTY-->
+    <div class="row report-qty-container">
+        <div class="col-md-3" style="line-height: 39px;">
+            <b>Records Returned:</b> <span class="jTable_totalRecords"></span>
+        </div>
+    </div>
+    <!--End Report QTY-->
+    <!--Report Menu-->
+    <div class="report-nav-container">
+        <nav class="navbar navbar-utility" id="report-nav">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapse" data-toggle="collapse" data-target="#fileNav">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div class="collapse navbar-collapse" id="fileNav">
+                    <ul class="nav navbar-nav">
+                        <li>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Reports<span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="#" id="printable" target="_blank"><span class="glyphicon glyphicon-small glyphicon-print"></span> Print</a></li>
+                                <li><a href="#" id="downloadReport"><span class="glyphicon glyphicon-cloud-download glyphicon-small"></span> Download</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Fields<span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="#" id="headers_edit" class="jTable_headers-edit"><span class="glyphicon glyphicon-edit glyphicon-small"></span> Edit</a></li>
+                                <li><a href="#" id="headers_clearall" class="jTable_headers-clearAll"><span class="glyphicon glyphicon-remove glyphicon-small"></span> Clear All</a></li>
+                                <li><a href="#" id="headers_addall" class="jTable_headers-addAll"><span class="glyphicon glyphicon-plus glyphicon-small"></span> Add All</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Sort By<span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="#" id="sortings_edit" class="jTable_sortings-edit"><span class="glyphicon glyphicon-edit glyphicon-small"></span> Edit</a></li>
+                                <li><a href="#" id="sortings_clearall" class="jTable_sortings-clearAll"><span class="glyphicon glyphicon-remove glyphicon-small"></span> Clear All</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Filters<span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="#" id="filters_edit" class="jTable_filters-edit"><span class="glyphicon glyphicon-edit glyphicon-small"></span> Edit</a></li>
+                                <li><a href="#" id="filters_clearall" class="jTable_filters-clearAll"><span class="glyphicon glyphicon-remove glyphicon-small"></span> Clear All</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <!--End Report Menu-->
+    <!--Report Options-->
+    <div class="row add-padding-vertical-5 color-grey-2" id="report-options">
+        <div class="col-md-2 add-padding-vertical">
+            <label class="control-label">
+                Count: <input type="checkbox" class="jTable_count" id="count" />
+            </label>
+        </div>
+        <div class="col-md-2 add-padding-vertical">
+            <label class="control-label">
+                AVG / %: <input type="checkbox" class="jTable_average" id="averages" />
+            </label>
+        </div>
+        <div class="col-md-2 add-padding-vertical">
+            <label class="control-label">
+                Display Graph: <input type="checkbox" class="jTable_graph" id="graphs" />
+            </label>
+        </div>
+        <div class="col-md-2 add-padding-vertical-5">
+            <label class="control-label">Records Per Page:</label>
+            <input type="text" id="pageSize" class="form-control input-sm jTable_recordsPerPage" data-form-validation="number" />
+        </div>
+        <div class="col-md-2 add-padding-vertical-5">
+            <label class="control-label">Page:</label>
+            <div class="input-group input-group-sm">
+                <span class="input-group-btn"><button id="pageLeft" class="btn btn-default jTable_pageLeft"><span class="glyphicon glyphicon-arrow-left"></span></button></span>
+                <select class="form-control input-sm jTable_pageSelect" id="jTable_pageSelect"></select>
+                <span class="input-group-btn"><button id="pageRight" class="btn btn-default jTable_pageRight"><span class="glyphicon glyphicon-arrow-right"></span></button></span>
+            </div>
+        </div>
+    </div>
+    <!--End Report Options-->
+    <!--Report Data-->
+    <div id="mainHolder" class="row">
+        <div class="col-xs-12 text-small">
+            <section>
+                <table class="table table-striped table-registration-data" id="jTable"></table>
+            </section>
+        </div>
+    </div>
+    <!--End Report Data-->
+</div>

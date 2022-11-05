@@ -1,0 +1,2221 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{C803FFEB-0846-4112-9065-E5F6AAA4A523}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>RSToolKit.WebUI</RootNamespace>
+    <AssemblyName>RSToolKit.WebUI</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <MvcBuildViews>true</MvcBuildViews>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <TypeScriptToolsVersion>1.0</TypeScriptToolsVersion>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <UseGlobalApplicationHostFile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <CodeAnalysisAdditionalOptions>/assemblyCompareMode:StrongNameIgnoringVersion</CodeAnalysisAdditionalOptions>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <MvcBuildViews>true</MvcBuildViews>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Antlr3.Runtime, Version=3.5.0.2, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFrameworkExtension">
+      <HintPath>..\packages\EntityFrameworkExtension.2.0.1\lib\EntityFrameworkExtension.dll</HintPath>
+    </Reference>
+    <Reference Include="EPPlus">
+      <HintPath>..\packages\EPPlus.4.0.4\lib\net20\EPPlus.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp">
+      <HintPath>..\packages\izenda.itextsharp.4.0.3.0\lib\net20\itextsharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Owin">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.2.1\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.Core.2.2.0\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.SystemWeb, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.SystemWeb.2.2.0\lib\net45\Microsoft.AspNet.SignalR.SystemWeb.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Owin, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.Owin.3.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.3.0.1\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.Owin.Security.3.0.1\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Cookies, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.Owin.Security.Cookies.3.0.1\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.OAuth, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.Owin.Security.OAuth.3.0.1\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Ninject">
+      <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Web.Common">
+      <HintPath>..\packages\Ninject.Web.Common.3.2.3.0\lib\net45-full\Ninject.Web.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Web.Mvc">
+      <HintPath>..\packages\Ninject.MVC3.3.2.1.0\lib\net45-full\Ninject.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="PayPal">
+      <HintPath>..\packages\PayPal.1.5.0\lib\net45\PayPal.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SendGrid.SmtpApi">
+      <HintPath>..\packages\SendGrid.SmtpApi.1.3.1\lib\net40\SendGrid.SmtpApi.dll</HintPath>
+    </Reference>
+    <Reference Include="SendGridMail">
+      <HintPath>..\packages\Sendgrid.6.1.0\lib\SendGridMail.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Cors">
+      <HintPath>..\packages\Microsoft.AspNet.Cors.5.2.3\lib\net45\System.Web.Cors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.Cors">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Cors.5.2.3\lib\net45\System.Web.Http.Cors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.Owin, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Owin.5.2.3\lib\net45\System.Web.Http.Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="WebActivatorEx, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\WebActivatorEx.2.0.6\lib\net40\WebActivatorEx.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease, Version=1.6.5135.21930, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="Z.ExtensionMethods.EntityFramework">
+      <HintPath>..\packages\Z.ExtensionMethods.EntityFramework.1.1.4.2\lib\Z.ExtensionMethods.EntityFramework.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Web.Infrastructure">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Browsers\ie.browser" />
+    <Content Include="App_Browsers\firefox.browser" />
+    <Content Include="App_Data\Emails\app-lead.html" />
+    <Content Include="App_Data\Emails\app-rs.html" />
+    <Content Include="App_Data\Emails\event-lead.html" />
+    <Content Include="App_Data\Emails\event-rs.html" />
+    <Content Include="App_Data\Emails\generic_confirmation.html" />
+    <Content Include="App_Data\Emails\generic_invoice.html" />
+    <Content Include="App_Data\Emails\generic_cc.html" />
+    <Content Include="App_Data\Emails\generic_cancellation.html" />
+    <Content Include="App_Data\Emails\99FE7B15-37B7-497F-ADD2-918B81B36003_cancellation.html" />
+    <Content Include="App_Data\Emails\99FE7B15-37B7-497F-ADD2-918B81B36003_cc.html" />
+    <Content Include="App_Data\Emails\99FE7B15-37B7-497F-ADD2-918B81B36003_confirmation.html" />
+    <Content Include="App_Data\Emails\99FE7B15-37B7-497F-ADD2-918B81B36003_invoice.html" />
+    <Content Include="App_Data\Emails\generic_continue.html" />
+    <Content Include="App_Data\Emails\validateEmail.html" />
+    <None Include="ClearScript.V8\ClearScriptV8-32.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="ClearScript.V8\ClearScriptV8-64.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="ClearScript.V8\v8-ia32.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="ClearScript.V8\v8-x64.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <Content Include="App_Data\Reports\spacer.txt" />
+    <Content Include="Content\2-regstep.css" />
+    <Content Include="Content\2-regstep.min.css">
+      <DependentUpon>2-regstep.css</DependentUpon>
+    </Content>
+    <Content Include="Content\3-colors.css" />
+    <Content Include="Content\3-colors.min.css">
+      <DependentUpon>3-colors.css</DependentUpon>
+    </Content>
+    <Content Include="Content\4-nav.css" />
+    <Content Include="Content\4-nav.min.css">
+      <DependentUpon>4-nav.css</DependentUpon>
+    </Content>
+    <Content Include="Content\5-tools.css" />
+    <Content Include="Content\5-tools.min.css">
+      <DependentUpon>5-tools.css</DependentUpon>
+    </Content>
+    <Content Include="Content\6-site.css" />
+    <Content Include="Content\6-site.min.css">
+      <DependentUpon>6-site.css</DependentUpon>
+    </Content>
+    <Content Include="Content\bootstrap-ext.css" />
+    <Content Include="Content\Bootstrap\bootstrap-datetimepicker-build.css">
+      <DependentUpon>bootstrap-datetimepicker-build.less</DependentUpon>
+    </Content>
+    <Content Include="Content\Bootstrap\bootstrap-datetimepicker-build.min.css">
+      <DependentUpon>bootstrap-datetimepicker-build.css</DependentUpon>
+    </Content>
+    <Content Include="Content\Bootstrap\bootstrap-datetimepicker-custom.css">
+      <DependentUpon>bootstrap-datetimepicker-custom.less</DependentUpon>
+    </Content>
+    <Content Include="Content\Bootstrap\bootstrap-datetimepicker-custom.min.css">
+      <DependentUpon>bootstrap-datetimepicker-custom.css</DependentUpon>
+    </Content>
+    <Content Include="Content\Bootstrap\bootstrap.css">
+      <DependentUpon>bootstrap.less</DependentUpon>
+    </Content>
+    <Content Include="Content\Bootstrap\bootstrap.min.css">
+      <DependentUpon>bootstrap.css</DependentUpon>
+    </Content>
+    <Content Include="Content\Bootstrap\colorpicker.css">
+      <DependentUpon>colorpicker.less</DependentUpon>
+    </Content>
+    <Content Include="Content\Bootstrap\colorpicker.min.css">
+      <DependentUpon>colorpicker.css</DependentUpon>
+    </Content>
+    <Content Include="Content\Bootstrap\datetimepicker.css">
+      <DependentUpon>datetimepicker.less</DependentUpon>
+    </Content>
+    <Content Include="Content\Bootstrap\datetimepicker.min.css">
+      <DependentUpon>datetimepicker.css</DependentUpon>
+    </Content>
+    <Content Include="Content\Bootstrap\formPlugin.css">
+      <DependentUpon>formPlugin.less</DependentUpon>
+    </Content>
+    <Content Include="Content\Bootstrap\formPlugin.min.css">
+      <DependentUpon>formPlugin.css</DependentUpon>
+    </Content>
+    <Content Include="Content\Bootstrap\img\bootstrap-colorpicker\alpha-horizontal.png" />
+    <Content Include="Content\Bootstrap\img\bootstrap-colorpicker\alpha.png" />
+    <Content Include="Content\Bootstrap\img\bootstrap-colorpicker\hue-horizontal.png" />
+    <Content Include="Content\Bootstrap\img\bootstrap-colorpicker\hue.png" />
+    <Content Include="Content\Bootstrap\img\bootstrap-colorpicker\saturation.png" />
+    <Content Include="Content\Bootstrap\rating.css" />
+    <Content Include="Content\Bootstrap\Tree.css">
+      <DependentUpon>Tree.less</DependentUpon>
+    </Content>
+    <Content Include="Content\Bootstrap\Tree.min.css">
+      <DependentUpon>Tree.css</DependentUpon>
+    </Content>
+    <Content Include="Content\Bootstrap\variables.css">
+      <DependentUpon>variables.less</DependentUpon>
+    </Content>
+    <Content Include="Content\Bootstrap\variables.min.css">
+      <DependentUpon>variables.css</DependentUpon>
+    </Content>
+    <Content Include="Content\Popout\popout.css">
+      <DependentUpon>popout.less</DependentUpon>
+    </Content>
+    <Content Include="Content\Popout\popout.min.css">
+      <DependentUpon>popout.css</DependentUpon>
+    </Content>
+    <Content Include="Content\toolkit\b_toolkit.css">
+      <DependentUpon>b_toolkit.css.bundle</DependentUpon>
+    </Content>
+    <Content Include="Content\toolkit\b_toolkit.min.css">
+      <DependentUpon>b_toolkit.css</DependentUpon>
+    </Content>
+    <Content Include="Content\Cloud\CloudNav.css" />
+    <Content Include="Content\Cloud\EditReport.css" />
+    <Content Include="Content\Cloud\Layout.css">
+      <DependentUpon>Layout.less</DependentUpon>
+    </Content>
+    <Content Include="Content\Cloud\Layout.min.css">
+      <DependentUpon>Layout.css</DependentUpon>
+    </Content>
+    <Content Include="Content\Cloud\report.css">
+      <DependentUpon>report.less</DependentUpon>
+    </Content>
+    <Content Include="Content\Cloud\report.min.css">
+      <DependentUpon>report.css</DependentUpon>
+    </Content>
+    <Content Include="Content\CompanyAdmin\Layout.css">
+      <DependentUpon>Layout.less</DependentUpon>
+    </Content>
+    <Content Include="Content\CompanyAdmin\Layout.min.css">
+      <DependentUpon>Layout.css</DependentUpon>
+    </Content>
+    <Content Include="Content\Email\EditEmail.css">
+      <DependentUpon>EditEmail.less</DependentUpon>
+    </Content>
+    <Content Include="Content\Email\EditEmail.min.css">
+      <DependentUpon>EditEmail.css</DependentUpon>
+    </Content>
+    <Content Include="Content\Email\Layout.css">
+      <DependentUpon>Layout.less</DependentUpon>
+    </Content>
+    <Content Include="Content\Email\Layout.min.css">
+      <DependentUpon>Layout.css</DependentUpon>
+    </Content>
+    <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\FormBuilder\Layout.css">
+      <DependentUpon>Layout.less</DependentUpon>
+    </Content>
+    <Content Include="Content\FormBuilder\Layout.min.css">
+      <DependentUpon>Layout.css</DependentUpon>
+    </Content>
+    <Content Include="Content\FormBuilder\Variables.css">
+      <DependentUpon>Variables.less</DependentUpon>
+    </Content>
+    <Content Include="Content\FormBuilder\Variables.min.css">
+      <DependentUpon>Variables.css</DependentUpon>
+    </Content>
+    <Content Include="Content\jQuery\Plugins\Navigation\navigation.css" />
+    <Content Include="Content\Registration\Static.css">
+      <DependentUpon>Static.less</DependentUpon>
+    </Content>
+    <Content Include="Content\Registration\Static.min.css">
+      <DependentUpon>Static.css</DependentUpon>
+    </Content>
+    <Content Include="Content\Registration\TransactionPrint.css">
+      <DependentUpon>TransactionPrint.less</DependentUpon>
+    </Content>
+    <Content Include="Content\Registration\TransactionPrint.min.css">
+      <DependentUpon>TransactionPrint.css</DependentUpon>
+    </Content>
+    <Content Include="Content\Security\Layout.css">
+      <DependentUpon>Layout.less</DependentUpon>
+    </Content>
+    <Content Include="Content\Security\Layout.min.css">
+      <DependentUpon>Layout.css</DependentUpon>
+    </Content>
+    <Content Include="Content\Site.css">
+      <DependentUpon>Site.less</DependentUpon>
+    </Content>
+    <Content Include="Content\Site.min.css">
+      <DependentUpon>Site.css</DependentUpon>
+    </Content>
+    <Content Include="Content\toolkit\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\Tool\jTable.css">
+      <DependentUpon>jTable.less</DependentUpon>
+    </Content>
+    <Content Include="Content\Tool\jTable.min.css">
+      <DependentUpon>jTable.css</DependentUpon>
+    </Content>
+    <Content Include="Content\Tool\Logic.css">
+      <DependentUpon>Logic.less</DependentUpon>
+    </Content>
+    <Content Include="Content\Tool\Logic.min.css">
+      <DependentUpon>Logic.css</DependentUpon>
+    </Content>
+    <Content Include="Content\Tool\toggleEdit.css" />
+    <Content Include="Content\Variables.css">
+      <DependentUpon>Variables.less</DependentUpon>
+    </Content>
+    <Content Include="Content\Variables.min.css">
+      <DependentUpon>Variables.css</DependentUpon>
+    </Content>
+    <Content Include="Dlls\USAePayAPI.dll" />
+    <Content Include="favicon.ico" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Global.asax" />
+    <Content Include="Content\Site.less" />
+    <Content Include="Content\Variables.less" />
+    <Content Include="Content\Site.css.map">
+      <DependentUpon>Site.css</DependentUpon>
+    </Content>
+    <Content Include="Content\Email\EditEmail.less" />
+    <Content Include="Content\Email\EditEmail.css.map">
+      <DependentUpon>EditEmail.css</DependentUpon>
+    </Content>
+    <Content Include="Content\Bootstrap\colorpicker.less" />
+    <Content Include="Content\Bootstrap\colorpicker.css.map">
+      <DependentUpon>colorpicker.css</DependentUpon>
+    </Content>
+    <Content Include="Content\Cloud\Layout.less" />
+    <Content Include="Content\Cloud\Layout.css.map">
+      <DependentUpon>Layout.css</DependentUpon>
+    </Content>
+    <Content Include="Content\Email\Layout.less" />
+    <Content Include="Content\Email\Layout.css.map">
+      <DependentUpon>Layout.css</DependentUpon>
+    </Content>
+    <Content Include="Content\FormBuilder\Layout.less" />
+    <Content Include="Content\FormBuilder\Layout.css.map">
+      <DependentUpon>Layout.css</DependentUpon>
+    </Content>
+    <Content Include="Content\Bootstrap\bootstrap-datetimepicker-build.less" />
+    <Content Include="Content\Bootstrap\bootstrap-datetimepicker.less" />
+    <Content Include="Content\Bootstrap\bootstrap-datetimepicker-custom.less" />
+    <Content Include="Content\Bootstrap\variables.less" />
+    <Content Include="Content\Bootstrap\bootstrap-datetimepicker-custom.css.map">
+      <DependentUpon>bootstrap-datetimepicker-custom.css</DependentUpon>
+    </Content>
+    <Content Include="Content\Bootstrap\bootstrap-datetimepicker-build.css.map">
+      <DependentUpon>bootstrap-datetimepicker-build.css</DependentUpon>
+    </Content>
+    <Content Include="Content\FormBuilder\Variables.less" />
+    <Content Include="Content\Bootstrap\formPlugin.less" />
+    <Content Include="Content\Bootstrap\formPlugin.css.map">
+      <DependentUpon>formPlugin.css</DependentUpon>
+    </Content>
+    <Content Include="Content\Registration\Static.less" />
+    <Content Include="Content\Registration\Static.css.map">
+      <DependentUpon>Static.css</DependentUpon>
+    </Content>
+    <Content Include="Content\Registration\TransactionPrint.less" />
+    <Content Include="Content\Registration\TransactionPrint.css.map">
+      <DependentUpon>TransactionPrint.css</DependentUpon>
+    </Content>
+    <Content Include="Content\Variables.css.map">
+      <DependentUpon>Variables.css</DependentUpon>
+    </Content>
+    <Content Include="Content\CompanyAdmin\Layout.less" />
+    <Content Include="Content\CompanyAdmin\Layout.css.map">
+      <DependentUpon>Layout.css</DependentUpon>
+    </Content>
+    <Content Include="Content\FormBuilder\Variables.css.map">
+      <DependentUpon>Variables.css</DependentUpon>
+    </Content>
+    <Content Include="Content\Security\Layout.less" />
+    <Content Include="Content\Security\Layout.css.map">
+      <DependentUpon>Layout.css</DependentUpon>
+    </Content>
+    <Content Include="Content\Bootstrap\Tree.less" />
+    <Content Include="Content\Bootstrap\Tree.css.map">
+      <DependentUpon>Tree.css</DependentUpon>
+    </Content>
+    <Content Include="Content\Tool\Logic.less" />
+    <Content Include="Content\Tool\Logic.css.map">
+      <DependentUpon>Logic.css</DependentUpon>
+    </Content>
+    <Content Include="Content\Bootstrap\datetimepicker.less" />
+    <Content Include="Content\Bootstrap\datetimepicker.css.map">
+      <DependentUpon>datetimepicker.css</DependentUpon>
+    </Content>
+    <Content Include="Content\Bootstrap\variables.css.map">
+      <DependentUpon>variables.css</DependentUpon>
+    </Content>
+    <Content Include="Content\Tool\jTable.less" />
+    <Content Include="Content\Tool\jTable.css.map">
+      <DependentUpon>jTable.css</DependentUpon>
+    </Content>
+    <Content Include="Icon.png" />
+    <Content Include="Images\Common\loading.gif" />
+    <Content Include="Images\Email\openevent.gif" />
+    <Content Include="Scripts\AdminRegistration\PromotionCodes.js" />
+    <Content Include="Scripts\AdminRegister\promotions.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\fileInput.js" />
+    <Content Include="Scripts\Contact\list.js" />
+    <Content Include="Scripts\Contact\rectifyUpload.js" />
+    <Content Include="Scripts\Contact\upload.js" />
+    <Content Include="Scripts\FormEmailReport\report.js" />
+    <Content Include="Scripts\GlobalReport\report.js" />
+    <Content Include="Scripts\Json\Filters - Copy %282%29.min.js">
+      <DependentUpon>jsonFilter.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Json\Filters - Copy.min - Copy.js">
+      <DependentUpon>jsonSorting.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Json\jsonFilter.js" />
+    <Content Include="Scripts\Json\jsonSorting.js" />
+    <Content Include="Scripts\Permission\EditPermissions.js" />
+    <Content Include="Scripts\Registration\register.js" />
+    <Content Include="Scripts\bootstrap-datetimepicker.js" />
+    <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\DateTime Picker\bootstrap-datetimepicker.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\DateTime Picker\bootstrap-datetimepicker.min.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\1 colorpicker-color.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\1 colorpicker-color.min.js">
+      <DependentUpon>1 colorpicker-color.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Bootstrap\Plugins\2 colorpicker.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\2 colorpicker.min.js">
+      <DependentUpon>2 colorpicker.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Bootstrap\Plugins\DateTime Picker\locales\bootstrap-datetimepicker.ar-ma.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\DateTime Picker\locales\bootstrap-datetimepicker.ar.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\DateTime Picker\locales\bootstrap-datetimepicker.bg.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\DateTime Picker\locales\bootstrap-datetimepicker.br.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\DateTime Picker\locales\bootstrap-datetimepicker.bs.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\DateTime Picker\locales\bootstrap-datetimepicker.by.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\DateTime Picker\locales\bootstrap-datetimepicker.ca.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\DateTime Picker\locales\bootstrap-datetimepicker.cs.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\DateTime Picker\locales\bootstrap-datetimepicker.cv.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\DateTime Picker\locales\bootstrap-datetimepicker.da.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\DateTime Picker\locales\bootstrap-datetimepicker.de.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\DateTime Picker\locales\bootstrap-datetimepicker.el.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\DateTime Picker\locales\bootstrap-datetimepicker.en-au.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\DateTime Picker\locales\bootstrap-datetimepicker.en-ca.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\DateTime Picker\locales\bootstrap-datetimepicker.en-gb.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\DateTime Picker\locales\bootstrap-datetimepicker.eo.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\DateTime Picker\locales\bootstrap-datetimepicker.es.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\DateTime Picker\locales\bootstrap-datetimepicker.et.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\DateTime Picker\locales\bootstrap-datetimepicker.eu.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\DateTime Picker\locales\bootstrap-datetimepicker.fa.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\DateTime Picker\locales\bootstrap-datetimepicker.fi.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\DateTime Picker\locales\bootstrap-datetimepicker.fr-ca.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\DateTime Picker\locales\bootstrap-datetimepicker.fr.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\DateTime Picker\locales\bootstrap-datetimepicker.gl.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\DateTime Picker\locales\bootstrap-datetimepicker.he.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\DateTime Picker\locales\bootstrap-datetimepicker.hi.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\DateTime Picker\locales\bootstrap-datetimepicker.hr.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\DateTime Picker\locales\bootstrap-datetimepicker.hu.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\DateTime Picker\locales\bootstrap-datetimepicker.id.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\DateTime Picker\locales\bootstrap-datetimepicker.is.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\DateTime Picker\locales\bootstrap-datetimepicker.it.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\DateTime Picker\locales\bootstrap-datetimepicker.ja.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\DateTime Picker\locales\bootstrap-datetimepicker.ka.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\DateTime Picker\locales\bootstrap-datetimepicker.ko.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\DateTime Picker\locales\bootstrap-datetimepicker.lt.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\DateTime Picker\locales\bootstrap-datetimepicker.lv.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\DateTime Picker\locales\bootstrap-datetimepicker.ml.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\DateTime Picker\locales\bootstrap-datetimepicker.mr.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\DateTime Picker\locales\bootstrap-datetimepicker.ms-my.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\DateTime Picker\locales\bootstrap-datetimepicker.nb.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\DateTime Picker\locales\bootstrap-datetimepicker.ne.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\DateTime Picker\locales\bootstrap-datetimepicker.nl.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\DateTime Picker\locales\bootstrap-datetimepicker.nn.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\DateTime Picker\locales\bootstrap-datetimepicker.pl.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\DateTime Picker\locales\bootstrap-datetimepicker.pt-BR.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\DateTime Picker\locales\bootstrap-datetimepicker.pt.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\DateTime Picker\locales\bootstrap-datetimepicker.ro.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\DateTime Picker\locales\bootstrap-datetimepicker.ru.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\DateTime Picker\locales\bootstrap-datetimepicker.sk.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\DateTime Picker\locales\bootstrap-datetimepicker.sl.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\DateTime Picker\locales\bootstrap-datetimepicker.sq.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\DateTime Picker\locales\bootstrap-datetimepicker.sv.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\DateTime Picker\locales\bootstrap-datetimepicker.th.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\DateTime Picker\locales\bootstrap-datetimepicker.tr.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\DateTime Picker\locales\bootstrap-datetimepicker.tzm-la.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\DateTime Picker\locales\bootstrap-datetimepicker.tzm.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\DateTime Picker\locales\bootstrap-datetimepicker.uk.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\DateTime Picker\locales\bootstrap-datetimepicker.uz.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\DateTime Picker\locales\bootstrap-datetimepicker.vn.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\DateTime Picker\locales\bootstrap-datetimepicker.zh-CN.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\DateTime Picker\locales\bootstrap-datetimepicker.zh-TW.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\datetimepicker\bootstrap-datetimepicker.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\datetimepicker\bootstrap-datetimepicker.min.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\datetimepicker\locales\bootstrap-datetimepicker.ar.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\datetimepicker\locales\bootstrap-datetimepicker.bg.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\datetimepicker\locales\bootstrap-datetimepicker.ca.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\datetimepicker\locales\bootstrap-datetimepicker.cs.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\datetimepicker\locales\bootstrap-datetimepicker.da.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\datetimepicker\locales\bootstrap-datetimepicker.de.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\datetimepicker\locales\bootstrap-datetimepicker.ee.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\datetimepicker\locales\bootstrap-datetimepicker.el.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\datetimepicker\locales\bootstrap-datetimepicker.es.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\datetimepicker\locales\bootstrap-datetimepicker.fi.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\datetimepicker\locales\bootstrap-datetimepicker.fr.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\datetimepicker\locales\bootstrap-datetimepicker.he.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\datetimepicker\locales\bootstrap-datetimepicker.hr.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\datetimepicker\locales\bootstrap-datetimepicker.hu.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\datetimepicker\locales\bootstrap-datetimepicker.id.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\datetimepicker\locales\bootstrap-datetimepicker.is.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\datetimepicker\locales\bootstrap-datetimepicker.it.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\datetimepicker\locales\bootstrap-datetimepicker.ja.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\datetimepicker\locales\bootstrap-datetimepicker.ko.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\datetimepicker\locales\bootstrap-datetimepicker.lt.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\datetimepicker\locales\bootstrap-datetimepicker.lv.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\datetimepicker\locales\bootstrap-datetimepicker.ms.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\datetimepicker\locales\bootstrap-datetimepicker.nb.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\datetimepicker\locales\bootstrap-datetimepicker.nl.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\datetimepicker\locales\bootstrap-datetimepicker.no.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\datetimepicker\locales\bootstrap-datetimepicker.pl.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\datetimepicker\locales\bootstrap-datetimepicker.pt-BR.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\datetimepicker\locales\bootstrap-datetimepicker.pt.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\datetimepicker\locales\bootstrap-datetimepicker.ro.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\datetimepicker\locales\bootstrap-datetimepicker.rs-latin.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\datetimepicker\locales\bootstrap-datetimepicker.rs.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\datetimepicker\locales\bootstrap-datetimepicker.ru.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\datetimepicker\locales\bootstrap-datetimepicker.sk.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\datetimepicker\locales\bootstrap-datetimepicker.sl.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\datetimepicker\locales\bootstrap-datetimepicker.sv.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\datetimepicker\locales\bootstrap-datetimepicker.sw.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\datetimepicker\locales\bootstrap-datetimepicker.th.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\datetimepicker\locales\bootstrap-datetimepicker.tr.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\datetimepicker\locales\bootstrap-datetimepicker.ua.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\datetimepicker\locales\bootstrap-datetimepicker.uk.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\datetimepicker\locales\bootstrap-datetimepicker.zh-CN.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\datetimepicker\locales\bootstrap-datetimepicker.zh-TW.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\Forms\formPlugin.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\nitrox.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\nitrox.min.js">
+      <DependentUpon>nitrox.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Chart.js" />
+    <Content Include="Scripts\Chart.min.js" />
+    <Content Include="Scripts\Cloud\MerchantAccountInfo.js" />
+    <Content Include="Content\Bootstrap\bootstrap.css.map">
+      <DependentUpon>bootstrap.css</DependentUpon>
+    </Content>
+    <Content Include="Content\toolkit\b_toolkit.css.bundle" />
+    <Content Include="Content\toolkit\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\toolkit\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Content\toolkit\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Content\toolkit\fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="Content\less\bootstrap-datetimepicker-build.less" />
+    <Content Include="Content\less\_bootstrap-datetimepicker.less" />
+    <Content Include="Content\Popout\popout.less" />
+    <Content Include="Content\Popout\popout.css.map">
+      <DependentUpon>popout.css</DependentUpon>
+    </Content>
+    <None Include="Properties\PublishProfiles\lamir-dev.pubxml" />
+    <None Include="Scripts\jquery-2.1.4.intellisense.js" />
+    <Content Include="Scripts\Cloud\PagedReports.js" />
+    <Content Include="Scripts\FormReport\report.js" />
+    <Content Include="Scripts\InventoryReport\inventoryReport.js" />
+    <Content Include="Scripts\jquery-2.1.4.js" />
+    <Content Include="Scripts\jquery-2.1.4.min.js" />
+    <Content Include="Scripts\linq.js" />
+    <Content Include="Scripts\MerchantAccount\merchantAccount.js" />
+    <Content Include="Scripts\MerchantAccount\merchantAccounts.js" />
+    <Content Include="Scripts\moment-with-locales.js" />
+    <Content Include="Scripts\moment-with-locales.min.js" />
+    <Content Include="Scripts\moment.js" />
+    <Content Include="Scripts\moment.min.js" />
+    <Content Include="Scripts\npm.js" />
+    <Content Include="Scripts\Registrant\changeSet.js" />
+    <Content Include="Scripts\Registrant\registrant.js" />
+    <Content Include="Scripts\Registration\components.js" />
+    <Content Include="Scripts\Sorting\advSorting.js" />
+    <Content Include="Scripts\Sorting\sortable.js" />
+    <Content Include="Scripts\SystemAdministration\b_logs.js">
+      <DependentUpon>b_logs.js.bundle</DependentUpon>
+    </Content>
+    <Content Include="Scripts\SystemAdministration\b_logs.min.js">
+      <DependentUpon>b_logs.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Json\Filters - Copy %282%29.min.js.map">
+      <DependentUpon>Filters - Copy %282%29.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Json\Filters - Copy.min.js - Copy.map">
+      <DependentUpon>Filters - Copy.min - Copy.js</DependentUpon>
+    </Content>
+    <None Include="Scripts\toolkit\toolkit.intellisense.js" />
+    <Content Include="Scripts\Company\companies.js" />
+    <Content Include="Scripts\toolkit\jQueryExtensions.js" />
+    <Content Include="Scripts\toolkit\trail.js" />
+    <Content Include="Scripts\toolkit\changecompany.js" />
+    <Content Include="Scripts\toolkit\contactUpload.js" />
+    <Content Include="Scripts\toolkit\cycle.js" />
+    <Content Include="Scripts\toolkit\indexOf.js" />
+    <Content Include="Scripts\toolkit\JsonFilter.js" />
+    <Content Include="Scripts\toolkit\JsonSorting.js" />
+    <Content Include="Scripts\toolkit\browserGap.js" />
+    <Content Include="Scripts\toolkit\extensions.js" />
+    <Content Include="Scripts\toolkit\toolkit.js" />
+    <Content Include="Scripts\toolkit\prettyProcessing.js" />
+    <Content Include="Scripts\toolkit\restful.js" />
+    <Content Include="Scripts\toolkit\md5.js" />
+    <Content Include="Scripts\toolkit\versioning.js" />
+    <Content Include="Scripts\Tool\Filters - Copy %282%29.min.js">
+      <DependentUpon>JsonFilter.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Tool\Filters - Copy.min - Copy.js">
+      <DependentUpon>JsonSorting.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Tool\Layout\globalVariables.js" />
+    <Content Include="Scripts\Tool\JsonFilter.js" />
+    <Content Include="Scripts\Tool\Layout\browserGap.min.js">
+      <DependentUpon>browserGap.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Tool\Layout\b_tool.js">
+      <DependentUpon>b_tool.js.bundle</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Tool\Layout\b_tool.min.js">
+      <DependentUpon>b_tool.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Tool\Layout\extensions.min.js">
+      <DependentUpon>extensions.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Tool\Layout\prettyProcessing.js" />
+    <Content Include="Scripts\Tool\Layout\prettyProcessing.min.js">
+      <DependentUpon>prettyProcessing.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Tool\Layout\processing.js" />
+    <Content Include="Scripts\Tool\Layout\processing.min.js">
+      <DependentUpon>processing.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Bootstrap\Plugins\rating.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\Tree\Tree.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\Tree\Tree.min.js">
+      <DependentUpon>Tree.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Tool\Layout\browserGap.js" />
+    <Content Include="Scripts\Chartv2.js" />
+    <Content Include="Scripts\Chartv2.min.js" />
+    <Content Include="Scripts\ckeditor\adapters\jquery.js" />
+    <Content Include="Scripts\ckeditor\ckeditor.js" />
+    <Content Include="Scripts\ckeditor\config.js" />
+    <Content Include="Scripts\ckeditor\contents.css" />
+    <Content Include="Scripts\ckeditor\email_config.js" />
+    <Content Include="Scripts\ckeditor\lang\af.js" />
+    <Content Include="Scripts\ckeditor\lang\ar.js" />
+    <Content Include="Scripts\ckeditor\lang\bg.js" />
+    <Content Include="Scripts\ckeditor\lang\bn.js" />
+    <Content Include="Scripts\ckeditor\lang\bs.js" />
+    <Content Include="Scripts\ckeditor\lang\ca.js" />
+    <Content Include="Scripts\ckeditor\lang\cs.js" />
+    <Content Include="Scripts\ckeditor\lang\cy.js" />
+    <Content Include="Scripts\ckeditor\lang\da.js" />
+    <Content Include="Scripts\ckeditor\lang\de.js" />
+    <Content Include="Scripts\ckeditor\lang\el.js" />
+    <Content Include="Scripts\ckeditor\lang\en-au.js" />
+    <Content Include="Scripts\ckeditor\lang\en-ca.js" />
+    <Content Include="Scripts\ckeditor\lang\en-gb.js" />
+    <Content Include="Scripts\ckeditor\lang\en.js" />
+    <Content Include="Scripts\ckeditor\lang\eo.js" />
+    <Content Include="Scripts\ckeditor\lang\es.js" />
+    <Content Include="Scripts\ckeditor\lang\et.js" />
+    <Content Include="Scripts\ckeditor\lang\eu.js" />
+    <Content Include="Scripts\ckeditor\lang\fa.js" />
+    <Content Include="Scripts\ckeditor\lang\fi.js" />
+    <Content Include="Scripts\ckeditor\lang\fo.js" />
+    <Content Include="Scripts\ckeditor\lang\fr-ca.js" />
+    <Content Include="Scripts\ckeditor\lang\fr.js" />
+    <Content Include="Scripts\ckeditor\lang\gl.js" />
+    <Content Include="Scripts\ckeditor\lang\gu.js" />
+    <Content Include="Scripts\ckeditor\lang\he.js" />
+    <Content Include="Scripts\ckeditor\lang\hi.js" />
+    <Content Include="Scripts\ckeditor\lang\hr.js" />
+    <Content Include="Scripts\ckeditor\lang\hu.js" />
+    <Content Include="Scripts\ckeditor\lang\id.js" />
+    <Content Include="Scripts\ckeditor\lang\is.js" />
+    <Content Include="Scripts\ckeditor\lang\it.js" />
+    <Content Include="Scripts\ckeditor\lang\ja.js" />
+    <Content Include="Scripts\ckeditor\lang\ka.js" />
+    <Content Include="Scripts\ckeditor\lang\km.js" />
+    <Content Include="Scripts\ckeditor\lang\ko.js" />
+    <Content Include="Scripts\ckeditor\lang\ku.js" />
+    <Content Include="Scripts\ckeditor\lang\lt.js" />
+    <Content Include="Scripts\ckeditor\lang\lv.js" />
+    <Content Include="Scripts\ckeditor\lang\mk.js" />
+    <Content Include="Scripts\ckeditor\lang\mn.js" />
+    <Content Include="Scripts\ckeditor\lang\ms.js" />
+    <Content Include="Scripts\ckeditor\lang\nb.js" />
+    <Content Include="Scripts\ckeditor\lang\nl.js" />
+    <Content Include="Scripts\ckeditor\lang\no.js" />
+    <Content Include="Scripts\ckeditor\lang\pl.js" />
+    <Content Include="Scripts\ckeditor\lang\pt-br.js" />
+    <Content Include="Scripts\ckeditor\lang\pt.js" />
+    <Content Include="Scripts\ckeditor\lang\ro.js" />
+    <Content Include="Scripts\ckeditor\lang\ru.js" />
+    <Content Include="Scripts\ckeditor\lang\si.js" />
+    <Content Include="Scripts\ckeditor\lang\sk.js" />
+    <Content Include="Scripts\ckeditor\lang\sl.js" />
+    <Content Include="Scripts\ckeditor\lang\sq.js" />
+    <Content Include="Scripts\ckeditor\lang\sr-latn.js" />
+    <Content Include="Scripts\ckeditor\lang\sr.js" />
+    <Content Include="Scripts\ckeditor\lang\sv.js" />
+    <Content Include="Scripts\ckeditor\lang\th.js" />
+    <Content Include="Scripts\ckeditor\lang\tr.js" />
+    <Content Include="Scripts\ckeditor\lang\tt.js" />
+    <Content Include="Scripts\ckeditor\lang\ug.js" />
+    <Content Include="Scripts\ckeditor\lang\uk.js" />
+    <Content Include="Scripts\ckeditor\lang\vi.js" />
+    <Content Include="Scripts\ckeditor\lang\zh-cn.js" />
+    <Content Include="Scripts\ckeditor\lang\zh.js" />
+    <Content Include="Scripts\ckeditor\plugins\a11yhelp\dialogs\a11yhelp.js" />
+    <Content Include="Scripts\ckeditor\plugins\a11yhelp\dialogs\lang\af.js" />
+    <Content Include="Scripts\ckeditor\plugins\a11yhelp\dialogs\lang\ar.js" />
+    <Content Include="Scripts\ckeditor\plugins\a11yhelp\dialogs\lang\bg.js" />
+    <Content Include="Scripts\ckeditor\plugins\a11yhelp\dialogs\lang\ca.js" />
+    <Content Include="Scripts\ckeditor\plugins\a11yhelp\dialogs\lang\cs.js" />
+    <Content Include="Scripts\ckeditor\plugins\a11yhelp\dialogs\lang\cy.js" />
+    <Content Include="Scripts\ckeditor\plugins\a11yhelp\dialogs\lang\da.js" />
+    <Content Include="Scripts\ckeditor\plugins\a11yhelp\dialogs\lang\de.js" />
+    <Content Include="Scripts\ckeditor\plugins\a11yhelp\dialogs\lang\el.js" />
+    <Content Include="Scripts\ckeditor\plugins\a11yhelp\dialogs\lang\en-gb.js" />
+    <Content Include="Scripts\ckeditor\plugins\a11yhelp\dialogs\lang\en.js" />
+    <Content Include="Scripts\ckeditor\plugins\a11yhelp\dialogs\lang\eo.js" />
+    <Content Include="Scripts\ckeditor\plugins\a11yhelp\dialogs\lang\es.js" />
+    <Content Include="Scripts\ckeditor\plugins\a11yhelp\dialogs\lang\et.js" />
+    <Content Include="Scripts\ckeditor\plugins\a11yhelp\dialogs\lang\fa.js" />
+    <Content Include="Scripts\ckeditor\plugins\a11yhelp\dialogs\lang\fi.js" />
+    <Content Include="Scripts\ckeditor\plugins\a11yhelp\dialogs\lang\fr-ca.js" />
+    <Content Include="Scripts\ckeditor\plugins\a11yhelp\dialogs\lang\fr.js" />
+    <Content Include="Scripts\ckeditor\plugins\a11yhelp\dialogs\lang\gl.js" />
+    <Content Include="Scripts\ckeditor\plugins\a11yhelp\dialogs\lang\gu.js" />
+    <Content Include="Scripts\ckeditor\plugins\a11yhelp\dialogs\lang\he.js" />
+    <Content Include="Scripts\ckeditor\plugins\a11yhelp\dialogs\lang\hi.js" />
+    <Content Include="Scripts\ckeditor\plugins\a11yhelp\dialogs\lang\hr.js" />
+    <Content Include="Scripts\ckeditor\plugins\a11yhelp\dialogs\lang\hu.js" />
+    <Content Include="Scripts\ckeditor\plugins\a11yhelp\dialogs\lang\id.js" />
+    <Content Include="Scripts\ckeditor\plugins\a11yhelp\dialogs\lang\it.js" />
+    <Content Include="Scripts\ckeditor\plugins\a11yhelp\dialogs\lang\ja.js" />
+    <Content Include="Scripts\ckeditor\plugins\a11yhelp\dialogs\lang\km.js" />
+    <Content Include="Scripts\ckeditor\plugins\a11yhelp\dialogs\lang\ko.js" />
+    <Content Include="Scripts\ckeditor\plugins\a11yhelp\dialogs\lang\ku.js" />
+    <Content Include="Scripts\ckeditor\plugins\a11yhelp\dialogs\lang\lt.js" />
+    <Content Include="Scripts\ckeditor\plugins\a11yhelp\dialogs\lang\lv.js" />
+    <Content Include="Scripts\ckeditor\plugins\a11yhelp\dialogs\lang\mk.js" />
+    <Content Include="Scripts\ckeditor\plugins\a11yhelp\dialogs\lang\mn.js" />
+    <Content Include="Scripts\ckeditor\plugins\a11yhelp\dialogs\lang\nb.js" />
+    <Content Include="Scripts\ckeditor\plugins\a11yhelp\dialogs\lang\nl.js" />
+    <Content Include="Scripts\ckeditor\plugins\a11yhelp\dialogs\lang\no.js" />
+    <Content Include="Scripts\ckeditor\plugins\a11yhelp\dialogs\lang\pl.js" />
+    <Content Include="Scripts\ckeditor\plugins\a11yhelp\dialogs\lang\pt-br.js" />
+    <Content Include="Scripts\ckeditor\plugins\a11yhelp\dialogs\lang\pt.js" />
+    <Content Include="Scripts\ckeditor\plugins\a11yhelp\dialogs\lang\ro.js" />
+    <Content Include="Scripts\ckeditor\plugins\a11yhelp\dialogs\lang\ru.js" />
+    <Content Include="Scripts\ckeditor\plugins\a11yhelp\dialogs\lang\si.js" />
+    <Content Include="Scripts\ckeditor\plugins\a11yhelp\dialogs\lang\sk.js" />
+    <Content Include="Scripts\ckeditor\plugins\a11yhelp\dialogs\lang\sl.js" />
+    <Content Include="Scripts\ckeditor\plugins\a11yhelp\dialogs\lang\sq.js" />
+    <Content Include="Scripts\ckeditor\plugins\a11yhelp\dialogs\lang\sr-latn.js" />
+    <Content Include="Scripts\ckeditor\plugins\a11yhelp\dialogs\lang\sr.js" />
+    <Content Include="Scripts\ckeditor\plugins\a11yhelp\dialogs\lang\sv.js" />
+    <Content Include="Scripts\ckeditor\plugins\a11yhelp\dialogs\lang\th.js" />
+    <Content Include="Scripts\ckeditor\plugins\a11yhelp\dialogs\lang\tr.js" />
+    <Content Include="Scripts\ckeditor\plugins\a11yhelp\dialogs\lang\tt.js" />
+    <Content Include="Scripts\ckeditor\plugins\a11yhelp\dialogs\lang\ug.js" />
+    <Content Include="Scripts\ckeditor\plugins\a11yhelp\dialogs\lang\uk.js" />
+    <Content Include="Scripts\ckeditor\plugins\a11yhelp\dialogs\lang\vi.js" />
+    <Content Include="Scripts\ckeditor\plugins\a11yhelp\dialogs\lang\zh-cn.js" />
+    <Content Include="Scripts\ckeditor\plugins\a11yhelp\dialogs\lang\zh.js" />
+    <Content Include="Scripts\ckeditor\plugins\a11yhelp\dialogs\lang\_translationstatus.txt" />
+    <Content Include="Scripts\ckeditor\plugins\about\dialogs\about.js" />
+    <Content Include="Scripts\ckeditor\plugins\about\dialogs\hidpi\logo_ckeditor.png" />
+    <Content Include="Scripts\ckeditor\plugins\about\dialogs\logo_ckeditor.png" />
+    <Content Include="Scripts\ckeditor\plugins\clipboard\dialogs\paste.js" />
+    <Content Include="Scripts\ckeditor\plugins\colordialog\dialogs\colordialog.js" />
+    <Content Include="Scripts\ckeditor\plugins\dialog\dialogDefinition.js" />
+    <Content Include="Scripts\ckeditor\plugins\div\dialogs\div.js" />
+    <Content Include="Scripts\ckeditor\plugins\emailcontext\plugin.js" />
+    <Content Include="Scripts\ckeditor\plugins\find\dialogs\find.js" />
+    <Content Include="Scripts\ckeditor\plugins\flash\dialogs\flash.js" />
+    <Content Include="Scripts\ckeditor\plugins\flash\images\placeholder.png" />
+    <Content Include="Scripts\ckeditor\plugins\forms\dialogs\button.js" />
+    <Content Include="Scripts\ckeditor\plugins\forms\dialogs\checkbox.js" />
+    <Content Include="Scripts\ckeditor\plugins\forms\dialogs\form.js" />
+    <Content Include="Scripts\ckeditor\plugins\forms\dialogs\hiddenfield.js" />
+    <Content Include="Scripts\ckeditor\plugins\forms\dialogs\radio.js" />
+    <Content Include="Scripts\ckeditor\plugins\forms\dialogs\select.js" />
+    <Content Include="Scripts\ckeditor\plugins\forms\dialogs\textarea.js" />
+    <Content Include="Scripts\ckeditor\plugins\forms\dialogs\textfield.js" />
+    <Content Include="Scripts\ckeditor\plugins\forms\images\hiddenfield.gif" />
+    <Content Include="Scripts\ckeditor\plugins\icons.png" />
+    <Content Include="Scripts\ckeditor\plugins\icons_hidpi.png" />
+    <Content Include="Scripts\ckeditor\plugins\iframe\dialogs\iframe.js" />
+    <Content Include="Scripts\ckeditor\plugins\iframe\images\placeholder.png" />
+    <Content Include="Scripts\ckeditor\plugins\image\dialogs\image.js" />
+    <Content Include="Scripts\ckeditor\plugins\image\images\noimage.png" />
+    <Content Include="Scripts\ckeditor\plugins\link\dialogs\anchor.js" />
+    <Content Include="Scripts\ckeditor\plugins\link\dialogs\link.js" />
+    <Content Include="Scripts\ckeditor\plugins\link\images\anchor.png" />
+    <Content Include="Scripts\ckeditor\plugins\link\images\hidpi\anchor.png" />
+    <Content Include="Scripts\ckeditor\plugins\liststyle\dialogs\liststyle.js" />
+    <Content Include="Scripts\ckeditor\plugins\magicline\images\hidpi\icon-rtl.png" />
+    <Content Include="Scripts\ckeditor\plugins\magicline\images\hidpi\icon.png" />
+    <Content Include="Scripts\ckeditor\plugins\magicline\images\icon-rtl.png" />
+    <Content Include="Scripts\ckeditor\plugins\magicline\images\icon.png" />
+    <Content Include="Scripts\ckeditor\plugins\pagebreak\images\pagebreak.gif" />
+    <Content Include="Scripts\ckeditor\plugins\pastefromword\filter\default.js" />
+    <Content Include="Scripts\ckeditor\plugins\preview\preview.html" />
+    <Content Include="Scripts\ckeditor\plugins\scayt\dialogs\options.js" />
+    <Content Include="Scripts\ckeditor\plugins\scayt\dialogs\toolbar.css" />
+    <Content Include="Scripts\ckeditor\plugins\showblocks\images\block_address.png" />
+    <Content Include="Scripts\ckeditor\plugins\showblocks\images\block_blockquote.png" />
+    <Content Include="Scripts\ckeditor\plugins\showblocks\images\block_div.png" />
+    <Content Include="Scripts\ckeditor\plugins\showblocks\images\block_h1.png" />
+    <Content Include="Scripts\ckeditor\plugins\showblocks\images\block_h2.png" />
+    <Content Include="Scripts\ckeditor\plugins\showblocks\images\block_h3.png" />
+    <Content Include="Scripts\ckeditor\plugins\showblocks\images\block_h4.png" />
+    <Content Include="Scripts\ckeditor\plugins\showblocks\images\block_h5.png" />
+    <Content Include="Scripts\ckeditor\plugins\showblocks\images\block_h6.png" />
+    <Content Include="Scripts\ckeditor\plugins\showblocks\images\block_p.png" />
+    <Content Include="Scripts\ckeditor\plugins\showblocks\images\block_pre.png" />
+    <Content Include="Scripts\ckeditor\plugins\smiley\dialogs\smiley.js" />
+    <Content Include="Scripts\ckeditor\plugins\smiley\images\angel_smile.gif" />
+    <Content Include="Scripts\ckeditor\plugins\smiley\images\angel_smile.png" />
+    <Content Include="Scripts\ckeditor\plugins\smiley\images\angry_smile.gif" />
+    <Content Include="Scripts\ckeditor\plugins\smiley\images\angry_smile.png" />
+    <Content Include="Scripts\ckeditor\plugins\smiley\images\broken_heart.gif" />
+    <Content Include="Scripts\ckeditor\plugins\smiley\images\broken_heart.png" />
+    <Content Include="Scripts\ckeditor\plugins\smiley\images\confused_smile.gif" />
+    <Content Include="Scripts\ckeditor\plugins\smiley\images\confused_smile.png" />
+    <Content Include="Scripts\ckeditor\plugins\smiley\images\cry_smile.gif" />
+    <Content Include="Scripts\ckeditor\plugins\smiley\images\cry_smile.png" />
+    <Content Include="Scripts\ckeditor\plugins\smiley\images\devil_smile.gif" />
+    <Content Include="Scripts\ckeditor\plugins\smiley\images\devil_smile.png" />
+    <Content Include="Scripts\ckeditor\plugins\smiley\images\embaressed_smile.gif" />
+    <Content Include="Scripts\ckeditor\plugins\smiley\images\embarrassed_smile.gif" />
+    <Content Include="Scripts\ckeditor\plugins\smiley\images\embarrassed_smile.png" />
+    <Content Include="Scripts\ckeditor\plugins\smiley\images\envelope.gif" />
+    <Content Include="Scripts\ckeditor\plugins\smiley\images\envelope.png" />
+    <Content Include="Scripts\ckeditor\plugins\smiley\images\heart.gif" />
+    <Content Include="Scripts\ckeditor\plugins\smiley\images\heart.png" />
+    <Content Include="Scripts\ckeditor\plugins\smiley\images\kiss.gif" />
+    <Content Include="Scripts\ckeditor\plugins\smiley\images\kiss.png" />
+    <Content Include="Scripts\ckeditor\plugins\smiley\images\lightbulb.gif" />
+    <Content Include="Scripts\ckeditor\plugins\smiley\images\lightbulb.png" />
+    <Content Include="Scripts\ckeditor\plugins\smiley\images\omg_smile.gif" />
+    <Content Include="Scripts\ckeditor\plugins\smiley\images\omg_smile.png" />
+    <Content Include="Scripts\ckeditor\plugins\smiley\images\regular_smile.gif" />
+    <Content Include="Scripts\ckeditor\plugins\smiley\images\regular_smile.png" />
+    <Content Include="Scripts\ckeditor\plugins\smiley\images\sad_smile.gif" />
+    <Content Include="Scripts\ckeditor\plugins\smiley\images\sad_smile.png" />
+    <Content Include="Scripts\ckeditor\plugins\smiley\images\shades_smile.gif" />
+    <Content Include="Scripts\ckeditor\plugins\smiley\images\shades_smile.png" />
+    <Content Include="Scripts\ckeditor\plugins\smiley\images\teeth_smile.gif" />
+    <Content Include="Scripts\ckeditor\plugins\smiley\images\teeth_smile.png" />
+    <Content Include="Scripts\ckeditor\plugins\smiley\images\thumbs_down.gif" />
+    <Content Include="Scripts\ckeditor\plugins\smiley\images\thumbs_down.png" />
+    <Content Include="Scripts\ckeditor\plugins\smiley\images\thumbs_up.gif" />
+    <Content Include="Scripts\ckeditor\plugins\smiley\images\thumbs_up.png" />
+    <Content Include="Scripts\ckeditor\plugins\smiley\images\tongue_smile.gif" />
+    <Content Include="Scripts\ckeditor\plugins\smiley\images\tongue_smile.png" />
+    <Content Include="Scripts\ckeditor\plugins\smiley\images\tounge_smile.gif" />
+    <Content Include="Scripts\ckeditor\plugins\smiley\images\whatchutalkingabout_smile.gif" />
+    <Content Include="Scripts\ckeditor\plugins\smiley\images\whatchutalkingabout_smile.png" />
+    <Content Include="Scripts\ckeditor\plugins\smiley\images\wink_smile.gif" />
+    <Content Include="Scripts\ckeditor\plugins\smiley\images\wink_smile.png" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\icons\hidpi\sourcedialog-rtl.png" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\icons\hidpi\sourcedialog.png" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\icons\sourcedialog-rtl.png" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\icons\sourcedialog.png" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\lang\af.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\lang\ar.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\lang\bg.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\lang\bn.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\lang\bs.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\lang\ca.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\lang\cs.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\lang\cy.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\lang\da.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\lang\de.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\lang\el.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\lang\en-au.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\lang\en-ca.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\lang\en-gb.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\lang\en.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\lang\eo.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\lang\es.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\lang\et.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\lang\eu.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\lang\fa.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\lang\fi.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\lang\fo.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\lang\fr-ca.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\lang\fr.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\lang\gl.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\lang\gu.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\lang\he.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\lang\hi.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\lang\hr.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\lang\hu.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\lang\id.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\lang\is.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\lang\it.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\lang\ja.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\lang\ka.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\lang\km.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\lang\ko.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\lang\ku.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\lang\lt.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\lang\lv.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\lang\mn.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\lang\ms.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\lang\nb.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\lang\nl.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\lang\no.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\lang\pl.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\lang\pt-br.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\lang\pt.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\lang\ro.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\lang\ru.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\lang\si.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\lang\sk.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\lang\sl.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\lang\sq.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\lang\sr-latn.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\lang\sr.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\lang\sv.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\lang\th.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\lang\tr.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\lang\tt.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\lang\ug.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\lang\uk.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\lang\vi.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\lang\zh-cn.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\lang\zh.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\plugin.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\samples\sourcedialog.html" />
+    <Content Include="Scripts\ckeditor\plugins\specialchar\dialogs\lang\af.js" />
+    <Content Include="Scripts\ckeditor\plugins\specialchar\dialogs\lang\ar.js" />
+    <Content Include="Scripts\ckeditor\plugins\specialchar\dialogs\lang\bg.js" />
+    <Content Include="Scripts\ckeditor\plugins\specialchar\dialogs\lang\ca.js" />
+    <Content Include="Scripts\ckeditor\plugins\specialchar\dialogs\lang\cs.js" />
+    <Content Include="Scripts\ckeditor\plugins\specialchar\dialogs\lang\cy.js" />
+    <Content Include="Scripts\ckeditor\plugins\specialchar\dialogs\lang\da.js" />
+    <Content Include="Scripts\ckeditor\plugins\specialchar\dialogs\lang\de.js" />
+    <Content Include="Scripts\ckeditor\plugins\specialchar\dialogs\lang\el.js" />
+    <Content Include="Scripts\ckeditor\plugins\specialchar\dialogs\lang\en-gb.js" />
+    <Content Include="Scripts\ckeditor\plugins\specialchar\dialogs\lang\en.js" />
+    <Content Include="Scripts\ckeditor\plugins\specialchar\dialogs\lang\eo.js" />
+    <Content Include="Scripts\ckeditor\plugins\specialchar\dialogs\lang\es.js" />
+    <Content Include="Scripts\ckeditor\plugins\specialchar\dialogs\lang\et.js" />
+    <Content Include="Scripts\ckeditor\plugins\specialchar\dialogs\lang\fa.js" />
+    <Content Include="Scripts\ckeditor\plugins\specialchar\dialogs\lang\fi.js" />
+    <Content Include="Scripts\ckeditor\plugins\specialchar\dialogs\lang\fr-ca.js" />
+    <Content Include="Scripts\ckeditor\plugins\specialchar\dialogs\lang\fr.js" />
+    <Content Include="Scripts\ckeditor\plugins\specialchar\dialogs\lang\gl.js" />
+    <Content Include="Scripts\ckeditor\plugins\specialchar\dialogs\lang\he.js" />
+    <Content Include="Scripts\ckeditor\plugins\specialchar\dialogs\lang\hr.js" />
+    <Content Include="Scripts\ckeditor\plugins\specialchar\dialogs\lang\hu.js" />
+    <Content Include="Scripts\ckeditor\plugins\specialchar\dialogs\lang\id.js" />
+    <Content Include="Scripts\ckeditor\plugins\specialchar\dialogs\lang\it.js" />
+    <Content Include="Scripts\ckeditor\plugins\specialchar\dialogs\lang\ja.js" />
+    <Content Include="Scripts\ckeditor\plugins\specialchar\dialogs\lang\km.js" />
+    <Content Include="Scripts\ckeditor\plugins\specialchar\dialogs\lang\ku.js" />
+    <Content Include="Scripts\ckeditor\plugins\specialchar\dialogs\lang\lt.js" />
+    <Content Include="Scripts\ckeditor\plugins\specialchar\dialogs\lang\lv.js" />
+    <Content Include="Scripts\ckeditor\plugins\specialchar\dialogs\lang\nb.js" />
+    <Content Include="Scripts\ckeditor\plugins\specialchar\dialogs\lang\nl.js" />
+    <Content Include="Scripts\ckeditor\plugins\specialchar\dialogs\lang\no.js" />
+    <Content Include="Scripts\ckeditor\plugins\specialchar\dialogs\lang\pl.js" />
+    <Content Include="Scripts\ckeditor\plugins\specialchar\dialogs\lang\pt-br.js" />
+    <Content Include="Scripts\ckeditor\plugins\specialchar\dialogs\lang\pt.js" />
+    <Content Include="Scripts\ckeditor\plugins\specialchar\dialogs\lang\ru.js" />
+    <Content Include="Scripts\ckeditor\plugins\specialchar\dialogs\lang\si.js" />
+    <Content Include="Scripts\ckeditor\plugins\specialchar\dialogs\lang\sk.js" />
+    <Content Include="Scripts\ckeditor\plugins\specialchar\dialogs\lang\sl.js" />
+    <Content Include="Scripts\ckeditor\plugins\specialchar\dialogs\lang\sq.js" />
+    <Content Include="Scripts\ckeditor\plugins\specialchar\dialogs\lang\sv.js" />
+    <Content Include="Scripts\ckeditor\plugins\specialchar\dialogs\lang\th.js" />
+    <Content Include="Scripts\ckeditor\plugins\specialchar\dialogs\lang\tr.js" />
+    <Content Include="Scripts\ckeditor\plugins\specialchar\dialogs\lang\tt.js" />
+    <Content Include="Scripts\ckeditor\plugins\specialchar\dialogs\lang\ug.js" />
+    <Content Include="Scripts\ckeditor\plugins\specialchar\dialogs\lang\uk.js" />
+    <Content Include="Scripts\ckeditor\plugins\specialchar\dialogs\lang\vi.js" />
+    <Content Include="Scripts\ckeditor\plugins\specialchar\dialogs\lang\zh-cn.js" />
+    <Content Include="Scripts\ckeditor\plugins\specialchar\dialogs\lang\zh.js" />
+    <Content Include="Scripts\ckeditor\plugins\specialchar\dialogs\lang\_translationstatus.txt" />
+    <Content Include="Scripts\ckeditor\plugins\specialchar\dialogs\specialchar.js" />
+    <Content Include="Scripts\ckeditor\plugins\tabletools\dialogs\tableCell.js" />
+    <Content Include="Scripts\ckeditor\plugins\table\dialogs\table.js" />
+    <Content Include="Scripts\ckeditor\plugins\templates\dialogs\templates.css" />
+    <Content Include="Scripts\ckeditor\plugins\templates\dialogs\templates.js" />
+    <Content Include="Scripts\ckeditor\plugins\templates\templates\default.js" />
+    <Content Include="Scripts\ckeditor\plugins\templates\templates\images\template1.gif" />
+    <Content Include="Scripts\ckeditor\plugins\templates\templates\images\template2.gif" />
+    <Content Include="Scripts\ckeditor\plugins\templates\templates\images\template3.gif" />
+    <Content Include="Scripts\ckeditor\plugins\wsc\dialogs\ciframe.html" />
+    <Content Include="Scripts\ckeditor\plugins\wsc\dialogs\tmpFrameset.html" />
+    <Content Include="Scripts\ckeditor\plugins\wsc\dialogs\wsc.css" />
+    <Content Include="Scripts\ckeditor\plugins\wsc\dialogs\wsc.js" />
+    <Content Include="Scripts\ckeditor\plugins\wsc\dialogs\wsc_ie.js" />
+    <Content Include="Scripts\ckeditor\skins\bootstrapck\readme.md" />
+    <Content Include="Scripts\ckeditor\skins\bootstrapck\scss\browser-specific\gecko\editor_gecko.scss" />
+    <Content Include="Scripts\ckeditor\skins\bootstrapck\scss\browser-specific\ie7\dialog_ie7.scss" />
+    <Content Include="Scripts\ckeditor\skins\bootstrapck\scss\browser-specific\ie7\editor_ie7.scss" />
+    <Content Include="Scripts\ckeditor\skins\bootstrapck\scss\browser-specific\ie8\dialog_ie8.scss" />
+    <Content Include="Scripts\ckeditor\skins\bootstrapck\scss\browser-specific\ie8\editor_ie8.scss" />
+    <Content Include="Scripts\ckeditor\skins\bootstrapck\scss\browser-specific\iequirks\dialog_iequirks.scss" />
+    <Content Include="Scripts\ckeditor\skins\bootstrapck\scss\browser-specific\iequirks\editor_iequirks.scss" />
+    <Content Include="Scripts\ckeditor\skins\bootstrapck\scss\browser-specific\ie\dialog_ie.scss" />
+    <Content Include="Scripts\ckeditor\skins\bootstrapck\scss\browser-specific\ie\editor_ie.scss" />
+    <Content Include="Scripts\ckeditor\skins\bootstrapck\scss\browser-specific\opera\dialog_opera.scss" />
+    <Content Include="Scripts\ckeditor\skins\bootstrapck\scss\components\editor.scss" />
+    <Content Include="Scripts\ckeditor\skins\bootstrapck\scss\components\_colorpanel.scss" />
+    <Content Include="Scripts\ckeditor\skins\bootstrapck\scss\components\_elementspath.scss" />
+    <Content Include="Scripts\ckeditor\skins\bootstrapck\scss\components\_mainui.scss" />
+    <Content Include="Scripts\ckeditor\skins\bootstrapck\scss\components\_menu.scss" />
+    <Content Include="Scripts\ckeditor\skins\bootstrapck\scss\components\_panel.scss" />
+    <Content Include="Scripts\ckeditor\skins\bootstrapck\scss\components\_presets.scss" />
+    <Content Include="Scripts\ckeditor\skins\bootstrapck\scss\components\_reset.scss" />
+    <Content Include="Scripts\ckeditor\skins\bootstrapck\scss\components\_richcombo.scss" />
+    <Content Include="Scripts\ckeditor\skins\bootstrapck\scss\components\_toolbar.scss" />
+    <Content Include="Scripts\ckeditor\skins\bootstrapck\scss\config\_colors.scss" />
+    <Content Include="Scripts\ckeditor\skins\bootstrapck\scss\config\_config.scss" />
+    <Content Include="Scripts\ckeditor\skins\bootstrapck\scss\config\_defaults.scss" />
+    <Content Include="Scripts\ckeditor\skins\bootstrapck\scss\dialog\dialog.scss" />
+    <Content Include="Scripts\bootstrap.min.js.map">
+      <DependentUpon>bootstrap.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\ckeditor\skins\moono\dialog.css" />
+    <Content Include="Scripts\ckeditor\skins\moono\dialog_ie.css" />
+    <Content Include="Scripts\ckeditor\skins\moono\dialog_ie7.css" />
+    <Content Include="Scripts\ckeditor\skins\moono\dialog_ie8.css" />
+    <Content Include="Scripts\ckeditor\skins\moono\dialog_iequirks.css" />
+    <Content Include="Scripts\ckeditor\skins\moono\editor.css" />
+    <Content Include="Scripts\ckeditor\skins\moono\editor_gecko.css" />
+    <Content Include="Scripts\ckeditor\skins\moono\editor_ie.css" />
+    <Content Include="Scripts\ckeditor\skins\moono\editor_ie7.css" />
+    <Content Include="Scripts\ckeditor\skins\moono\editor_ie8.css" />
+    <Content Include="Scripts\ckeditor\skins\moono\editor_iequirks.css" />
+    <Content Include="Scripts\ckeditor\skins\moono\icons.png" />
+    <Content Include="Scripts\ckeditor\skins\moono\icons_hidpi.png" />
+    <Content Include="Scripts\ckeditor\skins\moono\images\arrow.png" />
+    <Content Include="Scripts\ckeditor\skins\moono\images\close.png" />
+    <Content Include="Scripts\ckeditor\skins\moono\images\hidpi\close.png" />
+    <Content Include="Scripts\ckeditor\skins\moono\images\hidpi\lock-open.png" />
+    <Content Include="Scripts\ckeditor\skins\moono\images\hidpi\lock.png" />
+    <Content Include="Scripts\ckeditor\skins\moono\images\hidpi\refresh.png" />
+    <Content Include="Scripts\ckeditor\skins\moono\images\lock-open.png" />
+    <Content Include="Scripts\ckeditor\skins\moono\images\lock.png" />
+    <Content Include="Scripts\ckeditor\skins\moono\images\refresh.png" />
+    <Content Include="Scripts\ckeditor\styles.js" />
+    <Content Include="Scripts\Cloud\ContactList-old.min.js">
+      <DependentUpon>ContactList-old.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Cloud\ContactList.min.js">
+      <DependentUpon>ContactList.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Cloud\EditReport.min.js">
+      <DependentUpon>EditReport.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Cloud\EmailListClass.min.js">
+      <DependentUpon>EmailListClass.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Cloud\EmailLists.min.js">
+      <DependentUpon>EmailLists.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Cloud\EmailReports.js" />
+    <Content Include="Scripts\Cloud\EmailSendInformation.js" />
+    <Content Include="Scripts\Cloud\FormReport.old.2.js" />
+    <Content Include="Scripts\Cloud\RegistrantChangeSet.js" />
+    <Content Include="Scripts\Cloud\FormReport.min.js">
+      <DependentUpon>FormReport.old.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Cloud\FormReports.min.js.map">
+      <DependentUpon>FormReports.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Cloud\ContactList-old.min.js.map">
+      <DependentUpon>ContactList-old.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Cloud\ContactList.min.js.map">
+      <DependentUpon>ContactList.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Cloud\EditReport.min.js.map">
+      <DependentUpon>EditReport.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Cloud\EmailListClass.min.js.map">
+      <DependentUpon>EmailListClass.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Cloud\EmailLists.min.js.map">
+      <DependentUpon>EmailLists.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Cloud\FormReport.min.js.map">
+      <DependentUpon>FormReport.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Cloud\Index.min.js.map">
+      <DependentUpon>Index.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Cloud\PrintSingleFormReport.min.js.map">
+      <DependentUpon>PrintSingleFormReport.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Cloud\Rectify.min.js.map">
+      <DependentUpon>Rectify.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Cloud\RegData.min.js.map">
+      <DependentUpon>RegData.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Cloud\Registrant.min.js.map">
+      <DependentUpon>Registrant.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Cloud\reportFilter.min.js.map">
+      <DependentUpon>reportFilter.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Cloud\Reports.min.js.map">
+      <DependentUpon>Reports.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Cloud\Reports\b_report.js">
+      <DependentUpon>b_report.js.bundle</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Cloud\Reports\b_report.min.js">
+      <DependentUpon>b_report.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Cloud\Reports\Report.js" />
+    <Content Include="Scripts\Cloud\Reports\Report.min.js">
+      <DependentUpon>Report.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Cloud\SavedList.min.js.map">
+      <DependentUpon>SavedList.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Cloud\SingleFormReport.min.js.map">
+      <DependentUpon>SingleFormReport.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Cloud\SurveyReport.js" />
+    <Content Include="Scripts\Cloud\Transaction.min.js.map">
+      <DependentUpon>Transaction.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Cloud\ViewSingleFormReport.min.js.map">
+      <DependentUpon>ViewSingleFormReport.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Tool\Layout\processing.min.js.map">
+      <DependentUpon>processing.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\CompanyAdmin\Index.js" />
+    <Content Include="Scripts\Email\EditCampaign.min.js">
+      <DependentUpon>EditCampaign.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Email\EditEmail.js" />
+    <Content Include="Scripts\Email\EditEmail.min.js">
+      <DependentUpon>EditEmail.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Email\EditHtmlEmail.js" />
+    <Content Include="Scripts\Email\Email.min.js.map">
+      <DependentUpon>Email.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Bootstrap\Plugins\1 colorpicker-color.min.js.map">
+      <DependentUpon>1 colorpicker-color.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Bootstrap\Plugins\2 colorpicker.min.js.map">
+      <DependentUpon>2 colorpicker.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Email\EmailLogicForm.js" />
+    <Content Include="Scripts\Email\Index.min.js">
+      <DependentUpon>Index.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Email\JLogic.js" />
+    <Content Include="Scripts\Email\newEmail.min.js">
+      <DependentUpon>newEmail.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Email\SendEmail.min.js">
+      <DependentUpon>SendEmail.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\FormBuilder\JLogic.js" />
+    <Content Include="Scripts\FormBuilder\Map.min.js.map">
+      <DependentUpon>Map.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Bootstrap\Plugins\nitrox.min.js.map">
+      <DependentUpon>nitrox.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Email\EditCampaign.min.js.map">
+      <DependentUpon>EditCampaign.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Email\Index.min.js.map">
+      <DependentUpon>Index.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Email\newEmail.min.js.map">
+      <DependentUpon>newEmail.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Email\SendEmail.min.js.map">
+      <DependentUpon>SendEmail.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Email\EditEmail.min.js.map">
+      <DependentUpon>EditEmail.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Bootstrap\Plugins\Tree\Tree.min.js.map">
+      <DependentUpon>Tree.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Cloud\ContactList.v2.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\datetimepicker\bootstrap-datetimepicker.min.js.map">
+      <DependentUpon>bootstrap-datetimepicker.min.js</DependentUpon>
+    </Content>
+    <Content Include="Images\Common\regstep-full-white.png" />
+    <Content Include="Images\Common\regstep.png" />
+    <Content Include="Images\Sprites\sprite-cloud-save.png" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\ckeditor\plugins\image\dialogs\image.old.js" />
+    <Content Include="Scripts\ckeditor\plugins\sourcedialog\dialogs\sourcedialog.js" />
+    <Content Include="Scripts\ckeditor\skins\bootstrapck\dialog.css" />
+    <Content Include="Scripts\ckeditor\skins\bootstrapck\dialog_ie.css" />
+    <Content Include="Scripts\ckeditor\skins\bootstrapck\dialog_ie7.css" />
+    <Content Include="Scripts\ckeditor\skins\bootstrapck\dialog_ie8.css" />
+    <Content Include="Scripts\ckeditor\skins\bootstrapck\dialog_iequirks.css" />
+    <Content Include="Scripts\ckeditor\skins\bootstrapck\dialog_opera.css" />
+    <Content Include="Scripts\ckeditor\skins\bootstrapck\editor.css" />
+    <Content Include="Scripts\ckeditor\skins\bootstrapck\editor_gecko.css" />
+    <Content Include="Scripts\ckeditor\skins\bootstrapck\editor_ie.css" />
+    <Content Include="Scripts\ckeditor\skins\bootstrapck\editor_ie7.css" />
+    <Content Include="Scripts\ckeditor\skins\bootstrapck\editor_ie8.css" />
+    <Content Include="Scripts\ckeditor\skins\bootstrapck\editor_iequirks.css" />
+    <Content Include="Scripts\ckeditor\skins\bootstrapck\icons.png" />
+    <Content Include="Scripts\ckeditor\skins\bootstrapck\icons_hidpi.png" />
+    <Content Include="Scripts\ckeditor\skins\bootstrapck\images\arrow.png" />
+    <Content Include="Scripts\ckeditor\skins\bootstrapck\images\close.png" />
+    <Content Include="Scripts\ckeditor\skins\bootstrapck\images\hidpi\close.png" />
+    <Content Include="Scripts\ckeditor\skins\bootstrapck\images\hidpi\lock-open.png" />
+    <Content Include="Scripts\ckeditor\skins\bootstrapck\images\hidpi\lock.png" />
+    <Content Include="Scripts\ckeditor\skins\bootstrapck\images\hidpi\refresh.png" />
+    <Content Include="Scripts\ckeditor\skins\bootstrapck\images\lock-open.png" />
+    <Content Include="Scripts\ckeditor\skins\bootstrapck\images\lock.png" />
+    <Content Include="Scripts\ckeditor\skins\bootstrapck\images\refresh.png" />
+    <Content Include="Scripts\ckeditor\skins\bootstrapck\sample\bootstrapck-sample.html" />
+    <Content Include="Scripts\ckeditor\skins\bootstrapck\sample\css\bootstrapck-sample.css" />
+    <Content Include="Scripts\ckeditor\skins\bootstrapck\sample\js\analytics.js" />
+    <Content Include="Scripts\ckeditor\skins\bootstrapck\sample\js\jquery-1.11.0.min.js" />
+    <Content Include="Scripts\Cloud\ContactList-old.js" />
+    <Content Include="Scripts\Cloud\ContactList.js" />
+    <Content Include="Scripts\Cloud\EditReport.js" />
+    <Content Include="Scripts\Cloud\EmailListClass.js" />
+    <Content Include="Scripts\Cloud\EmailLists.js" />
+    <Content Include="Scripts\Cloud\FormReport.old.js" />
+    <Content Include="Scripts\Cloud\FormReports.js" />
+    <Content Include="Scripts\Cloud\FormReports.min.js">
+      <DependentUpon>FormReports.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Cloud\index.js" />
+    <Content Include="Scripts\Cloud\Index.min.js">
+      <DependentUpon>index.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Cloud\PrintSingleFormReport.min.js">
+      <DependentUpon>PrintSingleFormReport.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Cloud\Rectify.js" />
+    <Content Include="Scripts\Cloud\Rectify.min.js">
+      <DependentUpon>Rectify.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Cloud\RegData.js" />
+    <Content Include="Scripts\Cloud\RegData.min.js">
+      <DependentUpon>RegData.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Cloud\Registrant.js" />
+    <Content Include="Scripts\Cloud\Registrant.min.js">
+      <DependentUpon>Registrant.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Cloud\reportFilter.js" />
+    <Content Include="Scripts\Cloud\reportFilter.min.js">
+      <DependentUpon>reportFilter.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Cloud\Reports.js" />
+    <Content Include="Scripts\Cloud\Reports.min.js">
+      <DependentUpon>Reports.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Cloud\SavedList.js" />
+    <Content Include="Scripts\Cloud\SavedList.min.js">
+      <DependentUpon>SavedList.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Cloud\SingleFormReport.js" />
+    <Content Include="Scripts\Cloud\SingleFormReport.min.js">
+      <DependentUpon>SingleFormReport.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Cloud\Transaction.js" />
+    <Content Include="Scripts\Cloud\PrintSingleFormReport.js" />
+    <Content Include="Scripts\Cloud\Transaction.min.js">
+      <DependentUpon>Transaction.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Cloud\ViewSingleFormReport.js" />
+    <Content Include="Scripts\Cloud\ViewSingleFormReport.min.js">
+      <DependentUpon>ViewSingleFormReport.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\ColorPicker\colorpicker.js" />
+    <Content Include="Scripts\ColorPicker\eye.js" />
+    <Content Include="Scripts\ColorPicker\jquery.js" />
+    <Content Include="Scripts\ColorPicker\layout.js" />
+    <Content Include="Scripts\ColorPicker\utils.js" />
+    <Content Include="Scripts\CompanyAdmin\Users.js" />
+    <Content Include="Scripts\Email\Email.js" />
+    <Content Include="Scripts\Email\Email.min.js">
+      <DependentUpon>Email.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Email\newEmail.js" />
+    <Content Include="Scripts\FormBuilder\AudienceSelect.js" />
+    <Content Include="Scripts\FormBuilder\DisplayOrder.js" />
+    <Content Include="Scripts\FormBuilder\EditComponent.js" />
+    <Content Include="Scripts\FormBuilder\EditInput.js" />
+    <Content Include="Scripts\FormBuilder\EditPage.js" />
+    <Content Include="Scripts\Email\EditCampaign.js" />
+    <Content Include="Scripts\Email\Index.js" />
+    <Content Include="Scripts\Email\SendEmail.js" />
+    <Content Include="Scripts\FormBuilder\Audiences.js" />
+    <Content Include="Scripts\FormBuilder\EditContentLogic.js" />
+    <Content Include="Scripts\FormBuilder\EditLogic.js" />
+    <Content Include="Scripts\FormBuilder\EditPanel.js" />
+    <Content Include="Scripts\FormBuilder\EditPrice.js" />
+    <Content Include="Scripts\FormBuilder\EditStyles.js" />
+    <Content Include="Scripts\FormBuilder\FolderNavigation.js" />
+    <Content Include="Scripts\FormBuilder\EditForm.js" />
+    <Content Include="Scripts\FormBuilder\Map.js" />
+    <Content Include="Scripts\FormBuilder\Map.min.js">
+      <DependentUpon>Map.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\html5shiv-printshiv.js" />
+    <Content Include="Scripts\html5shiv-printshiv.min.js" />
+    <Content Include="Scripts\html5shiv.js" />
+    <Content Include="Scripts\html5shiv.min.js" />
+    <Content Include="Scripts\jquery-2.1.1.min.js" />
+    <Content Include="Scripts\Chartv2.min.js.map">
+      <DependentUpon>Chartv2.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Bootstrap\Plugins\DateTime Picker\bootstrap-datetimepicker.min.js.map">
+      <DependentUpon>bootstrap-datetimepicker.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\html5shiv-printshiv.min.js.map">
+      <DependentUpon>html5shiv-printshiv.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\html5shiv.min.js.map">
+      <DependentUpon>html5shiv.min.js</DependentUpon>
+    </Content>
+    <Content Include="Content\Bootstrap\modals.less" />
+    <Content Include="Content\Cloud\report.less" />
+    <Content Include="Content\Cloud\report.css.map">
+      <DependentUpon>report.css</DependentUpon>
+    </Content>
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\Bootstrap\wells.less" />
+    <Content Include="Content\Bootstrap\utilities.less" />
+    <Content Include="Content\Bootstrap\type.less" />
+    <Content Include="Content\Bootstrap\tooltip.less" />
+    <Content Include="Content\Bootstrap\thumbnails.less" />
+    <Content Include="Content\Bootstrap\theme.less" />
+    <Content Include="Content\Bootstrap\tables.less" />
+    <Content Include="Content\Bootstrap\scaffolding.less" />
+    <Content Include="Content\Bootstrap\responsive-utilities.less" />
+    <Content Include="Content\Bootstrap\responsive-embed.less" />
+    <Content Include="Content\Bootstrap\progress-bars.less" />
+    <Content Include="Content\Bootstrap\print.less" />
+    <Content Include="Content\Bootstrap\popovers.less" />
+    <Content Include="Content\Bootstrap\panels.less" />
+    <Content Include="Content\Bootstrap\pagination.less" />
+    <Content Include="Content\Bootstrap\pager.less" />
+    <Content Include="Content\Bootstrap\normalize.less" />
+    <Content Include="Content\Bootstrap\navs.less" />
+    <Content Include="Content\Bootstrap\navbar.less" />
+    <Content Include="Content\Bootstrap\mixins\vendor-prefixes.less" />
+    <Content Include="Content\Bootstrap\mixins\text-overflow.less" />
+    <Content Include="Content\Bootstrap\mixins\text-emphasis.less" />
+    <Content Include="Content\Bootstrap\mixins\table-row.less" />
+    <Content Include="Content\Bootstrap\mixins\tab-focus.less" />
+    <Content Include="Content\Bootstrap\mixins\size.less" />
+    <Content Include="Content\Bootstrap\mixins\responsive-visibility.less" />
+    <Content Include="Content\Bootstrap\mixins\resize.less" />
+    <Content Include="Content\Bootstrap\mixins\reset-filter.less" />
+    <Content Include="Content\Bootstrap\mixins\progress-bar.less" />
+    <Content Include="Content\Bootstrap\mixins\panels.less" />
+    <Content Include="Content\Bootstrap\mixins\pagination.less" />
+    <Content Include="Content\Bootstrap\mixins\opacity.less" />
+    <Content Include="Content\Bootstrap\mixins\nav-vertical-align.less" />
+    <Content Include="Content\Bootstrap\mixins\nav-divider.less" />
+    <Content Include="Content\Bootstrap\mixins\list-group.less" />
+    <Content Include="Content\Bootstrap\mixins\labels.less" />
+    <Content Include="Content\Bootstrap\mixins\image.less" />
+    <Content Include="Content\Bootstrap\mixins\hide-text.less" />
+    <Content Include="Content\Bootstrap\mixins\grid-framework.less" />
+    <Content Include="Content\Bootstrap\mixins\grid.less" />
+    <Content Include="Content\Bootstrap\mixins\gradients.less" />
+    <Content Include="Content\Bootstrap\mixins\forms.less" />
+    <Content Include="Content\Bootstrap\mixins\clearfix.less" />
+    <Content Include="Content\Bootstrap\mixins\center-block.less" />
+    <Content Include="Content\Bootstrap\mixins\buttons.less" />
+    <Content Include="Content\Bootstrap\mixins\border-radius.less" />
+    <Content Include="Content\Bootstrap\mixins\background-variant.less" />
+    <Content Include="Content\Bootstrap\mixins\alerts.less" />
+    <Content Include="Content\Bootstrap\mixins.less" />
+    <Content Include="Content\Bootstrap\media.less" />
+    <Content Include="Content\Bootstrap\list-group.less" />
+    <Content Include="Content\Bootstrap\labels.less" />
+    <Content Include="Content\Bootstrap\jumbotron.less" />
+    <Content Include="Content\Bootstrap\input-groups.less" />
+    <Content Include="Content\Bootstrap\grid.less" />
+    <Content Include="Content\Bootstrap\glyphicons.less" />
+    <Content Include="Content\Bootstrap\forms.less" />
+    <Content Include="Content\Bootstrap\dropdowns.less" />
+    <Content Include="Content\Bootstrap\component-animations.less" />
+    <Content Include="Content\Bootstrap\code.less" />
+    <Content Include="Content\Bootstrap\close.less" />
+    <Content Include="Content\Bootstrap\carousel.less" />
+    <Content Include="Content\Bootstrap\buttons.less" />
+    <Content Include="Content\Bootstrap\button-groups.less" />
+    <Content Include="Content\Bootstrap\breadcrumbs.less" />
+    <Content Include="Content\Bootstrap\bootstrap.less" />
+    <Content Include="Content\Bootstrap\badges.less" />
+    <Content Include="Content\Bootstrap\alerts.less" />
+    <None Include="Properties\PublishProfiles\devtool-live.pubxml" />
+    <Content Include="Scripts\ckeditor\skins\moono\readme.md" />
+    <Content Include="Scripts\ckeditor\README.md" />
+    <Content Include="Scripts\ckeditor\plugins\wsc\README.md" />
+    <Content Include="Scripts\ckeditor\plugins\wsc\LICENSE.md" />
+    <Content Include="Scripts\ckeditor\plugins\scayt\README.md" />
+    <Content Include="Scripts\ckeditor\plugins\scayt\LICENSE.md" />
+    <Content Include="Scripts\ckeditor\LICENSE.md" />
+    <Content Include="Scripts\ckeditor\CHANGES.md" />
+    <Content Include="Scripts\Cloud\Reports\Report.min.js.map">
+      <DependentUpon>Report.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Cloud\Reports\b_report.js.bundle" />
+    <Content Include="Scripts\Cloud\Reports\b_report.min.js.map">
+      <DependentUpon>b_report.min.js</DependentUpon>
+    </Content>
+    <None Include="Properties\PublishProfiles\tool-live.pubxml" />
+    <Content Include="Scripts\jquery-2.1.3.min.js" />
+    <Content Include="Scripts\jquery.signalR-2.2.0.js" />
+    <Content Include="Scripts\jquery.signalR-2.2.0.min.js" />
+    <Content Include="Scripts\jQuery\jquery-1.11.min.js" />
+    <Content Include="Scripts\jQuery\Plugins\disableSelect.js" />
+    <Content Include="Scripts\Bootstrap\Plugins\formPlugins.js" />
+    <Content Include="Scripts\jQuery\Plugins\formvalidate.js" />
+    <Content Include="Scripts\jQuery\Plugins\jquery-color.js" />
+    <Content Include="Scripts\jQuery\Plugins\jquery-color.min.js">
+      <DependentUpon>jquery-color.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\jQuery\Plugins\jsonData.js" />
+    <Content Include="Scripts\jQuery\Plugins\Navigation\navigation.js" />
+    <Content Include="Scripts\jQuery\Plugins\sortable.js" />
+    <Content Include="Scripts\Layout\changeCompany.js" />
+    <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\Moment\moment-with-locales.js" />
+    <Content Include="Scripts\Moment\moment-with-locales.min.js" />
+    <Content Include="Scripts\Moment\moment.js" />
+    <Content Include="Scripts\Moment\moment.min.js" />
+    <Content Include="Scripts\Registration\chance.js" />
+    <Content Include="Scripts\Registration\FillRandom.js" />
+    <Content Include="Scripts\Registration\PromotionCodes.js" />
+    <Content Include="Scripts\Registration\Registration.js" />
+    <Content Include="Scripts\Cloud\Reports\jTable.js" />
+    <Content Include="Scripts\Cloud\Reports\jTable.min.js">
+      <DependentUpon>jTable.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\respond.js" />
+    <Content Include="Scripts\respond.matchmedia.addListener.js" />
+    <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
+    <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\SystemAdministration\EditCompany.js" />
+    <Content Include="Scripts\SystemAdministration\EditPermissions.js" />
+    <Content Include="Scripts\SystemAdministration\Logs.js" />
+    <Content Include="Scripts\Tool\Layout\breadCrumb.js" />
+    <Content Include="Scripts\Tool\changecompany.js" />
+    <Content Include="Scripts\Tool\changecompany.min.js">
+      <DependentUpon>changecompany.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Tool\contactUpload.js" />
+    <Content Include="Scripts\Tool\contactUpload.min.js">
+      <DependentUpon>contactUpload.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Tool\cycle.js" />
+    <Content Include="Scripts\Tool\Layout\extensions.js" />
+    <Content Include="Scripts\Tool\filter.min.js">
+      <DependentUpon>filter.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Tool\Layout\breadCrumb.min.js">
+      <DependentUpon>breadCrumb.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Tool\Layout\restful-old.js" />
+    <Content Include="Scripts\Tool\Layout\restful - Copy.min.js">
+      <DependentUpon>restful-old.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Tool\oldFilter.js" />
+    <Content Include="Scripts\Tool\POFilter.js" />
+    <Content Include="Scripts\Tool\JsonSorting.js" />
+    <Content Include="Scripts\Tool\Sortings.js" />
+    <Content Include="Scripts\Tool\Filters - Copy.min.js">
+      <DependentUpon>Sortings.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Tool\Filters.js" />
+    <Content Include="Scripts\Tool\Filters.min.js">
+      <DependentUpon>Filters.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Tool\indexOf.js" />
+    <Content Include="Scripts\Tool\md5.js" />
+    <Content Include="Scripts\Tool\Layout\restful.js" />
+    <Content Include="Scripts\Tool\filter.js" />
+    <Content Include="Scripts\Tool\Layout\restful.min.js">
+      <DependentUpon>restful.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Tool\saveSprite.js" />
+    <Content Include="Scripts\Tool\saveSprite.min.js">
+      <DependentUpon>saveSprite.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Tool\sideCommand.js" />
+    <Content Include="Scripts\Tool\sideCommand.min.js">
+      <DependentUpon>sideCommand.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Tool\submit.js" />
+    <Content Include="Scripts\Tool\toggleEdit.js" />
+    <Content Include="Scripts\Tool\toggleEdit.min.js">
+      <DependentUpon>toggleEdit.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Tool\Filters - Copy.min.js.map">
+      <DependentUpon>Filters - Copy.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\jquery-2.1.3.min.js.map">
+      <DependentUpon>jquery-2.1.3.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\jquery.signalR-2.2.0.min.js.map">
+      <DependentUpon>jquery.signalR-2.2.0.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Moment\moment-with-locales.min.js.map">
+      <DependentUpon>moment-with-locales.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Moment\moment.min.js.map">
+      <DependentUpon>moment.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\respond.matchmedia.addListener.min.js.map">
+      <DependentUpon>respond.matchmedia.addListener.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\respond.min.js.map">
+      <DependentUpon>respond.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\jQuery\Plugins\jquery-color.min.js.map">
+      <DependentUpon>jquery-color.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Cloud\Reports\jTable.min.js.map">
+      <DependentUpon>jTable.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Tool\Layout\breadCrumb.min.js.map">
+      <DependentUpon>breadCrumb.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Tool\Layout\prettyProcessing.min.js.map">
+      <DependentUpon>prettyProcessing.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Tool\Layout\extensions.min.js.map">
+      <DependentUpon>extensions.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Tool\Layout\browserGap.min.js.map">
+      <DependentUpon>browserGap.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Tool\Layout\b_tool.js.bundle">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Scripts\Tool\Layout\b_tool.min.js.map">
+      <DependentUpon>b_tool.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\SystemAdministration\b_logs.js.bundle" />
+    <Content Include="Scripts\SystemAdministration\b_logs.min.js.map">
+      <DependentUpon>b_logs.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\jquery-2.1.4.min.map" />
+    <Content Include="Scripts\Tool\Filters - Copy %282%29.min.js.map">
+      <DependentUpon>Filters - Copy %282%29.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Tool\Filters - Copy.min.js - Copy.map">
+      <DependentUpon>Filters - Copy.min - Copy.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Tool\Layout\restful - Copy.min.js.map">
+      <DependentUpon>restful - Copy.min.js</DependentUpon>
+    </Content>
+    <None Include="Scripts\_references.js" />
+    <Content Include="Scripts\Transaction\transaction.js" />
+    <Content Include="Scripts\versioning.js" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\BootstrapBundleConfig.cs" />
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\NinjectWebCommon.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\API\ChargeController.cs" />
+    <Compile Include="Controllers\API\ChargesController.cs" />
+    <Compile Include="Controllers\CompanyController.cs" />
+    <Compile Include="Controllers\FinancesController.cs" />
+    <None Include="Controllers\OldAdminRegisterController.cs.old" />
+    <Compile Include="Controllers\AdminRegisterController.cs" />
+    <Compile Include="Controllers\API\ComponentController.cs" />
+    <Compile Include="Controllers\API\ComponentsController.cs" />
+    <Compile Include="Controllers\API\ContactController.cs" />
+    <Compile Include="Controllers\API\ContactHeaderController.cs" />
+    <Compile Include="Controllers\API\ContactHeadersController.cs" />
+    <Compile Include="Controllers\API\ContactsController.cs" />
+    <Compile Include="Controllers\API\Email_EmailSendController.cs" />
+    <Compile Include="Controllers\API\Email_SendController.cs" />
+    <Compile Include="Controllers\API\EventController.cs" />
+    <Compile Include="Controllers\API\EventsController.cs" />
+    <Compile Include="Controllers\API\EventStatsController.cs" />
+    <Compile Include="Controllers\API\RegisterController.cs" />
+    <Compile Include="Controllers\API\Registrant_AgendaController.cs" />
+    <Compile Include="Controllers\API\RegistrantController.cs" />
+    <Compile Include="Controllers\API\RegistrationsController.cs" />
+    <Compile Include="Controllers\API\LoginController.cs" />
+    <Compile Include="Controllers\API\SendGridController.cs" />
+    <Compile Include="Controllers\API\SubmitController.cs" />
+    <Compile Include="Controllers\CapacityController.cs" />
+    <Compile Include="Controllers\Cloud2Controller.cs" />
+    <Compile Include="Controllers\CloudController.cs" />
+    <Compile Include="Controllers\CompanyAdminController.cs" />
+    <Compile Include="Controllers\ContactController.cs" />
+    <Compile Include="Controllers\GlobalReportController.cs" />
+    <Compile Include="Controllers\InventoryReportController.cs" />
+    <Compile Include="Controllers\PermissionController.cs" />
+    <Compile Include="Controllers\TrailController.cs" />
+    <Compile Include="Controllers\CrumbController.cs" />
+    <Compile Include="Controllers\DebugController.cs" />
+    <Compile Include="Controllers\EmailEventController.cs" />
+    <Compile Include="Controllers\EmailController.cs" />
+    <Compile Include="Controllers\EmailInformationController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
+    <Compile Include="Controllers\FolderController.cs" />
+    <Compile Include="Controllers\FormBuilderController.cs" />
+    <Compile Include="Controllers\API\FormGatewayController.cs" />
+    <Compile Include="Controllers\FormEmailReportController.cs" />
+    <Compile Include="Controllers\FormReportController.cs" />
+    <Compile Include="Controllers\HelpController.cs" />
+    <Compile Include="Controllers\MerchantAccountController.cs" />
+    <Compile Include="Controllers\NodeController.cs" />
+    <Compile Include="Controllers\RegisterController.cs" />
+    <Compile Include="Infrastructure\Attributes\ApiGlobalAuthorizationAttribute.cs" />
+    <Compile Include="Infrastructure\Attributes\Authorization\ApiAuthorizationAttribute.cs" />
+    <Compile Include="Infrastructure\Engines\RegEngine.cs" />
+    <Compile Include="Infrastructure\Extensions\AudienceExtensions.cs" />
+    <Compile Include="Infrastructure\Extensions\ComponentExtensions.cs" />
+    <Compile Include="Infrastructure\Extensions\CustomTextExtensions.cs" />
+    <Compile Include="Infrastructure\Extensions\DateTimeExtensions.cs" />
+    <Compile Include="Infrastructure\Extensions\EmailEventExtensions.cs" />
+    <Compile Include="Infrastructure\Extensions\EmailSendExtensions.cs" />
+    <Compile Include="Infrastructure\Extensions\FormExtensions.cs" />
+    <Compile Include="Infrastructure\Extensions\HtmlEmailExtensions.cs" />
+    <Compile Include="Infrastructure\Extensions\IDataItemExtensions.cs" />
+    <Compile Include="Infrastructure\Extensions\InventoryReportExtensions.cs" />
+    <Compile Include="Infrastructure\Extensions\JLogicExtensions.cs" />
+    <Compile Include="Infrastructure\Extensions\LogicBlockExtensions.cs" />
+    <Compile Include="Infrastructure\Extensions\LogicExtensions.cs" />
+    <Compile Include="Infrastructure\Extensions\PageExtensions.cs" />
+    <Compile Include="Infrastructure\Extensions\PanelExtensions.cs" />
+    <Compile Include="Infrastructure\Extensions\PriceGroupExtensions.cs" />
+    <Compile Include="Infrastructure\Extensions\PromotionalCodeExtensions.cs" />
+    <Compile Include="Infrastructure\Extensions\RegistrantExtensions.cs" />
+    <Compile Include="Infrastructure\Extensions\RSEmailExtensions.cs" />
+    <Compile Include="Infrastructure\Extensions\SeaterExtensions.cs" />
+    <Compile Include="Infrastructure\Extensions\SeatingExtensions.cs" />
+    <Compile Include="Infrastructure\Extensions\SingleFormReportExtensions.cs" />
+    <Compile Include="Infrastructure\Json\RegTable.cs" />
+    <Compile Include="Infrastructure\RegStepApiController.cs" />
+    <Compile Include="Infrastructure\Repositories\GlobalReportRepository.cs" />
+    <Compile Include="Infrastructure\Repositories\Repository.cs" />
+    <Compile Include="Infrastructure\WebConstants.cs" />
+    <Compile Include="Infrastructure\Exceptions\TokenNotFoundException.cs" />
+    <Compile Include="Infrastructure\Extensions\ContactExtensions.cs" />
+    <Compile Include="Infrastructure\JsonTables.cs" />
+    <Compile Include="Infrastructure\Json\JsonError.cs" />
+    <Compile Include="Infrastructure\Json\JsonResultData.cs" />
+    <Compile Include="Infrastructure\Register\IRegisterHtmlHelper.cs" />
+    <Compile Include="Infrastructure\Register\PageNumber.cs" />
+    <Compile Include="Infrastructure\Register\AdminRegisterHtmlHelper.cs" />
+    <Compile Include="Infrastructure\Register\RegisterHtmlHelper.cs" />
+    <Compile Include="Models\Inputs\Company\CompanyInput.cs" />
+    <Compile Include="Models\Inputs\Contact\ContactDataInput.cs" />
+    <Compile Include="Models\Inputs\Contact\ContactUploadInput.cs" />
+    <Compile Include="Models\Inputs\Register\AudienceInput.cs" />
+    <Compile Include="Models\Inputs\Register\MerchantConfirmationInput.cs" />
+    <Compile Include="Models\Inputs\Register\ChargeInput.cs" />
+    <Compile Include="Models\Inputs\Register\PageInput.cs" />
+    <Compile Include="Models\Inputs\Register\RSVPInput.cs" />
+    <Compile Include="Models\Inputs\Register\StartInput.cs" />
+    <Compile Include="Models\Views\Unsubscribe\UnsubscribeView.cs" />
+    <Compile Include="Models\Views\Capacity\CapacitiesView.cs" />
+    <Compile Include="Models\Views\Company\CompaniesView.cs" />
+    <Compile Include="Models\Views\Company\CompanyView.cs" />
+    <Compile Include="Models\Views\Contact\ContactUploadListView.cs" />
+    <Compile Include="Models\Views\Contact\ListView.cs" />
+    <Compile Include="Models\Views\Contact\UploadView.cs" />
+    <Compile Include="Models\Views\FormEmailReport\GetView.cs" />
+    <Compile Include="Models\Views\Register\AudiencesView.cs" />
+    <Compile Include="Models\Views\Register\BaseRegisterView.cs" />
+    <Compile Include="Models\Views\Register\ChargeConfirmationView.cs" />
+    <Compile Include="Models\Views\Register\ChargeView.cs" />
+    <Compile Include="Models\Views\Register\CheckOutView.cs" />
+    <Compile Include="Models\Views\Register\ConfirmationView.cs" />
+    <Compile Include="Models\Views\Register\PromotionsView.cs" />
+    <Compile Include="Models\Views\Register\ReviewView.cs" />
+    <Compile Include="Models\Views\Register\RSVPView.cs" />
+    <Compile Include="Models\Views\Register\StartView.cs" />
+    <Compile Include="Models\Views\Register\PageView.cs" />
+    <Compile Include="Controllers\RegistrantController.cs" />
+    <Compile Include="Controllers\SecurityController.cs" />
+    <Compile Include="Controllers\SystemAdministrationController.cs" />
+    <Compile Include="Controllers\TransactionController.cs" />
+    <Compile Include="Controllers\UnsubscribeController.cs" />
+    <Compile Include="Infrastructure\ApiAuthorize.cs" />
+    <Compile Include="Infrastructure\Attributes\ApiTokenAuthorizationAttribute.cs" />
+    <Compile Include="Infrastructure\Attributes\TrailAttribute.cs" />
+    <Compile Include="Infrastructure\Attributes\CrumbAttribute.cs" />
+    <Compile Include="Infrastructure\Attributes\HtmlTitleAttribute.cs" />
+    <Compile Include="Infrastructure\Attributes\IsAjaxAttribute.cs" />
+    <Compile Include="Infrastructure\Attributes\KeepAliveAttribute.cs" />
+    <Compile Include="Infrastructure\Attributes\MinimalViewAttribute.cs" />
+    <Compile Include="Infrastructure\Attributes\NoTrail.cs" />
+    <Compile Include="Infrastructure\Attributes\PopoutViewAttribute.cs" />
+    <Compile Include="Infrastructure\Attributes\UpdateAttribute.cs" />
+    <Compile Include="Infrastructure\AuthApiController.cs" />
+    <Compile Include="Infrastructure\Attributes\ComplexIdAttribute.cs" />
+    <Compile Include="Infrastructure\Attributes\RegStepHandleErrorAttribute.cs" />
+    <Compile Include="Infrastructure\ComponentSkipResult.cs" />
+    <Compile Include="Infrastructure\Component\HtmlComponentBuilder.cs" />
+    <Compile Include="Infrastructure\Exceptions\InvalidIdException.cs" />
+    <Compile Include="Infrastructure\Interfaces\IRegStepController.cs" />
+    <Compile Include="Infrastructure\JsonAntiForgery.cs" />
+    <Compile Include="Infrastructure\JsonNetResult.cs" />
+    <Compile Include="Infrastructure\JsonValidateAntiForgeryToken.cs" />
+    <Compile Include="Infrastructure\MissingContentTypeDH.cs" />
+    <Compile Include="Infrastructure\RegDataHtmlHelper.cs" />
+    <Compile Include="Infrastructure\AdminRegistrationHtml.cs" />
+    <None Include="Infrastructure\RegistrationHelper.cs.old" />
+    <Compile Include="Infrastructure\RegistrationHtml.cs" />
+    <Compile Include="Infrastructure\RegStepController.cs" />
+    <Compile Include="Infrastructure\ReportController.cs" />
+    <Compile Include="Infrastructure\RSController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
+    <Compile Include="Infrastructure\RSHtml.cs" />
+    <Compile Include="Infrastructure\RSHtmlHelper.cs" />
+    <Compile Include="Models\AdminRegistrationModel.cs" />
+    <Compile Include="Models\CloudModel.cs" />
+    <Compile Include="Models\Cloud\CloudIndex.cs" />
+    <Compile Include="Models\ContentBlockModel.cs" />
+    <Compile Include="Models\EditForm.cs" />
+    <Compile Include="Models\EditPageModel.cs" />
+    <Compile Include="Models\EmailModel.cs" />
+    <Compile Include="Models\GatewayApiModel.cs" />
+    <Compile Include="Models\IdentityModel.cs" />
+    <Compile Include="Models\LogicModel.cs" />
+    <Compile Include="Models\PermissionModel.cs" />
+    <Compile Include="Models\RegistrationModel.cs" />
+    <Compile Include="Models\SecurityModel.cs" />
+    <Compile Include="Models\SendGridEvent.cs" />
+    <Compile Include="Models\SysAdminApiModel.cs" />
+    <Compile Include="Models\TrailModel.cs" />
+    <Compile Include="Models\Views\ViewBase.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="packages.config" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\Cloud\Index.cshtml" />
+    <Content Include="Views\Account\Index.cshtml" />
+    <Content Include="Views\Account\Edit.cshtml" />
+    <Content Include="Views\SystemAdministration\Index.cshtml" />
+    <Content Include="Views\SystemAdministration\SmtpServers.cshtml" />
+    <Content Include="Views\SystemAdministration\EditSmtpServer.cshtml" />
+    <Content Include="Views\Error\Error403.cshtml" />
+    <Content Include="Views\SystemAdministration\AddSmtpServer.cshtml" />
+    <Content Include="Views\Shared\P_Login_Nav.cshtml" />
+    <Content Include="Views\Shared\_Layout_Login.cshtml" />
+    <Content Include="Views\Shared\P_FormBuilderNavigation.cshtml" />
+    <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Shared\_Layout_Tool.cshtml" />
+    <Content Include="Views\Email\EditEmail.cshtml">
+      <BrowseToURL>~/Email/EditEmail</BrowseToURL>
+    </Content>
+    <Content Include="Views\Email\Index.cshtml" />
+    <Content Include="Views\Email\EditEmailCampaign.cshtml" />
+    <Content Include="Views\Security\EditPermissions.cshtml" />
+    <Content Include="Views\Shared\P_Help_View.cshtml" />
+    <Content Include="Views\Shared\_Layout_Cloud.cshtml" />
+    <Content Include="Views\Shared\_Layout_Email.cshtml" />
+    <Content Include="Views\FormBuilder\Index.cshtml" />
+    <Content Include="Views\FormBuilder\Form.cshtml" />
+    <Content Include="Views\Shared\_Layout_FormBuilder.cshtml" />
+    <Content Include="Views\FormBuilder\Seatings.cshtml" />
+    <Content Include="Views\FormBuilder\Seating.cshtml" />
+    <Content Include="Views\FormBuilder\Styles.cshtml" />
+    <Content Include="Views\FormBuilder\Audiences.cshtml" />
+    <Content Include="Views\FormBuilder\Audience.cshtml" />
+    <Content Include="Views\FormBuilder\Header.cshtml" />
+    <Content Include="Views\FormBuilder\Footer.cshtml" />
+    <Content Include="Views\FormBuilder\ContentBlocks.cshtml" />
+    <Content Include="Views\FormBuilder\ContentBlock.cshtml" />
+    <Content Include="Views\FormBuilder\ContentLogics.cshtml" />
+    <Content Include="Views\FormBuilder\ContentLogic.cshtml" />
+    <Content Include="Views\FormBuilder\Logic.cshtml" />
+    <Content Include="Views\FormBuilder\Page.cshtml" />
+    <Content Include="Views\FormBuilder\PageLogics.cshtml" />
+    <Content Include="Views\FormBuilder\Panel.cshtml" />
+    <Content Include="Views\FormBuilder\Input.cshtml" />
+    <Content Include="Views\FormBuilder\FreeText.cshtml" />
+    <Content Include="Views\FormBuilder\CheckboxGroup.cshtml" />
+    <Content Include="Views\FormBuilder\RadioGroup.cshtml" />
+    <Content Include="Views\FormBuilder\DropdownGroup.cshtml" />
+    <Content Include="Views\FormBuilder\DropdownItem.cshtml" />
+    <Content Include="Views\FormBuilder\RadioItem.cshtml" />
+    <Content Include="Views\FormBuilder\CheckboxItem.cshtml" />
+    <Content Include="Views\FormBuilder\Prices.cshtml" />
+    <Content Include="Views\FormBuilder\Price.cshtml" />
+    <Content Include="Views\SystemAdministration\Company.cshtml" />
+    <Content Include="Views\Account\ChangeCompany.cshtml" />
+    <Content Include="Views\FormBuilder\TextPage.cshtml" />
+    <Content Include="Views\FormBuilder\PanelLogics.cshtml" />
+    <Content Include="Views\FormBuilder\ComponentLogics.cshtml" />
+    <Content Include="Views\FormBuilder\Tag.cshtml" />
+    <Content Include="Views\FormBuilder\Type.cshtml" />
+    <Content Include="Views\FormBuilder\Tags.cshtml" />
+    <Content Include="Views\FormBuilder\Types.cshtml" />
+    <Content Include="Views\Register\Start.cshtml" />
+    <Content Include="Views\Shared\_Layout_Registration.cshtml" />
+    <Content Include="Views\Register\P_RegistrationFormNavigation.cshtml" />
+    <Content Include="Views\Register\Next.cshtml" />
+    <Content Include="Views\Register\RSVP.cshtml" />
+    <Content Include="Views\Register\Audience.cshtml" />
+    <Content Include="Views\Register\Confirmation.cshtml" />
+    <Content Include="Views\SystemAdministration\FixCompanies.cshtml" />
+    <Content Include="Views\FormBuilder\PromotionCodes.cshtml" />
+    <Content Include="Views\FormBuilder\PromotionCode.cshtml" />
+    <Content Include="Views\FormBuilder\FormClosed.cshtml" />
+    <Content Include="Views\FormBuilder\UnderMaintenance.cshtml" />
+    <Content Include="Views\Register\FormClosed.cshtml" />
+    <Content Include="Views\Register\UnderMaintenance.cshtml" />
+    <Content Include="Views\Email\FormEmails.cshtml" />
+    <Content Include="Views\MerchantAccount\List.cshtml" />
+    <Content Include="Views\MerchantAccount\Index.cshtml" />
+    <Content Include="Views\Register\ShoppingCart.cshtml" />
+    <Content Include="Views\Register\PromotionCodes.cshtml" />
+    <Content Include="Views\Register\CreditCard.cshtml" />
+    <Content Include="Views\Register\CreditCardConfirmation.cshtml" />
+    <Content Include="Views\Register\Cancel.cshtml" />
+    <Content Include="Views\Register\BillMe.cshtml" />
+    <Content Include="Views\Error\Error404.cshtml" />
+    <Content Include="Views\Register\EmailUsed.cshtml" />
+    <Content Include="Views\Register\RegistrationCompleted.cshtml" />
+    <Content Include="Views\Register\NotEditable.cshtml" />
+    <Content Include="Views\Unsubscribe\Index.cshtml" />
+    <Content Include="Views\Unsubscribe\Unsubscribed.cshtml" />
+    <Content Include="Views\Help\Index.cshtml" />
+    <Content Include="Views\InventoryReport\List.cshtml" />
+    <Content Include="Views\CompanyAdmin\Index.cshtml" />
+    <Content Include="Views\Shared\_Layout_CompanyAdmin.cshtml" />
+    <Content Include="Views\CompanyAdmin\Users.cshtml" />
+    <Content Include="Views\CompanyAdmin\CompanyGroups.cshtml" />
+    <Content Include="Views\CompanyAdmin\Company.cshtml" />
+    <Content Include="Views\Shared\_Layout_Account.cshtml" />
+    <Content Include="Views\Account\MyAccount.cshtml" />
+    <Content Include="Views\Account\SetPassword.cshtml" />
+    <Content Include="Views\Shared\_Layout_Help.cshtml" />
+    <Content Include="TempFiles\ContactListSheets\Web.config" />
+    <Content Include="Views\Help\Cloud.cshtml" />
+    <Content Include="Views\Shared\_Layout_Help_Overview.cshtml" />
+    <Content Include="Views\Shared\_Layout_Help_Cloud.cshtml" />
+    <Content Include="Views\Email\EmailCampaigns.cshtml" />
+    <Content Include="Views\Email\Forms.cshtml" />
+    <Content Include="Scripts\jquery-2.1.1.min.js.map">
+      <DependentUpon>jquery-2.1.1.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Tool\changecompany.min.js.map">
+      <DependentUpon>changecompany.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Tool\contactUpload.min.js.map">
+      <DependentUpon>contactUpload.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Tool\filter.min.js.map">
+      <DependentUpon>filter.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Tool\Filters.min.js.map">
+      <DependentUpon>Filters.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Tool\Layout\restful.min.js.map">
+      <DependentUpon>restful.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Tool\saveSprite.min.js.map">
+      <DependentUpon>saveSprite.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Tool\sideCommand.min.js.map">
+      <DependentUpon>sideCommand.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Tool\toggleEdit.min.js.map">
+      <DependentUpon>toggleEdit.min.js</DependentUpon>
+    </Content>
+    <Content Include="Views\Help\CloudDashboard.cshtml" />
+    <Content Include="Views\Help\CloudFormReports.cshtml" />
+    <Content Include="Views\Help\CloudSurveyReports.cshtml" />
+    <Content Include="Views\Help\CloudEmailReports.cshtml" />
+    <Content Include="Views\Help\CloudGlobalReports.cshtml" />
+    <Content Include="Views\Help\CloudSavedLists.cshtml" />
+    <Content Include="Views\Help\CloudDynamicLists.cshtml" />
+    <Content Include="Views\Help\CloudUpload.cshtml" />
+    <Content Include="Views\Help\CloudFormReport.cshtml" />
+    <Content Include="Views\Help\CloudRegistrant.cshtml" />
+    <Content Include="Views\Shared\_Layout_SystemAdministration.cshtml" />
+    <Content Include="Views\Help\CloudTransaction.cshtml" />
+    <Content Include="Views\Shared\_Layout_Security.cshtml" />
+    <Content Include="Views\SystemAdministration\Companies.cshtml" />
+    <Content Include="Views\Help\Logic.cshtml" />
+    <Content Include="Views\Shared\_Layout_Help_TOC.cshtml" />
+    <Content Include="Views\Help\TOC.cshtml" />
+    <Content Include="Views\Help\CloudSingleFormReport.cshtml" />
+    <Content Include="Views\Help\CloudSingleFormReports.cshtml" />
+    <Content Include="Views\Help\CloudViewSingleFormReport.cshtml" />
+    <Content Include="Views\Help\CloudContactList.cshtml" />
+    <Content Include="Views\Help\Billing.cshtml" />
+    <Content Include="Views\Register\RegistrationDeleted.cshtml" />
+    <Content Include="Views\Register\NotInList.cshtml" />
+    <Content Include="Views\Capacity\Capacities.cshtml" />
+    <Content Include="Views\Capacity\Index.cshtml" />
+    <Content Include="Views\Email\PreviewEmail.cshtml" />
+    <Content Include="Views\SystemAdministration\EmailTemplates.cshtml" />
+    <Content Include="Views\Shared\_Layout_Help_FormBuilder.cshtml" />
+    <Content Include="Views\Help\FormBuilderFormWalk.cshtml" />
+    <Content Include="Views\Help\FormBuilderFormWalkPageTypes.cshtml" />
+    <Content Include="Views\Help\FormBuilderFormWalkPanels.cshtml" />
+    <Content Include="Views\Email\Logics.cshtml" />
+    <Content Include="Views\Email\FormLogic.cshtml" />
+    <Content Include="Views\SystemAdministration\Styles.cshtml" />
+    <Content Include="Views\Email\EditHtmlEmail.cshtml" />
+    <Content Include="Views\Register\Review.cshtml" />
+    <Content Include="Views\InventoryReport\Index.cshtml" />
+    <Content Include="Views\InventoryReport\View.cshtml" />
+    <Content Include="Views\AdminRegister\Audience.cshtml" />
+    <Content Include="Views\AdminRegister\BillMe.cshtml" />
+    <Content Include="Views\AdminRegister\Confirmation.cshtml" />
+    <Content Include="Views\AdminRegister\PromotionCodes.cshtml" />
+    <Content Include="Views\AdminRegister\Review.cshtml" />
+    <Content Include="Views\AdminRegister\RSVP.cshtml" />
+    <Content Include="Views\AdminRegister\CheckOut.cshtml" />
+    <Content Include="Views\AdminRegister\Start.cshtml" />
+    <Content Include="Views\FormBuilder\RatingSelect.cshtml" />
+    <Content Include="Views\Register\SurveyConfirmation.cshtml" />
+    <Content Include="Views\Register\P_ErrorMessage.cshtml" />
+    <Content Include="Views\Register\P_RegistrationInvoice.cshtml" />
+    <Content Include="Views\Error\Error500.cshtml" />
+    <Content Include="Views\SystemAdministration\Logs.cshtml" />
+    <Content Include="Views\SystemAdministration\Log.cshtml" />
+    <Content Include="Views\AdminRegister\Cancel.cshtml" />
+    <Content Include="Views\Registrant\ChangeSet.cshtml" />
+    <Content Include="Views\FormBuilder\JLogic.cshtml" />
+    <Content Include="Views\FormBuilder\JLogics.cshtml" />
+    <Content Include="Views\CompanyAdmin\TinyUrls.cshtml" />
+    <Content Include="Views\FormBuilder\NumberSelector.cshtml" />
+    <Content Include="Views\Email\JLogics.cshtml" />
+    <Content Include="Views\Email\JLogic.cshtml" />
+    <Content Include="Views\InventoryReport\Error.cshtml" />
+    <Content Include="Views\SystemAdministration\AdjustmentForm.cshtml" />
+    <Content Include="Views\Register\CustomLogin.cshtml" />
+    <Content Include="Views\Register\SurveyEmailDoesNotExist.cshtml" />
+    <Content Include="Views\Registrant\Index.cshtml" />
+    <Content Include="Views\Error\RegStepException.cshtml" />
+    <Content Include="Views\Shared\p_DisplayException.cshtml" />
+    <Content Include="Views\Transaction\Index.cshtml" />
+    <Content Include="Views\Shared\_L_Popout.cshtml" />
+    <Content Include="Views\FormReport\FormReports.cshtml" />
+    <Content Include="Views\Shared\_L_Cloud.cshtml" />
+    <Content Include="Views\Shared\_L_Tool.cshtml" />
+    <Content Include="Views\Error\Exception.cshtml" />
+    <Content Include="Views\FormReport\Report.cshtml" />
+    <Content Include="Views\Shared\P_Trail.cshtml" />
+    <Content Include="Views\Contact\List.cshtml" />
+    <Content Include="Views\FormBuilder\Start.cshtml" />
+    <Content Include="Views\Shared\_L_Register.cshtml" />
+    <Content Include="Views\Shared\_L_AdminRegister.cshtml" />
+    <Content Include="Views\AdminRegister\Page.cshtml" />
+    <Content Include="Views\AdminRegister\P_AdminRegisterNavigation.cshtml" />
+    <Content Include="Views\AdminRegister\Charge.cshtml" />
+    <Content Include="Views\AdminRegister\ChargeConfirmation.cshtml" />
+    <Content Include="Views\Contact\Upload.cshtml" />
+    <Content Include="Views\Contact\RectifyUpload.cshtml" />
+    <Content Include="Views\Company\Company.cshtml" />
+    <Content Include="Views\Company\Companies.cshtml" />
+    <Content Include="Views\FormEmailReport\Get.cshtml" />
+    <Content Include="Views\SystemAdministration\RemoveSeats.cshtml" />
+    <Content Include="Views\Cloud2\Contact.cshtml" />
+    <Content Include="Views\Cloud2\ContactList.cshtml" />
+    <Content Include="Views\Cloud2\ContactList.old.cshtml" />
+    <Content Include="Views\Cloud2\ContactReports.cshtml" />
+    <Content Include="Views\Cloud2\SavedList.cshtml" />
+    <Content Include="Views\Cloud2\SavedLists.cshtml" />
+    <Content Include="Views\Register\CustomLoginExcess.cshtml" />
+    <Content Include="Views\GlobalReport\Error.cshtml" />
+    <Content Include="Views\GlobalReport\Index.cshtml" />
+    <Content Include="Views\GlobalReport\List.cshtml" />
+    <Content Include="Views\GlobalReport\View.cshtml" />
+    <Content Include="Views\Permission\EditPermissions.cshtml" />
+    <None Include="Views\web.Debug.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
+    <None Include="Views\web.Release.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\RSToolKit.Domain\RSToolKit.Domain.csproj">
+      <Project>{e0864c3f-a028-4ff9-9c02-81c9e8da1c71}</Project>
+      <Name>RSToolKit.Domain</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Scripts\ckeditor\samples\assets\inlineall\" />
+    <Folder Include="Scripts\ckeditor\samples\assets\outputxhtml\" />
+    <Folder Include="Scripts\ckeditor\samples\assets\uilanguages\" />
+    <Folder Include="Scripts\ckeditor\samples\plugins\dialog\assets\" />
+    <Folder Include="Scripts\ckeditor\samples\plugins\enterkey\" />
+    <Folder Include="Scripts\ckeditor\samples\plugins\htmlwriter\assets\outputforflash\" />
+    <Folder Include="Scripts\ckeditor\samples\plugins\magicline\" />
+    <Folder Include="Scripts\ckeditor\samples\plugins\toolbar\" />
+    <Folder Include="Scripts\ckeditor\samples\plugins\wysiwygarea\" />
+    <Folder Include="Views\Charge\" />
+    <Folder Include="Views\Finances\" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>none</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>54339</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:54325/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

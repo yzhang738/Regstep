@@ -1,0 +1,255 @@
+﻿@using RSToolKit.WebUI.Models.Views.Register;
+@model ConfirmationView
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>@Model.Title</title>
+
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <meta name="author" content="RegStep Technologies" />
+
+    <!--CSS-->
+    <link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/Registration/Static.min.css" rel="stylesheet" />
+    <!--Scripts-->
+    <script src="~/Scripts/jQuery/jquery-1.11.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://addthisevent.com/libs/1.6.0/ate.min.js"></script>
+    <script type="text/javascript">
+        addthisevent.settings({
+            license: "ax30r350bzhff7ccsmdf639",
+            mouse: false,
+            css: false,
+            outlook: { show: true, text: "Outlook Calendar" },
+            google: { show: true, text: "Google Calendar" },
+            yahoo: { show: true, text: "Yahoo Calendar" },
+            outlookcom: { show: true, text: "Outlook.com" },
+            appleical: { show: true, text: "Apple iCalendar" },
+        });
+    </script>
+    <script>
+        function printPage() {
+            window.print();
+        }
+    </script>
+
+    <style type="text/css">
+        @Model.Styles
+        ul.nav-tabs {
+            border-bottom: none !important;
+        }
+        ul.nav-tabs > li > a {
+            border-bottom: none !important;
+        }
+        ul.nav-tabs > li > a:hover {
+            border-bottom: none !important;
+        }
+
+        ul.nav-tabs > li.active > a {
+            background: white !important;
+        }
+    </style>
+    <!--[if lt IE 9]>
+        <script src="../../Scripts/html5shiv.min.js"></script>
+        <script src="../../Scripts/respond.js"></script>
+    <![endif]-->
+
+</head>
+
+<body id="confirmation">
+    <div style="position: fixed; top: 0; left: 0; width: 100%; background-color: rgba(0, 0, 0, .5); color: #fc3333; font-size: 14pt;" class="text-center">Admin Registration</div>
+    <!--Wrapper-->
+    <div class="container-fluid page-wrapper">
+        <div class="container form-wrapper">
+
+            <!--Header-->
+            <div class="container-fluid form-header">
+                @Model.Header
+            </div>
+            <!--End Header-->
+            <!--Confirmation Nav Bar-->
+            <div class="container-fluid form-info-bar info-bar">
+                <div class="row">
+                    <div class="col-md-5 col-md-push-7">
+                        <div class="more-options-container">
+                            <div class="more-options">
+                                <a onclick="printPage()">
+                                    <span class="glyphicon glyphicon-print"></span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix visible-xs-block visible-sm-block"></div>
+                    <div class="col-md-7 col-md-pull-5">
+                        <nav class="nav-tabs-default">
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li class="active">
+                                    <a href="#event-info" role="tab" data-toggle="tab">
+                                        Event Information
+                                    </a>
+                                </li>
+                                @if (Model.ShowShoppingCart)
+                                {
+                                    <li>
+                                        <a href="#billing" role="tab" data-toggle="tab">
+                                            Payment Information
+                                        </a>
+                                    </li>
+                                }
+                                <li>
+                                    <a href="#reg-summary" role="tab" data-toggle="tab">
+                                        Registration Summary
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <!--End Confirmation Nav Bar-->
+            <!--Content Area-->
+            <div class="container-fluid form-content-area" style="background-color: white !important; color: black !important;">
+                <div class="row">
+                    <div class="col-xs-12">
+
+                        <!--Tabbed Conent-->
+                        <div class="container-fluid modal-tab-info">
+                            <div class="tab-content">
+
+                                <!--Event Info Panel-->
+                                <div class="tab-pane active" id="event-info">
+                                    <div class="row form-panel confirmation-panel">
+                                        <div class="col-xs-12">
+                                            <!--Panel Row-->
+                                            <div class="row form-panel-row">
+                                                <div class="col-xs-12">
+                                                    @Model.Notice
+                                                </div>
+                                            </div>
+                                            <!--End Panel Row-->
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--End Event Info Panel-->
+                                @if (Model.ShowShoppingCart)
+                                {
+                                <!--Billing Panel-->
+                                    <div class="tab-pane" id="billing">
+                                        <div class="row form-panel confirmation-panel">
+                                            <div class="col-xs-12">
+
+                                                <!--Panel Row-->
+                                                <div class="row form-panel-row">
+                                                    <div class="col-xs-12 table-responsive">
+                                                        @Model.Invoice
+                                                    </div>
+                                                </div>
+                                                <!--End Panel Row-->
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                <!--End Billing Panel-->
+                                }
+
+                                <!--Reg Summary Panel-->
+                                <div class="tab-pane" id="reg-summary">
+                                    <div class="row form-panel confirmation-panel">
+                                        <div class="col-xs-12">
+                                            @Model.Summary
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--End Reg Summary Panel-->
+                                @if (Model.FormBadge != null)
+                                {
+                                <!--Badges Panel-->
+                                    <div class="tab-pane" id="badges">
+                                        <div class="row confirmation-panel">
+                                            <div class="col-xs-12">
+
+                                                <!--Panel Row-->
+                                                <div class="row form-panel-row">
+                                                    <div class="col-xs-12">
+                                                        @Model.FormBadge
+                                                    </div>
+                                                </div>
+                                                <!--End Panel Row-->
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                <!--End Badges Panel-->
+                                }
+
+                            </div>
+                        </div>
+                        <!--End Tabbed Conent-->
+                        <!--Button Panel-->
+                        <div class="row form-btn-panel">
+                            <div class="col-xs-12">
+                                <div class="row">
+                                    @if (!(Model.RegistrantStatus == RSToolKit.Domain.Entities.RegistrationStatus.Canceled || Model.RegistrantStatus == RSToolKit.Domain.Entities.RegistrationStatus.CanceledByAdministrator || Model.RegistrantStatus == RSToolKit.Domain.Entities.RegistrationStatus.CanceledByCompany))
+                                    {
+                                        <div class="col-sm-6 col-md-4 col-lg-3 form-btn">
+                                            <a class="btn-rs btn-navigation" href="@Url.Action("Start", "AdminRegister", new { id = Model.FormId, email = Model.RegistrantEmail })">
+                                                Edit Registration
+                                            </a>
+                                        </div>
+                                        <div class="col-sm-6 col-md-4 col-lg-3 form-btn">
+                                            <a class="btn-rs btn-navigation" href="@Url.Action("Cancel", "AdminRegister", new { id = Model.RegistrantId })">
+                                                Cancel Registration
+                                            </a>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="col-xs-12 form-btn">
+                                            <p style="font-size: 18px; font-weight: bold;">
+                                                This registration has been cancelled.
+                                            </p>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <!--End Button Panel-->
+
+                    </div>
+                </div>
+            </div>
+            <!--End Content Area-->
+            <!--Footer-->
+            <div class="container-fluid form-footer" style="background: white;">
+                @Model.Footer
+            </div>
+            <!--End Footer-->
+        </div>
+        <!--RS-->
+        @if (((RSToolKit.Domain.Entities.Form)ViewBag.Form).CompanyKey.ToString() != "be2f9c3b-39fa-46e9-95e1-f9b9d08ab227" && ((RSToolKit.Domain.Entities.Form)ViewBag.Form).CompanyKey.ToString() != "abc14fa9-87a3-45e0-8a24-ef9da51c9522")
+        {
+            <div class="rs-footer">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="rs-footer-section">
+                                <a class="rs-footer-link" href="http://www.regstep.com" target="_blank">Powered by <span class="rs-footer-reg">Reg</span>Step</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        <!--End RS-->
+    </div>
+    <!--End Wrapper-->
+</body>
+</html>

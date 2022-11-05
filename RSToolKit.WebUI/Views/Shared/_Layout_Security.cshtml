@@ -1,0 +1,39 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout_Tool.cshtml";
+    ViewBag.Title = "RS Security - RegStep";
+}
+@section styles
+{
+    <link href="~/Content/Security/Layout.min.css" rel="stylesheet" />
+    @RenderSection("styles", required: false)
+}
+@section scripts
+{
+    @RenderSection("scripts", required: false)
+}
+@section modals
+{
+    @RenderSection("modals", required: false)
+}
+<!--Page Title-->
+<div class="row add-padding-bottom" id="page-title">
+    <div class="col-sm-6">
+        <h2 class="text-color-1">
+            @RenderSection("title", required: false)
+        </h2>
+    </div>
+    @Html.Partial("P_Help_View")
+</div>
+<!--End Page Title-->
+<!--Breadcrumb-->
+<div id="breadcrumb" class="row add-padding-vertical-5 add-border-vertical border-color-grey-2">
+    <div class="col-xs-12">
+        @RenderSection("breadcrumbs", required: false)
+    </div>
+</div>
+<!--End Breadcrumb-->
+<!--Work Area-->
+<div class="row add-padding-vertical">
+    @RenderBody()
+</div>
+<!--End Work Area-->

@@ -1,0 +1,28 @@
+﻿@model RSToolKit.Domain.Entities.Reports.GlobalReport
+@{
+    Layout = "~/Views/Shared/_L_Cloud.cshtml";
+    ViewBag.Title = "RegStep Cloud - Inventory Report";
+}
+@section scripts
+{
+    <script src="~/Scripts/GlobalReport/report.js"></script>
+}
+@section styles
+{
+}
+@section title
+{
+    @Model.Name
+}
+@section crumbs {
+    @Html.Partial("P_Trail", new TrailModel(ViewBag.Trail))
+}
+@section modals
+{
+}
+<input type="hidden" id="report_id" value="@Model.Id" />
+<div>
+    <a href="@Url.Action("Download", "GlobalReport", new { id = Model.Id })"><span class="glyphicon glyphicon-download"></span> Download Report</a>
+</div>
+<div id="tablesHolder">
+</div>

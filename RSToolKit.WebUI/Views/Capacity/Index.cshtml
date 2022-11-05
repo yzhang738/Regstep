@@ -1,0 +1,199 @@
+﻿@using System.Collections;
+@using RSToolKit.Domain.Entities;
+@using RSToolKit.Domain;
+@using RSToolKit.Domain.Entities.Components;
+@model Seating
+@{
+    ViewBag.Title = "RegStep Cloud - Capacity";
+    Layout = "~/Views/Shared/_L_Cloud.cshtml";
+}
+@section scripts
+{
+}
+@section styles
+{
+}
+@section title
+{
+    @Model.Form.Name Seatings
+}
+@section crumbs
+{
+    @Html.Partial("P_Trail", new TrailModel(ViewBag.Trail))
+}
+@section modals
+{
+}
+@Html.AntiForgeryToken()
+
+    <div class="col-xs-12">
+        <div class="add-padding-bottom-5 text-medium text-color-2">
+            @Model.Name Waitlist<br /><a href="@Url.Action("Download", "Capacity", new { id = Model.SortingId }, Request.Url.Scheme)"><span class="glyphicon glyphicon-download"></span>Download Report</a>
+        </div>
+        <div class="row add-padding-vertical-5 color-grey-2">
+            <div class="col-xs-12">
+                <div class="add-padding-vertical-5">
+                    Active Spaces Available: @Model.RawSeats
+                </div>
+            </div>
+        </div>
+        <!--Data-->
+        <div id="mainHolder" class="row text-small">
+            <section class="add-margin-vertical-3em">
+                <div class="row">
+                    <div class=" col-xs-12">
+                        <h3 class="text-rsred">Registrants on Waitlist</h3>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Confirmation Number
+                                    </th>
+                                    <th>
+                                        Registration Date
+                                    </th>
+                                    <th>
+                                        Email
+                                    </th>
+                                    <th>
+                                        Name
+                                    </th>
+                                    <th>
+                                        Component
+                                    </th>
+                                    <th>
+                                        Registration Status
+                                    </th>
+                                    <th>
+                                        Status
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var seater in Model.Waited)
+                                {
+                                    <tr>
+                                        <td>
+                                            <a href="@Url.Action("Get", "Registrant", new { id = seater.RegistrantKey }, Request.Url.Scheme)">@seater.Registrant.Confirmation</a>
+                                        </td>
+                                        <td>
+                                            @Html.UserDate(seater.Date)
+                                        </td>
+                                        <td>
+                                            @seater.Registrant.Email
+                                        </td>
+                                        <td>
+                                            @seater.Registrant.FullName
+                                        </td>
+                                        <td>
+                                            @if (seater.Component is IComponentItem)
+                                            {
+                                                <span class="IComponentItemParent">@((seater.Component as IComponentItem).Parent.GetVariable())&nbsp;-&nbsp;</span>
+                                                <span class="IComponentItem">@(seater.Component.LabelText)</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="IComponent">@seater.Component.GetVariable()</span>
+                                            }
+
+                                        </td>
+                                        <td>
+                                            @seater.Registrant.Status.GetStringValue()
+                                        </td>
+                                        <td>
+                                            Waitlisted for @seater.Component.LabelText
+                                            @if (ViewBag.CanEdit)
+                                            {
+                                                @:&nbsp;<a class="text-color-2" href="@Url.Action("Promote", "Capacity", null, Request.Url.Scheme)" data-xhr-method="put" data-xhr-oncomplete="refresh" data-xhr-options='{"id":"@seater.SortingId"}'><span class="glyphicon glyphicon-ok"></span> Move to Active</a>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+            <section class="add-margin-top-10">
+                <div class="row">
+                    <div class="col-xs-12 background-rsgrey">
+                        <h3 class="text-rsred">Seated Registrants</h3>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Confirmation Number
+                                    </th>
+                                    <th>
+                                        Date Seated
+                                    </th>
+                                    <th>
+                                        Email
+                                    </th>
+                                    <th>
+                                        Name
+                                    </th>
+                                    <th>
+                                        Component
+                                    </th>
+                                    <th>
+                                        Registration Status
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var seater in Model.Seated)
+                                {
+                                    <tr>
+                                        <td>
+                                            <a href="@Url.Action("Get", "Registrant", new { id = seater.RegistrantKey }, Request.Url.Scheme)">@seater.Registrant.Confirmation</a>
+                                        </td>
+                                        <td>
+                                            @Html.UserDate(seater.Date)
+                                        </td>
+                                        <td>
+                                            @seater.Registrant.Email
+                                        </td>
+                                        <td>
+                                            @seater.Registrant.FullName
+                                        </td>
+                                        <td>
+                                            @if (seater.Component is IComponentItem)
+                                            {
+                                                <span class="IComponentItemParent">@((seater.Component as IComponentItem).Parent.GetVariable())&nbsp;-&nbsp;</span>
+                                                <span class="IComponentItem">@(seater.Component.LabelText)</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="IComponent">@seater.Component.GetVariable()</span>
+                                            }
+
+                                        </td>
+                                        <td>
+                                            @seater.Registrant.Status.GetStringValue()
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <!--End Data-->
+    </div>
+    <script type="text/javascript">
+    </script>
+
+
+
+
+

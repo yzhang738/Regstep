@@ -1,0 +1,77 @@
+﻿@using RSToolKit.Domain.Entities.Components;
+@model RegistrationHtml
+@{
+    ViewBag.Title = Model.Form.Name;
+    ViewBag.WrapperClass = Model.Registrant.Type == RSToolKit.Domain.Entities.RegistrationType.Test ? "form-test" : "form-live";
+    Layout = "~/Views/Shared/_Layout_Registration.cshtml";
+}
+
+@section pageNumber
+{
+    @Model.RenderPageNumbers()
+}
+@section shoppingCart
+{
+    @Model.RenderShoppingCart()
+}
+@section header
+{
+    @Model.RenderHeader()
+}
+@section footer
+{
+    @Model.RenderFooter()
+}
+@section customStyles
+{
+    @Model.RenderFormStyle()
+}
+@section scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var audience = null;
+            $('form').on('submit', function () {
+                if (audience === null) {
+                    return false;
+                }
+                return true;
+            });
+            $('.btn-audience').on('click', function () {
+                audience = true;
+                $('#Audience').val($(this).attr('data-value'));
+                $('#form').submit();
+            });
+
+        });
+    </script>
+}
+@using (Html.BeginForm("Audience", "Register", FormMethod.Post, new { id = "form" }))
+{
+    @Html.AntiForgeryToken()
+    @Model.RenderHiddens()
+    <div class="row form-panel">
+        <div class="col-xs-12">
+            <div class="row form-panel-row">
+                @Model.Render(Model.Page.Panels[0].Components.OfType<FreeText>().First())
+            </div>
+        </div>        
+    </div>
+    @Model.RenderAudiences()
+    if (Model.Form.Pages.Where(p => p.Type == RSToolKit.Domain.Entities.PageType.RSVP).First().Enabled)
+    {
+        <div class="row form-btn-panel">
+            <div class="col-xs-12">
+                <div class="row">
+                    <!--Button Nav Back-->
+                    <div class="col-sm-4 col-md-3 col-lg-2 form-btn">
+                        <a class="btn-rs btn-navigation" href="@Url.Action("Back", "Register", new { id = Model.Registrant.UId, pageNumber = Model.Page.PageNumber })">
+                            Back
+                        </a>
+                    </div>
+                    <!--End Button Nav Back-->
+                </div>
+            </div>
+        </div>
+    }
+}

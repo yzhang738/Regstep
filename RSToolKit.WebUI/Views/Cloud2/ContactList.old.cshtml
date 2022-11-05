@@ -1,0 +1,417 @@
+﻿@using System.Collections;
+@using RSToolKit.Domain.Entities;
+@using RSToolKit.Domain;
+@using Newtonsoft.Json;
+@using RSToolKit.Domain.Data;
+@using System.Data.Entity;
+@model List<ContactHeader>
+@{
+    Layout = "~/Views/Shared/_Layout_Cloud.cshtml";
+    var Repository = (FormsRepository)ViewBag.Repository;
+    var CompanyKey = (Guid)ViewBag.Company;
+    var reports = Repository.Search<ContactReport>(r => r.CompanyKey == CompanyKey).ToList();
+    var savedLists = Repository.Search<SavedList>(l => l.CompanyKey == CompanyKey).ToList();
+}
+@section scripts
+{
+    <script type="text/javascript">
+        var headers = @Html.Raw(JsonConvert.SerializeObject(Model));
+        var reports = @Html.Raw(JsonConvert.SerializeObject(reports));
+        var savedLists = @Html.Raw(JsonConvert.SerializeObject(savedLists));
+    </script>
+    <script src="~/Scripts/Tool/oldFilter.js"></script>
+    <script src="~/Scripts/Moment/moment.min.js"></script>
+    <script src="~/Scripts/Bootstrap/Plugins/DateTime%20Picker/bootstrap-datetimepicker.min.js"></script>
+    <script src="~/Scripts/Cloud/ContactList.v2.js"></script>
+}
+@section styles
+{
+    <link href="~/Content/Bootstrap/bootstrap-datetimepicker-custom.min.css" rel="stylesheet" />
+    <style>
+        .dateTimePicker {
+            z-index: 1500 !important;
+        }
+
+        .bootstrap-datetimepicker-widget {
+            z-index: 1500;
+        }
+    </style>
+}
+@section title
+{
+    Contacts
+}
+@section breadcrumbs {
+@Html.Raw(((User)ViewBag.User).BreadCrumbs.GetBreadTrail(Url))
+}
+@section modals
+{
+    <!--Reorder Columns-->
+    <div class="modal fade" id="reorder-columns">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3 class="modal-title">Column Order</h3>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-default" id="saveOrder">Save Changes</button>
+            </div>
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    <!--End Reorder Columns-->
+    
+    <div class="modal fade" id="editModal">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3 class="modal-title">Edit Data</h3>
+                <span class="label label-danger" id="editModalError"></span>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-default" id="saveEdit">Save Changes</button>
+            </div>
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <div class="modal fade" id="newContactReport">
+        <div class="modal-dialog">
+                <div class="modal-header">
+                    <h3 class="modal-title">Dynamic List Name</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="checkbox">
+                                <label class="col-md-12"><input type="checkbox" id="overwriteReport" /> Overwrite an existing Dynamic List</label>
+                            </div>
+                        </div>
+                    </div>                    
+                    
+                    <div class="row" id="noOverwriteReport">
+                        <div class="col-xs-12">
+                            <label class="control-label">Name:</label>
+                            <input type="text" id="reportName" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row" id="yesOverwriteReport">
+                        <div class="col-xs-12">
+                            <label class="control-label">Name:</label>
+                            <select class="form-control" id="reportSelect">
+                                @for (var i = 0; i < reports.Count; i++)
+                                {
+                                    var report = reports[i];
+                                    <option value="@report.UId" data-index="@i">@report.Name</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-default" id="saveReport" data-dismiss="modal">Save List</button>
+                </div>
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <div class="modal fade" id="savedList">
+        <div class="modal-dialog">
+                <div class="modal-header">
+                    <h3 class="modal-title">Add To or Remove From Static List</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <label class="col-md-4 control-label">Action:</label>
+                        <div class="col-md-8">
+                            <select id="savedListAction" class="form-control">
+                                <option value="add">Add Selected</option>
+                                <option value="remove">Remove Selected</option>
+                                <option value="addByFilter">Add All</option>
+                                <option value="removeByFilter">Remove All</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row add-padding-top">
+                        <label class="col-md-4 control-label">Static List:</label>
+                        <div class="col-md-8">
+                            <select class="form-control" id="listSelected">
+                                @for (var i = 0; i < savedLists.Count; i++)
+                                {
+                                    var list = savedLists[i];
+                                    <option value="@list.UId" data-index="@i">@list.Name</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-default" id="actionList">Execute</button>
+                </div>
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    @using (Html.BeginForm("Contact", "Cloud", FormMethod.Post, new { @class = "form form-horizontal", role = "form", data_xhr_method = "post" }))
+    {
+        <div class="modal fade" id="newContact">
+            <div class="modal-dialog">
+                    <div class="modal-header">
+                        <h3 class="modal-title">New Contact</h3>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <label class="control-label">Email:</label>
+                                <input type="text" class="form-control" name="Email" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-default" id="addContact">Add Contact</button>
+                    </div>
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+    }
+
+    <div class="modal fade" id="newSavedList">
+        <div class="modal-dialog">
+                <div class="modal-header">
+                    <h3 class="modal-title">New Static List</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <label class="control-label">Name:</label>
+                            <input type="text" class="form-control" id="savedListName" />
+                        </div>                        
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-default" id="createSavedList">Create Static List</button>
+                </div>
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <div class="modal fade" id="m_headerModal">
+            <div class="modal-dialog">
+                <div class="modal-header">
+                    <h3 class="modal-title">New Field</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <label class="control-label">Name:</label>
+                            <input type="text" class="form-control" id="headerName" />
+                        </div>
+                    </div>
+                    <div class="row add-padding-top">
+                        <div class="col-xs-12">
+                            <label class="control-label">Data Type:</label>
+                            <select class="form-control" id="headerDescriminator">
+                                @foreach (var e_desc in Enum.GetValues(typeof(ContactDataType)).Cast<ContactDataType>())
+                                {
+                                    <option value="@((int)e_desc)">@e_desc.GetStringValue()</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row add-padding-top" id="timezoneDiv">
+                        <div class="col-xs-12">
+                            <label class="control-label">Timezone:</label>
+                            <select class="form-control" id="headerTimezone">
+                                @foreach (TimeZoneInfo timezone in TimeZoneInfo.GetSystemTimeZones())
+                                {
+                                    <option value="@timezone.Id">@timezone.DisplayName</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row add-padding-top" id="moneyDiv">
+                        <div class="col-xs-12">
+                            <label class="control-label">Country Currency:</label>
+                            <select class="form-control" id="headerMoney">
+                                <optgroup label="Common">
+                                    <option value="en-us">USA</option>
+                                </optgroup>
+                                <optgroup label="All">
+                                    @foreach (var culture in System.Globalization.CultureInfo.GetCultures(System.Globalization.CultureTypes.AllCultures))
+                                    {
+                                        if (culture.Name != "en-US")
+                                        {
+                                            <option value="@culture.Name">@culture.DisplayName</option>
+                                        }
+                                    }
+                                </optgroup>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-default" id="addHeader">Add Field</button>
+                </div>
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <div class="modal fade" id="filterModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-header">
+                <h3 class="modal-title">Filters</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row add-padding-bottom">
+                    <div class="col-xs-12">
+                        <label class="control-label">Apply Existing Dynamic List Filters:</label>                        
+                        <select class="form-control" id="reports">
+                            <option value="">None</option>
+                            @for (var i = 0; i < reports.Count; i++)
+                            {
+                                var report = reports[i];
+                                <option value="@report.UId" data-index="@i">@report.Name</option>
+                            }
+                        </select>                        
+                    </div>
+                </div>
+                <div class="add-padding-top text-color-1">
+                    <h4>
+                        Current Filters
+                    </h4>                    
+                </div>
+                <div class="row color-grey-2 add-padding-vertical-5">
+                    <div class="col-sm-6">
+                        <div class="add-padding-vertical-5">
+                            <a href="#" id="groupTogether"><span class="glyphicon glyphicon-link"></span> Group Selected</a>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="add-padding-vertical-5">
+                            <a href="#" id="ungroup"><span class="glyphicon glyphicon-link"></span> Ungroup All</a>
+                        </div>
+                    </div>                    
+                </div>
+                <div class="row">
+                    <table class="table table-filter filter-table" id="filterTable">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Link</th>
+                                <th>Variable</th>
+                                <th>Test</th>
+                                <th>Value</th>
+                            </tr>
+                        </thead>
+                        <tbody id="filters"></tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="5">
+                                    <a href="#" id="addStatement"><span class="glyphicon glyphicon-small glyphicon-plus"></span> New Statement</a>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-default" id="setFilters">Apply Filters</button>
+            </div>
+        </div>
+    </div>
+}
+<div class="col-xs-12">
+    <!--Options-->
+    <div class="add-padding-bottom-5 text-medium text-color-2">
+        Contact List Options
+    </div>
+    <div class="row add-padding-vertical-5 color-grey-2">
+        <div class="col-sm-6 col-md-3 col-lg-2">
+            <div class="add-padding-vertical-5">
+                <a href="#" data-toggle="modal" data-target="#newContact"><span class="glyphicon glyphicon-plus"></span> Contact</a>
+            </div>
+            <div class="add-padding-vertical-5">
+                <a href="#" data-toggle="modal" data-target="#newHeader"><span class="glyphicon glyphicon-plus"></span> Field</a>
+            </div>
+            <div class="add-padding-vertical-5">
+                <a class="modal-link" data-toggle="modal" data-target="#reorder-columns"><span class="glyphicon glyphicon-random"></span> Column Order</a>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-3 col-lg-2">
+            <div class="add-padding-vertical-5">
+                <a href="#" id="downloadContactReport"><span class="glyphicon glyphicon-cloud-download"></span> Download</a>
+            </div>
+            <div class="add-padding-vertical-5">
+                <a href="#" id="deleteSelected"><span class="glyphicon glyphicon-trash"></span> Delete Selected</a>
+            </div>
+            <div class="add-padding-vertical-5">
+                <a href="#" data-toggle="modal" data-target="#filterModal"><span class="glyphicon glyphicon-filter"></span> Apply Filters</a>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-3 col-lg-2">            
+            <div class="add-padding-vertical-5">
+                <a href="#" data-toggle="modal" data-target="#newContactReport"><span class="glyphicon glyphicon-save"></span> Save as Dynamic List</a>
+            </div>
+            <div class="add-padding-vertical-5">
+                <a href="#" data-toggle="modal" data-target="#newSavedList"><span class="glyphicon glyphicon-save"></span> Save as Static List</a>
+            </div>
+            <div class="add-padding-vertical-5">
+                <a href="#" data-toggle="modal" data-target="#savedList"><span class="glyphicon glyphicon-list"></span> Static List Members</a>
+            </div>
+        </div>
+        <div class="clearfix visible-md-block"></div>
+        <div class="col-sm-6 col-md-3 col-lg-2 col-lg-offset-2">
+            <div class="add-padding-vertical-5">
+                <label class="control-label">Records Per Page:</label>
+                <input type="text" id="pageSize" class="form-control input-sm" data-form-validation="number" value="25" />
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-3 col-lg-2">
+            <div class="add-padding-vertical-5">
+                <label class="control-label">Page:</label>
+                <div class="input-group input-group-sm">
+                    <div class="input-group-addon cursor-pointer" id="pageLeft"><span class="glyphicon glyphicon-arrow-left"></span></div>
+                    <select class="form-control input-sm" id="pageNumber">
+                        @for (var i = 0; i < 1; i++)
+                        {
+                            <option value="@(i + 1)">@(i + 1)</option>
+                        }
+                    </select>
+                    <div class="input-group-addon cursor-pointer" id="pageRight"><span class="glyphicon glyphicon-arrow-right"></span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--End Options-->
+    <!--Data-->
+    <div id="mainHolder" class="row add-padding-vertical-2em">
+        <div class="col-xs-12 text-small">
+            <section>
+                <div class="table-responsive">
+                    <table class="table table-striped filter-table table-registration-data">
+                        <thead id="headers">
+                            <tr>
+                                <th><input type="checkbox" id="selectAll" /></th>
+                                <th><a href="#" data-actingon="Email" class="table-sort"><span class="sort-icon glyphicon glyphicon-sort-by-attributes"></span>Email</a></th>
+                                @foreach (var header in Model)
+                                {
+                                    <th>
+                                        <a href="#" data-actingon="@header.UId" class="table-sort"><span class="sort-icon glyphicon"></span>@header.Name</a>
+                                        <a href="@Url.Action("ContactHeader", "Cloud", null, Request.Url.Scheme)" data-xhr-method="delete" data-xhr-options='{"id": "@header.UId.ToString()"}' data-xhr-oncomplete="refresh"><span class="glyphicon glyphicon-trash"></span></a>
+                                    </th>
+                                }
+                            </tr>
+                        </thead>
+                        <tbody id="contactData"></tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </div>
+    <!--End Data-->
+</div>
+<script type="text/javascript">
+</script>

@@ -1,0 +1,35 @@
+﻿table.LoginTable {
+    border: none;
+}
+    .LoginTable tbody tr td:nth-child(odd) {
+        text-align: right;
+    }
+    .LoginTable tbody tr td:nth-child(even) {
+        text-align: left;
+    }
+.LoginLightBox {
+    display: none;
+}
+.LoginLink {
+    cursor: pointer;
+    color: white !Important;
+    font-weight: bold !Important;
+    text-decoration: none !Important;
+}
+    .LoginLink:hover {
+        text-decoration: underline !Important;
+    }
+.LoginArea {
+    display: inline;
+}
+    .LoginArea a:link, .LoginArea a:visited, .LoginArea a:active {
+        color: white !Important;
+        font-weight: bold !Important;
+        text-decoration: none !Important;
+    }
+    .LoginArea a:hover {
+        text-decoration: underline !Important;
+    }
+    .LoginArea form {
+        display: inline !Important;
+    }

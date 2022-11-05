@@ -1,0 +1,19 @@
+﻿@model List<RSToolKit.Domain.Entities.Clients.Company>
+@{
+    ViewBag.Title = "ChangeCompany";
+    Layout = "~/Views/Shared/_L_Tool.cshtml";
+    var cc = ((User)ViewBag.User).WorkingCompany.UId;
+}
+
+<h2>ChangeCompany</h2>
+@using(Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <select name="Company">
+        @foreach (var c in Model)
+        {
+            <option value="@c.UId.ToString()"@(c.UId == cc ? " selected=true" : "")>@c.Name</option>
+        }
+    </select>
+    <button type="submit">Change</button>
+}

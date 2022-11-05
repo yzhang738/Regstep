@@ -1,0 +1,383 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout_Help_Cloud.cshtml";
+}
+@section scripts {
+    <script>
+        $(function () {
+            $("#popover-not").popover({
+                html: true,
+                placement: 'top',
+                trigger: 'focus',
+                title: 'Notifications',
+                content: function () {
+                    return $('#popover-not-content').html();
+                }
+            });
+            $("#popover-not-wl").popover({
+                html: true,
+                placement: 'top',
+                trigger: 'focus',
+                title: 'Waitlist Notifications',
+                content: function () {
+                    return $('#popover-not-wl-content').html();
+                }
+            });
+            $("#popover-not-refund").popover({
+                html: true,
+                placement: 'top',
+                trigger: 'focus',
+                title: 'Refund Notifications',
+                content: function () {
+                    return $('#popover-not-refund-content').html();
+                }
+            });
+            $("#popover-not-rs").popover({
+                html: true,
+                placement: 'top',
+                trigger: 'focus',
+                title: 'RegStep Notifications',
+                content: function () {
+                    return $('#popover-not-rs-content').html();
+                }
+            });
+            $("#popover-fav").popover({
+                html: true,
+                placement: 'top',
+                trigger: 'focus',
+                title: 'Favorite Reports',
+                content: function () {
+                    return $('#popover-fav-content').html();
+                }
+            });
+            $("#popover-active").popover({
+                html: true,
+                placement: 'top',
+                trigger: 'focus',
+                title: 'Active Projects',
+                content: function () {
+                    return $('#popover-active-content').html();
+                }
+            });
+            $("#popover-active-form").popover({
+                html: true,
+                placement: 'top',
+                trigger: 'focus',
+                title: 'Active Forms',
+                content: function () {
+                    return $('#popover-active-form-content').html();
+                }
+            });
+            $("#popover-active-email").popover({
+                html: true,
+                placement: 'top',
+                trigger: 'focus',
+                title: 'Active Emails',
+                content: function () {
+                    return $('#popover-active-email-content').html();
+                }
+            });
+            $("#popover-active-survey").popover({
+                html: true,
+                placement: 'top',
+                trigger: 'focus',
+                title: 'Active Surveys',
+                content: function () {
+                    return $('#popover-active-survey-content').html();
+                }
+            });
+        });
+    </script>
+}
+
+<div class="add-padding-vertical-5 add-border-bottom">
+    <div class="help-breadcrumb">
+        <a href="~/Help/Cloud">Cloud</a> <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span> Cloud Dashboard
+    </div>
+</div>
+
+<div class="add-padding-top help-text">
+    <h2 class="add-padding-bottom-5">
+        Dashboard
+    </h2>
+    <p>
+        The Dashboard contains summary data for all of your active projects, quick links to your favorite reports, and notifications of items that require your attention.
+    </p>
+    <p>
+        Click <span class="glyphicon glyphicon-info-sign text-color-1"></span> below for more details.
+    </p>
+</div>
+
+<div class="add-padding-vertical-2em">
+    <div class="screen-shot">
+        <div class="screen-shot-text screen-shot-header">
+            User Interface
+        </div>
+        <div class="screen-shot-body">
+            <!--UI Markup-->
+            <div class="container-fluid container-content color-white add-padding-vertical">
+                <div class="row">
+                    <div class="col-xs-12">
+
+                        <!--Page Title-->
+                        <div class="row add-padding-bottom" id="page-title">
+                            <div class="col-sm-6">
+                                <h2 class="text-color-1">
+
+                                    RS Cloud Dashboard
+
+                                </h2>
+                            </div>
+                            <div class="col-sm-6 text-align-right">
+                                <div class="btn-group btn-group-help">
+                                    <button type="button" class="btn btn-default btn-help dropdown-toggle" data-toggle="dropdown">
+                                        Help & Training <span class="caret"></span>
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!--End Page Title-->
+                        <!--Breadcrumb-->
+                        <div id="breadcrumb" class="row add-padding-vertical-5 add-border-vertical border-color-grey-2">
+                            <div class="col-xs-12">
+                                Welcome John Doe
+                            </div>
+                        </div>
+                        <!--End Breadcrumb-->
+                        <!--Work Area-->
+                        <div class="row add-padding-vertical">
+                            <!--Left Content-->
+                            <div class="col-sm-6">
+                                <!--Notifications-->
+                                <div class="row add-padding-vertical">
+                                    <div class="col-xs-12 color-grey-1 rounded">
+                                        <h3 class="add-padding-vertical">
+                                            Notifications <a tabindex="0" id="popover-not" class="help-info help-info-rsred"><span class="glyphicon glyphicon-info-sign"></span></a>  
+                                        </h3>
+                                        <div id="popover-not-content" style="display: none;">
+                                            Any item that requires your attention will be listed here. Each Notification links to the appropriate page to address the issue.
+                                        </div>
+                                        <div class="rounded add-border border-color-2 color-white add-margin-bottom">
+                                            <table class="table">
+                                                <tr>
+                                                    <td colspan="2">
+                                                        Waitlist - Annual Conference: New Seat available for Session 1 <a tabindex="0" id="popover-not-wl" class="help-info help-info-rsred" ><span class="glyphicon glyphicon-info-sign"></span></a>
+                                                        <div id="popover-not-wl-content" style="display: none;">
+                                                            Waitlist Notifications display when one or more inventory Items that had previously reached capacity open up due to a cancellation. These <b>only</b> apply to Items for which Waitlisting is enabled.
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>    
+                                                    <td colspan="2">
+                                                        Refund Due - Annual Conference: Jane Doe <a tabindex="0" id="popover-not-refund" class="help-info help-info-rsred" ><span class="glyphicon glyphicon-info-sign"></span></a>
+                                                        <div id="popover-not-refund-content" style="display: none;">
+                                                            When a registrant cancels their registration or edits their regitration so that their fee is lower than their original payment, a refund notification will display.
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>                               
+                                                    <td colspan="2">
+                                                        RegStep - System Maintenance 14 September <a tabindex="0" id="popover-not-rs" class="help-info help-info-rsred" ><span class="glyphicon glyphicon-info-sign"></span></a>
+                                                        <div id="popover-not-rs-content" style="display: none;">
+                                                            Information regarding upcoming system maintenance, changes to your account, system upgrades, and account billing will display in notifications until the item has been reconciled.
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--End Notifications-->
+                                <!--Favorite Reports-->
+                                <div class="row add-padding-vertical">
+                                    <div class="col-xs-12 color-grey-1 rounded">
+                                        <h3 class="add-padding-vertical">
+                                            Favorite Reports <a tabindex="0" id="popover-fav" class="help-info help-info-rsred" ><span class="glyphicon glyphicon-info-sign"></span></a>
+                                        </h3>
+                                        <div id="popover-fav-content" style="display: none;">
+                                            Any report that you mark as a favorite will display here for quick access.
+                                        </div>
+                                        <div class="rounded add-border border-color-2 color-white add-margin-bottom">
+                                            <table class="table table-dashboard">
+                                                <tr>
+                                                    <td colspan="2"><span class="glyphicon glyphicon-star"></span> Annual Conference Session 1 Roster</td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2"><span class="glyphicon glyphicon-star"></span> Annual Conference Session Totals</td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2"><span class="glyphicon glyphicon-star"></span> Current Year Email Statistics</td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2"><span class="glyphicon glyphicon-star"></span> Previous Year Survey Totals</td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--End Favorite Reports-->
+                            </div>
+                            <!--End Left Content-->
+                            <!--Live Projects-->
+                            <div class="col-sm-6">
+                                <div class="row add-padding-vertical">
+                                    <div class="col-xs-12 color-grey-1 rounded">
+                                        <h3 class="add-padding-vertical">
+                                            Active Projects <a tabindex="0" id="popover-active" class="help-info help-info-rsred" ><span class="glyphicon glyphicon-info-sign"></span></a>
+                                        </h3>
+                                        <div id="popover-active-content" style="display: none;">
+                                            Forms, Invitations, Email Campaigns, and Surveys that are in an <b>Active</b> state will display here so you can monitor your numbers. The <b>View</b> button at the bottom of each summary report provides access to detailed reports and/or the editing tool depending on your permissions.
+                                        </div>
+                                        <div class="rounded add-border border-color-2 color-white add-margin-bottom">
+                                            <h4 class="add-padding-horizontal add-padding-vertical-5 text-color-1">
+                                                Annual Conference <a tabindex="0" id="popover-active-form" class="help-info help-info-rsred" ><span class="glyphicon glyphicon-info-sign"></span></a>
+                                            </h4>
+                                            <div id="popover-active-form-content" style="display: none;">
+                                                Form summaries provide the total number of completed registrations, the number of Active, the number of Cancelled, and total revenue generated by the form. 
+                                            </div>
+                                            <table class="table table-dashboard">
+                                                <tr>
+                                                    <td class="left">
+                                                        Registrations:
+                                                    </td>
+                                                    <td class="right">
+                                                        2000
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="left">
+                                                        Active:
+                                                    </td>
+                                                    <td class="right">
+                                                        1990
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="left">
+                                                        Cancelled:
+                                                    </td>
+                                                    <td class="right">
+                                                        10
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="left">
+                                                        Sales:
+                                                    </td>
+                                                    <td class="right">
+                                                        $52,000.00
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            <div class="dropdown btn-group">
+                                                <button type="button" data-toggle="dropdown" role="button" class="btn btn-default btn-xs">View <span class="caret"></span></button>
+                                            </div>
+                                        </div>
+                                        <div class="rounded add-border border-color-2 color-white add-margin-bottom">
+                                            <h4 class="add-padding-horizontal add-padding-vertical-5 text-color-1">
+                                                Annual Conference Invitation <a tabindex="0" id="popover-active-email" class="help-info help-info-rsred" ><span class="glyphicon glyphicon-info-sign"></span></a>
+                                            </h4>
+                                            <div id="popover-active-email-content" style="display: none;">
+                                                Email summaries provide the total number of emails sent, the number that bounced, the number that were opened, and the number of click-throughs.
+                                            </div>
+                                            <table class="table table-dashboard">
+                                                <tr>
+                                                    <td class="left">
+                                                        Sent:
+                                                    </td>
+                                                    <td class="right">
+                                                        5200
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="left">
+                                                        Bounced:
+                                                    </td>
+                                                    <td class="right">
+                                                        110
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="left">
+                                                        Opened:
+                                                    </td>
+                                                    <td class="right">
+                                                        3000
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="left">
+                                                        Clicked:
+                                                    </td>
+                                                    <td class="right">
+                                                        2542
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            <div class="dropdown btn-group">
+                                                <button type="button" data-toggle="dropdown" role="button" class="btn btn-default btn-xs">View <span class="caret"></span></button>
+                                            </div>
+                                        </div>
+                                        <div class="rounded add-border border-color-2 color-white add-margin-bottom">
+                                            <h4 class="add-padding-horizontal add-padding-vertical-5 text-color-1">
+                                                Fall Training Conference Survey <a tabindex="0" id="popover-active-survey" class="help-info help-info-rsred" ><span class="glyphicon glyphicon-info-sign"></span></a>
+                                            </h4>
+                                            <div id="popover-active-survey-content" style="display: none;">
+                                                Survey summaries provide the total number of survey submissions, and the average, highest, and lowest rating compared to the highest rating possible.
+                                            </div>
+                                            <table class="table table-dashboard">
+                                                <tr>
+                                                    <td class="left">
+                                                        Responses:
+                                                    </td>
+                                                    <td class="right">
+                                                        2250
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="left">
+                                                        Avg Rating:
+                                                    </td>
+                                                    <td class="right">
+                                                        85 / 100
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="left">
+                                                        Highest Rating:
+                                                    </td>
+                                                    <td class="right">
+                                                        99 / 100
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="left">
+                                                        Lowest Rating:
+                                                    </td>
+                                                    <td class="right">
+                                                        72 / 100
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            <div class="dropdown btn-group">
+                                                <button type="button" data-toggle="dropdown" role="button" class="btn btn-default btn-xs">View <span class="caret"></span></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Live Projects-->
+                        </div>
+                        <!--End Work Area-->
+                    </div>
+                </div>
+            </div>
+            <!--End UI Markup-->
+        </div>
+        <div class="screen-shot-text screen-shot-footer">
+            Click on <span class="glyphicon glyphicon-info-sign"></span> to read more about each section and function.
+        </div>
+    </div>
+</div>
+
+

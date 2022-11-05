@@ -1,0 +1,42 @@
+﻿@model List<Seater>
+@{
+    Layout = "~/Views/Shared/_Layout_SystemAdministration.cshtml";
+}
+@section title {
+    Seats to be removed @Model.Count
+}
+@section breadcrumbs {
+}
+@section scripts {
+    <script src="~/Scripts/SystemAdministration/company.js"></script>
+}
+<div class="color-grey-2 add-padding-vertical-10 col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 col-sm-12 col-sm-offset-0">
+    <button class="btn btn-default" id="newCompany"><span class="glyphicon glyphicon-plus"></span> Company</button>
+</div>
+<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 col-sm-12 col-sm-offset-0">
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Registrant Confirmation</th>
+                    <th>Capacity Limit</th>
+                    <th>Acting on Component</th>
+                    <th>Componet Item ID :: Registrant Selections</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var seater in Model.OrderBy(s => s.Seating.Name).ThenBy(s => s.Component.LabelText).ThenBy(s => s.SortingId))
+                {
+                    var id = (seater.Component as IComponentItem).ParentKey;
+                    var data = seater.Registrant.Data.FirstOrDefault(d => d.VariableUId == id);
+                    <tr>
+                        <td>@seater.Registrant.Confirmation</td>
+                        <td>@seater.Seating.Name</td>
+                        <td>@seater.Component.LabelText</td>
+                        <td>@seater.Component.UId :: @(data != null && !String.IsNullOrEmpty(data.Value) ? data.Value : "no selection")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

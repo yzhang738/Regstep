@@ -1,0 +1,110 @@
+﻿@import "variables.less";
+@import "../Variables.less";
+
+.measurement-picker-wrapper {
+    position: relative;
+    input[data-type="measurement"] {
+    }
+    .measurement-picker-container {
+        position: absolute;
+        top: 0;
+        right: -50px;
+        border: 2px solid @brand-primary;
+        display: block;
+        height: 44px;
+        background-color: @gray-lighter;
+        z-index: 1000 !important;
+        overflow: visible;
+        .measurement-picker-type {
+            .measurement-picker {
+                height: 36px;
+                margin: 2px;
+                background-color: @brand-primary;
+                color: @gray-lighter;
+            }
+        }
+    }
+}
+
+.fontsize-picker-wrapper {
+    position: relative;
+    input[data-type="font-size"] {
+    }
+    .fontsize-picker-container {
+        position: absolute;
+        top: 0;
+        right: -50px;
+        border: 2px solid @brand-primary;
+        display: block;
+        height: 44px;
+        background-color: @gray-lighter;
+        z-index: 1000 !important;
+        overflow: visible;
+        .fontsize-picker-type {
+            .fontsize-picker {
+                height: 36px;
+                margin: 2px;
+                background-color: @brand-primary;
+                color: @gray-lighter;
+            }
+        }
+    }
+}
+
+.border-picker {
+    padding: 2px;
+    float: left;
+    &.border-picker-group-size {
+        width: 95px;
+    }
+    &.border-picker-group-type {
+        width: 85px;
+    }
+    &.border-picker-group-color {
+        width: 75px;
+    }
+    &.border-picker-group-none {
+        width: auto;
+    }
+    .border-picker-none-label {
+        font-size: 8pt;
+    }
+}
+
+.backgroundsize-picker {
+    padding: 2px;
+    float: left;
+    &.backgroundsize-picker-group-width {
+        width: 85px;
+    }
+    &.backgroundsize-picker-group-height {
+        width: 85px;
+    }
+    &.backgroundsize-picker-group-type {
+        width: 65px;
+    }
+    &.backgroundsize-picker-group-other {
+        width: 95px;
+    }
+}
+
+.padding-div {
+    margin: 0 0 0 0 !important;
+    .form-group {
+        margin: 0 0 0 0 !important;
+        padding: 0 0 0 0 !important;
+        .input-group-addon {
+            font-size: 10pt;
+            padding: 5px;
+        }
+    }
+}
+
+.form-charactercount {
+    padding: 3px 3px;
+    position: absolute;
+    top: 0;
+    right: -60px;
+    background-color: rgba(0, 148, 255, .6);
+}
+

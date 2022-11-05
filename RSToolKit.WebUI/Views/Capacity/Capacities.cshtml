@@ -1,0 +1,78 @@
+﻿@using System.Collections;
+@using RSToolKit.Domain.Entities;
+@using RSToolKit.Domain;
+@using RSToolKit.Domain.Entities.Components;
+@model RSToolKit.WebUI.Models.Views.Capacity.CapacitiesView
+@{
+    Layout = "~/Views/Shared/_L_Cloud.cshtml";
+}
+@section scripts
+{
+}
+@section styles
+{
+}
+@section title
+{
+    @Model.Name Capacity Limits
+}
+@section crumbs
+{
+    @Html.Partial("P_Trail", new TrailModel(ViewBag.Trail))
+}
+@section modals
+{
+}
+<div class="col-xs-12">
+    <div class="add-padding-bottom-5 text-medium text-color-2">
+        Available Capacity Limits
+    </div>
+    <!--Data-->
+    <div id="mainHolder" class="row">
+        <section>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>                                
+                        </th>
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            Limit
+                        </th>
+                        <th>
+                            Taken
+                        </th>
+                        <th>
+                            Available
+                        </th>
+                        <th>
+                            Waitlist Enabled
+                        </th>
+                        <th>
+                            Waitlisted
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                        @foreach (var capacity in Model.Capacities.OrderBy(s => s.Name))
+                        {
+                            <tr>
+                                <td>
+                                    <a href="@Url.Action("Get", "Capacity", new { id = capacity.Id }, Request.Url.Scheme)">View</a>
+                                </td>
+                                <td>@capacity.Name</td>
+                                <td>@capacity.Seats</td>
+                                <td>@capacity.Seaters</td>
+                                <td>@capacity.AvailableSeats</td>
+                                <td>@(capacity.Waitable ? "Yes" : "No")</td>
+                                <td>@capacity.Waiters</td>
+                            </tr>
+                        }
+                </tbody>
+            </table>
+        </section>
+    </div>
+    <!--End Data-->
+</div>

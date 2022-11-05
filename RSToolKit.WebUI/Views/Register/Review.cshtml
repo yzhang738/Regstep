@@ -1,0 +1,70 @@
+﻿@model RegistrationHtml
+@{
+    ViewBag.Title = Model.Form.Name;
+    ViewBag.WrapperClass = "form-live";
+    Layout = "~/Views/Shared/_Layout_Registration.cshtml";
+}
+@section pageNumber
+{
+    Review
+}
+@section shoppingCart
+{
+    @Model.RenderShoppingCart()
+}
+@section header
+{
+    @Model.RenderHeader()
+}
+@section footer
+{
+    @Model.RenderFooter()
+}
+@section customStyles
+{
+    @Model.RenderFormStyle()
+}
+<div class="row form-panel" style="background: white !important;">
+    <div class="col-xs-12">
+        <div class="row form-panel-row">
+            <div class="col-xs-12 form-component" style="padding-bottom: 10px; color: black !important;">
+                <h3>Review Your Selections</h3>
+                Click <b>Next</b> below to complete your registration or <b>Back</b> to make changes to your entries.
+            </div>
+            <div class="col-xs-12 form-component">
+                <table class="table confirmation-table">
+                    <tbody>
+                        <tr>
+                            <td>Confirmation Number:</td>
+                            <td>@Model.Registrant.Confirmation</td>
+                        </tr>
+                        <tr>
+                            <td>Email:</td>
+                            <td>@Model.Registrant.Email</td>
+                        </tr>
+                        @foreach (var page in Model.Form.Pages.Where(p => p.Type == RSToolKit.Domain.Entities.PageType.Audience || p.Type == RSToolKit.Domain.Entities.PageType.RSVP || p.Type == RSToolKit.Domain.Entities.PageType.UserDefined).ToList())
+                        {
+                            @:@Model.RenderConfirmationPage(page)
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row form-btn-panel">
+    <div class="col-xs-12">
+        <div class="row">
+            <!--Button Nav Back-->
+            <div class="col-sm-6 col-md-4 col-lg-3 form-btn">
+                <a class="btn-rs btn-navigation" href="@Url.Action("Back", "Register", new { id = Model.Registrant.UId, pageNumber = Model.Form.Pages.OrderBy(p => p.PageNumber).Last().PageNumber + 1 }, Request.Url.Scheme)">Back</a>
+            </div>
+            <!--End Button Nav Back-->
+            <!--Button Nav Next-->
+            <div class="col-sm-6 col-md-4 col-lg-3 form-btn">
+                <a class="btn-rs btn-navigation" href="@Url.Action("Next", "Register", new { RegistrantKey = Model.Registrant.UId, PageNumber = int.MaxValue }, Request.Url.Scheme)">Next</a>
+            </div>
+            <!--End Button Nav Next-->
+        </div>
+    </div>
+</div>

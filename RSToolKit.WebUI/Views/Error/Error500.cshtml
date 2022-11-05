@@ -1,0 +1,28 @@
+﻿@model long
+@{
+    ViewBag.Title = "Internal Server Error";
+    Layout = "~/Views/Shared/_Layout_Login.cshtml";
+}
+<div class="row add-padding-vertical">
+    <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4 add-padding-bottom-5">
+        <img style="width: 150px;" src="~/images/common/regstep.png" alt="RegStep" />
+    </div>
+    <div class="text-center col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4 color-1 text-color-white rounded-top text-medium add-padding-vertical-5">
+        <h4>We've experienced a temporary error. We are aware of and working on this issue. We apologize for the inconvenience.</h4>
+        @if (Model != 0)
+        {
+            <h5>Use error id @Model.ToString() when calling a representative.</h5>
+        }
+    </div>
+    <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4" style="font-size: 10px;">
+        <div class="row">
+            <div class="col-xs-6">
+                &copy; 2013-@DateTime.UtcNow.Year RegStep Technologies
+            </div>
+            <div class="col-xs-6 text-align-right">
+                <a class="text-color-1" href="http://www.regstep.com">www.regstep.com</a>
+            </div>
+        </div>
+
+    </div>
+</div>

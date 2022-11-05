@@ -1,0 +1,152 @@
+﻿@using RSToolKit.Domain.Entities;
+@using System.Linq;
+@using System.Data.Entity;
+@model Form
+@{
+    Layout = "~/Views/Shared/_Layout_FormBuilder.cshtml";
+}
+@section scripts
+{
+<script src="~/Scripts/Bootstrap/Plugins/1%20colorpicker-color.js"></script>
+<script src="~/Scripts/Bootstrap/Plugins/2%20colorpicker.js"></script>
+<script src="~/Scripts/Bootstrap/Plugins/Forms/formPlugin.js"></script>
+    <script src="~/Scripts/FormBuilder/EditStyles.js"></script>
+    <script type="text/javascript">
+        var formId = "@Model.UId";
+    </script>
+}
+@section styles
+{
+<link href="~/Content/Bootstrap/colorpicker.min.css" rel="stylesheet" />
+<link href="~/Content/Bootstrap/formPlugins.min.css" rel="stylesheet" />
+}
+@section title {
+    Edit Form Styles
+}
+@section breadcrumbs {
+@Html.ActionLink("Forms", "Index", "FormBuilder")
+<span class="glyphicon glyphicon-chevron-right glyphicon-small"></span> @Html.ActionLink((Model.Name.Length < 20 ? Model.Name : Model.Name.Substring(0, 20)), "Form", "FormBuilder", new { id = Model.UId }, null)
+<span class="glyphicon glyphicon-chevron-right glyphicon-small"></span> Edit Styles
+}
+@section modals
+{
+}
+@using (Html.BeginForm("Styles", "FormBuilder", FormMethod.Post, new { @class = "form", role = "form", data_xhr_method = "put" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.UId)
+        <!--Style-->
+        <div class="col-md-8 add-padding-bottom-2em">
+            <div class="add-padding-bottom-5 text-medium text-color-2">
+                Form Style
+            </div>
+            <!--Accordion-->
+            <div class="panel-group" id="accordion">
+                @{
+                var groups = Model.FormStyles.Select(s => s.Sort).Where(s => !String.IsNullOrWhiteSpace(s)).Distinct().OrderBy(s => s);
+                Model.FormStyles.Sort((a, b) => a.Name.CompareTo(b.Name));
+                }
+                @foreach (var sort in groups)
+                {
+                    var subSorts = Model.FormStyles.Where(s => s.Sort == sort && !String.IsNullOrWhiteSpace(s.SubSort)).Select(s => s.SubSort).Distinct().OrderBy(s => s);
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <span class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#options-@(sort.Replace(' ', '_'))">
+                                    @sort <span class="caret"></span>
+                                </a>
+                            </span>
+                        </div>
+                        <div id="options-@(sort.Replace(' ', '_'))" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <div class="row">
+                                    @foreach (var style in Model.FormStyles.Where(s => s.Sort == sort && String.IsNullOrEmpty(s.SubSort)).ToList())
+                                    {
+                                        <div class="style-item">
+                                            <label class="control-label">@style.Name</label>
+                                            @Html.TextBox(style.UId.ToString(), style.Value, new { @class = "form-control input-sm", data_type = style.Type })
+                                        </div>
+                                    }
+                                </div>
+                                @foreach (var subSort in subSorts)
+                                {
+                                    <div class="row">
+                                        <div class="col-xs-12 style-subsort-title">@subSort</div>
+                                        @foreach (var style in Model.FormStyles.Where(s => s.Sort == sort && s.SubSort == subSort))
+                                        {
+                                            <div class="style-item">
+                                                <label class="control-label">@style.Name</label>
+                                                @Html.TextBox(style.UId.ToString(), style.Value, new { @class = "form-control input-sm", data_type = style.Type })
+                                            </div>
+                                        }
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <!--Accordion-->
+        </div>
+        <!--End Style-->
+        <!--Default Layouts-->
+        <div class="col-md-4">
+            <div class="add-padding-bottom-5 text-medium text-color-2">
+                Default Component Display Order
+            </div>
+            <div class="row color-grey-2 add-padding-vertical-10">
+                <div class="col-xs-12">
+                    <div class="add-padding-vertical-5">
+                        <span class="modal-link">
+                            <span class="glyphicon glyphicon-edit"></span>
+                            Text Input
+                        </span>
+                    </div>
+                    <div class="add-padding-vertical-5">
+                        <span class="modal-link">
+                            <span class="glyphicon glyphicon-edit"></span>
+                            Date / Time
+                        </span>
+                    </div>
+                    <div class="add-padding-vertical-5">
+                        <span class="modal-link">
+                            <span class="glyphicon glyphicon-edit"></span>
+                            Dropdown Group
+                        </span>
+                    </div>
+                    <div class="add-padding-vertical-5">
+                        <span class="modal-link">
+                            <span class="glyphicon glyphicon-edit"></span>
+                            Checkbox Group
+                        </span>
+                    </div>
+                    <div class="add-padding-vertical-5">
+                        <span class="modal-link">
+                            <span class="glyphicon glyphicon-edit"></span>
+                            Checkbox Item
+                        </span>
+                    </div>
+                    <div class="add-padding-vertical-5">
+                        <span class="modal-link">
+                            <span class="glyphicon glyphicon-edit"></span>
+                            Radio Group
+                        </span>
+                    </div>
+                    <div class="add-padding-vertical-5">
+                        <span class="modal-link">
+                            <span class="glyphicon glyphicon-edit"></span>
+                            Radio Item
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <!--Save-->
+            <div class="add-padding-vertical-2em">
+                <button type="submit" class="btn btn-default">
+                    Save
+                </button>
+            </div>
+            <!--End Save-->
+        </div>
+        <!--End Default Layouts-->
+}

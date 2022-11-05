@@ -1,0 +1,239 @@
+﻿@using RSToolKit.WebUI.Infrastructure;
+@using RSToolKit.Domain;
+@using Microsoft.AspNet.Identity;
+@model Company
+@{
+    Layout = "~/Views/Shared/_Layout_CompanyAdmin.cshtml";
+    var Repository = (FormsRepository)ViewBag.Repository;
+    var Context = (EFDbContext)Repository.Context;
+    var roleManager = (AppRoleManager)ViewBag.RM;
+    var userManager = (AppUserManager)ViewBag.UM;
+}
+@section scripts
+{
+}
+@section styles
+{
+}
+@section title {
+    @Model.Name
+}
+@section breadcrumbs {
+    <a href="@Url.Action("Index", "CompanyAdmin", null, Request.Url.Scheme)">@Model.Name.First20()</a>
+    <span class="glyphicon glyphicon-chevron-right"></span> Company Information
+}
+@section modals {
+}
+@using (Html.BeginForm("Company", "CompanyAdmin", FormMethod.Post, new { @class = "form", role = "form", data_xhr_method = "put" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.UId)
+    <div class="col-xs-12">
+        <div class="panel-group" id="accordion">
+            <!--Info-->
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <span class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#info">
+                            Company Information <span class="caret"></span>
+                        </a>
+                    </span>
+                </div>
+                <div id="info" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <label class="control-label col-sm-12 col-md-3 col-lg-2 add-padding-vertical-5">Company Name:</label>
+                            <div class="col-sm-12 col-md-9 col-lg-10 add-padding-vertical-5">
+                                <input type="text" name="Name" value="@Model.Name" class="form-control input-sm" />
+                            </div>
+                        </div>
+                        <!--
+                        <div class="form-group">
+                            <label class="control-label col-sm-12 col-md-3 col-lg-2 add-padding-vertical-5">Company Logo:</label>
+                            <div class="col-sm-12 col-md-9 col-lg-10 add-padding-vertical-5">
+                                <input type="text" name="Logo" value="" class="form-control input-sm" />
+                            </div>
+                        </div>
+                        -->
+                    </div>
+                </div>
+            </div>
+            <!--Billing-->
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <span class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#billing">
+                            Billing Address <span class="caret"></span>
+                        </a>
+                    </span>
+                </div>
+                <div id="billing" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <label class="control-label col-sm-12 col-md-3 col-lg-2 add-padding-vertical-5">Address Line 1:</label>
+                            <div class="col-sm-12 col-md-9 col-lg-10 add-padding-vertical-5">
+                                <input type="text" name="BillingAddressLine1" value="@Model.BillingAddressLine1" class="form-control input-sm" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-12 col-md-3 col-lg-2 add-padding-vertical-5">Address Line 2:</label>
+                            <div class="col-sm-12 col-md-9 col-lg-10 add-padding-vertical-5">
+                                <input type="text" name="BillingAddressLine2" value="@Model.BillingAddressLine2" class="form-control input-sm" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-12 col-md-3 col-lg-2 add-padding-vertical-5">City:</label>
+                            <div class="col-sm-12 col-md-9 col-lg-10 add-padding-vertical-5">
+                                <input type="text" name="BillingCity" value="@Model.BillingCity" class="form-control input-sm" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-12 col-md-3 col-lg-2 add-padding-vertical-5">State:</label>
+                            <div class="col-sm-12 col-md-9 col-lg-10 add-padding-vertical-5">
+                                <input type="text" name="BillingState" value="@Model.BillingState" class="form-control input-sm" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-12 col-md-3 col-lg-2 add-padding-vertical-5">Country:</label>
+                            <div class="col-sm-12 col-md-9 col-lg-10 add-padding-vertical-5">
+                                <input type="text" name="BillingCountry" value="@Model.BillingCountry" class="form-control input-sm" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-12 col-md-3 col-lg-2 add-padding-vertical-5">Zip / Postal Code:</label>
+                            <div class="col-sm-12 col-md-9 col-lg-10 add-padding-vertical-5">
+                                <input type="text" name="BillingZip" value="@Model.BillingZip" class="form-control input-sm" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Shipping-->
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <span class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#shipping">
+                            Shipping Address <span class="caret"></span>
+                        </a>
+                    </span>
+                </div>
+                <div id="shipping" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <label class="control-label col-sm-12 col-md-3 col-lg-2 add-padding-vertical-5">Address Line 1:</label>
+                            <div class="col-sm-12 col-md-9 col-lg-10 add-padding-vertical-5">
+                                <input type="text" name="ShippingAddressLine1" value="@Model.ShippingAddressLine1" class="form-control input-sm" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-12 col-md-3 col-lg-2 add-padding-vertical-5">Address Line 2:</label>
+                            <div class="col-sm-12 col-md-9 col-lg-10 add-padding-vertical-5">
+                                <input type="text" name="ShippingAddressLine2" value="@Model.ShippingAddressLine2" class="form-control input-sm" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-12 col-md-3 col-lg-2 add-padding-vertical-5">City:</label>
+                            <div class="col-sm-12 col-md-9 col-lg-10 add-padding-vertical-5">
+                                <input type="text" name="ShippingCity" value="@Model.ShippingCity" class="form-control input-sm" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-12 col-md-3 col-lg-2 add-padding-vertical-5">State:</label>
+                            <div class="col-sm-12 col-md-9 col-lg-10 add-padding-vertical-5">
+                                <input type="text" name="ShippingState" value="@Model.ShippingState" class="form-control input-sm" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-12 col-md-3 col-lg-2 add-padding-vertical-5">Country:</label>
+                            <div class="col-sm-12 col-md-9 col-lg-10 add-padding-vertical-5">
+                                <input type="text" name="ShippingCountry" value="@Model.ShippingCountry" class="form-control input-sm" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-12 col-md-3 col-lg-2 add-padding-vertical-5">Zip / Postal Code:</label>
+                            <div class="col-sm-12 col-md-9 col-lg-10 add-padding-vertical-5">
+                                <input type="text" name="ShippingZip" value="@Model.ShippingZip" class="form-control input-sm" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Registration-->
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <span class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#registration">
+                            Registration Invoice Information <span class="caret"></span>
+                        </a>
+                    </span>
+                </div>
+                <div id="registration" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <div class="add-padding-vertical-5">
+                            This will be the default information for any Bill Me Invoices and Credit Card Receipts generated by your registration forms. If the information varies by event, you can edit each email.
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-12 col-md-3 col-lg-2 add-padding-vertical-5">Address Line 1:</label>
+                            <div class="col-sm-12 col-md-9 col-lg-10 add-padding-vertical-5">
+                                <input type="text" name="RegistrationAddressLine1" value="@Model.RegistrationAddressLine1" class="form-control input-sm" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-12 col-md-3 col-lg-2 add-padding-vertical-5">Address Line 2:</label>
+                            <div class="col-sm-12 col-md-9 col-lg-10 add-padding-vertical-5">
+                                <input type="text" name="RegistrationAddressLine2" value="@Model.RegistrationAddressLine2" class="form-control input-sm" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-12 col-md-3 col-lg-2 add-padding-vertical-5">City:</label>
+                            <div class="col-sm-12 col-md-9 col-lg-10 add-padding-vertical-5">
+                                <input type="text" name="RegistrationCity" value="@Model.RegistrationCity" class="form-control input-sm" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-12 col-md-3 col-lg-2 add-padding-vertical-5">State:</label>
+                            <div class="col-sm-12 col-md-9 col-lg-10 add-padding-vertical-5">
+                                <input type="text" name="RegistrationState" value="@Model.RegistrationState" class="form-control input-sm" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-12 col-md-3 col-lg-2 add-padding-vertical-5">Country:</label>
+                            <div class="col-sm-12 col-md-9 col-lg-10 add-padding-vertical-5">
+                                <input type="text" name="RegistrationCountry" value="@Model.RegistrationCountry" class="form-control input-sm" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-12 col-md-3 col-lg-2 add-padding-vertical-5">Zip / Postal Code:</label>
+                            <div class="col-sm-12 col-md-9 col-lg-10 add-padding-vertical-5">
+                                <input type="text" name="RegistrationZip" value="@Model.RegistrationZip" class="form-control input-sm" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-12 col-md-3 col-lg-2 add-padding-vertical-5">Phone:</label>
+                            <div class="col-sm-12 col-md-9 col-lg-10 add-padding-vertical-5">
+                                <input type="text" name="RegistrationPhone" value="@Model.RegistrationPhone" class="form-control input-sm" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-12 col-md-3 col-lg-2 add-padding-vertical-5">Fax:</label>
+                            <div class="col-sm-12 col-md-9 col-lg-10 add-padding-vertical-5">
+                                <input type="text" name="RegistrationFax" value="@Model.RegistrationFax" class="form-control input-sm" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-12 col-md-3 col-lg-2 add-padding-vertical-5">Email:</label>
+                            <div class="col-sm-12 col-md-9 col-lg-10 add-padding-vertical-5">
+                                <input type="text" name="RegistrationEmail" value="@Model.RegistrationEmail" class="form-control input-sm" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row add-padding-top">
+            <button type="submit" class="btn btn-default">Save</button>
+        </div>
+    </div>
+}

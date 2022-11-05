@@ -1,0 +1,80 @@
+﻿@using RSToolKit.WebUI.Infrastructure;
+@using RSToolKit.Domain;
+@using Microsoft.AspNet.Identity;
+@model Company
+@{
+    Layout = "~/Views/Shared/_Layout_CompanyAdmin.cshtml";
+    var Repository = (FormsRepository)ViewBag.Repository;
+}
+@section scripts
+{
+    <script type="text/javascript">
+        $('#submitNewGroup').on('click', function () {
+            $('#addGroup').modal('hide');
+        });
+    </script>
+}
+@section styles
+{
+}
+@section title {
+    @Model.Name
+}
+@section breadcrumbs {
+    <a href="@Url.Action("Index", "CompanyAdmin", null, Request.Url.Scheme)">@Model.Name.First20()</a>
+    <span class="glyphicon glyphicon-chevron-right"></span> Company Groups
+}
+@section modals {
+    <div class="modal fade" id="addGroup" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3>Add Group</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        @using (Html.BeginForm("CompanyGroup", "CompanyAdmin", FormMethod.Post, new { @class = "form", role = "form", data_type = "ajax", data_http_method = "post", data_redirect = "refresh" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <label class="control-label">Group Name</label>
+                            <input class="form-control input-sm" name="name" />
+                            <div class="add-padding-vertical-5">
+                                <button type="submit" class="btn btn-default" id="submitNewGroup">Create</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#addGroup">Cancel</button>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="col-xs-12">
+    <div class="add-padding-bottom-5 text-medium text-color-2">
+        Company Groups
+    </div>
+    <div class="row add-padding-vertical-5 color-grey-2">
+        <div class="col-sm-12 col-md-6">
+            <a href="#" data-target="#addGroup" data-toggle="modal"><span class="glyphicon glyphicon-plus"></span> New Group</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <table class="table table-striped">
+            <thead>
+            </thead>
+            <tbody>
+                @foreach (var group in Model.CustomGroups.OrderBy(g => g.Name))
+                {
+                    <tr>
+                        <td>@group.Name</td>
+                        <td><a href="@Url.Action("CompanyGroup", "CompanyAdmin", null, Request.Url.Scheme)" data-xhr-method="delete" data-xhr-options='{"id":"@group.UId"}' data-xhr-oncomplete="refresh"><span class="glyphicon glyphicon-trash"></span> Delete</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

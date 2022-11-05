@@ -1,0 +1,52 @@
+﻿@using RSToolKit.Domain.Entities.MerchantAccount;
+@model List<MerchantAccountInfo>
+@{
+    ViewBag.Title = "RegStep Cloud - Merchant Accounts";
+    Layout = "~/Views/Shared/_L_Cloud.cshtml";
+}
+@section title {
+    Merchant Accounts
+}
+@section scripts {
+    <script src="~/Scripts/MerchantAccount/merchantAccounts.js"></script>
+}
+@section crumbs {
+    @Html.Partial("P_Trail", new TrailModel(ViewBag.Trail))
+}
+<div class="row add-padding-vertical add-border-top">
+    <div class="col-xs-12">
+
+        <div class="add-padding-bottom-5 text-medium text-color-2">
+            Merchant Accounts
+        </div>
+
+        <div class="row add-padding-vertical-5 color-grey-2">
+            <!--Add Panel-->
+            <div class="col-xs-12">
+                <span class="modal-link">
+                    <a href="@Url.Action("New")"><span class="glyphicon glyphicon-plus"></span>Add Account</a>
+                </span>
+            </div>
+        </div>
+
+        <div class="row">
+            <table id="ItemList" class="table table-formbuilder audience-table">
+                <tbody>
+                    @for (var i = 0; i < Model.Count; i++)
+                    {
+                        var account = Model[i];
+                        <tr>
+
+                            <td><a href="@Url.Action("Get", new { id = account.SortingId })">@account.Name</a></td>
+                            <td><a href="@Url.Action("Delete")" data-id="@account.SortingId" class="merchant-delete"><span class="glyphicon glyphicon-trash"></span> Delete</a></td>
+                            <td class="Fill"></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="row">
+            <button type="submit" class="btn btn-default">Save</button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,51 @@
+﻿@using System.Collections;
+@using RSToolKit.Domain.Entities;
+@using RSToolKit.Domain;
+@using Newtonsoft.Json;
+@using RSToolKit.Domain.Data;
+@using RSToolKit.Domain.Entities.Components;
+@using RSToolKit.Domain.Engines;
+@model RegScriptTableException
+@{
+    ViewBag.Title = "RS Cloud - RegStep Technologies";
+    Layout = "~/Views/Shared/_L_Cloud.cshtml";
+    var Repository = (FormsRepository)ViewBag.Repository;
+}
+@section scripts
+{
+}
+@section styles
+{
+}
+@section title
+{
+    RegScript Engine Syntax Error
+}
+@section crumbs {
+    @Html.Partial("P_Trail", new TrailModel(ViewBag.Trail))
+}
+@section modals
+{
+}
+<div class="col-xs-12">
+    <div class="row add-padding-vertical">
+        <div class="col-xs-12">
+            @for (var i = 0; i < Model.Lines.Count(); i++)
+            {
+                var line = Model.Lines.ElementAt(i);
+                <div>
+                    <span style="color: white; background-color: blue;">@(i + 1): </span>
+                    @if (i == Model.LineNumber)
+                    {
+                        <span style="background-color: yellow;">@line</span><br />
+                        <span style="background-color: red; color: white;">@Model.Message</span>
+                    }
+                    else
+                    {
+                        @line
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</div>

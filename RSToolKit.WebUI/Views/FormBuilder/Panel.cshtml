@@ -1,0 +1,396 @@
+﻿@using RSToolKit.Domain.Entities;
+@using RSToolKit.Domain;
+@model RSToolKit.Domain.Entities.Panel
+@{
+    Layout = "~/Views/Shared/_Layout_FormBuilder.cshtml";
+    var AudienceList = (List<Audience>)ViewBag.AudienceList;
+    var leftRow = Model.Components.Where(c => c.Row == 1).ToList();
+    var middleRow = Model.Components.Where(c => c.Row == 2).ToList();
+    var rightRow = Model.Components.Where(c => c.Row == 3).ToList();
+}
+@section scripts
+{
+    <script src="~/Scripts/jQuery/Plugins/sortable.js"></script>
+    <script src="~/Scripts/FormBuilder/EditPanel.js"></script>
+    <script type="text/javascript">
+        var formId = "@Model.UId";
+        var audienceUIds = @JsonConvert.SerializeObject(Model.Audiences.Select(a => a.UId).ToList());
+    </script>
+}
+@section styles
+{
+}
+@section title {
+    Edit Panel
+}
+@section breadcrumbs {
+    @Html.ActionLink("Forms", "Index", "FormBuilder")
+    <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span> @Html.ActionLink((Model.Page.Form.Name.Length < 20 ? Model.Page.Form.Name : Model.Page.Form.Name.Substring(0, 20)), "Form", "FormBuilder", new { id = Model.Page.Form.UId }, null)
+    <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span> @Html.ActionLink((Model.Page.Name.Length < 20 ? Model.Page.Name : Model.Page.Name.Substring(0, 20)), "Page", "FormBuilder", new { id = Model.Page.UId }, null)
+    <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span> @Model.Name
+}
+@section modals
+{
+    <!--Modal for Audiences-->
+<div class="modal fade" id="tagsSelect">
+    <div class="modal-dialog">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 class="modal-title">Registration Type Select</h3>
+        </div>
+
+        <div class="modal-body">
+            <div class="container-fluid">
+                <div class="tag-container tags-notSelected">
+                    <div class="tag-title">
+                        Available Registration Types
+                    </div>
+                    <div class="tags">
+                        @foreach (var audience in Model.GetForm().Audiences)
+                        {
+                            <label class="control-label tag@(Model.Audiences.Contains(audience) ? " tag-hidden" : " tag-visible")" data-id="@audience.UId"><input type="checkbox" class="tag-input" data-id="@audience.UId" />@audience.Name</label>
+                        }
+                    </div>
+                </div>
+                <div class="tag-commands">
+                    <a href="#" id="addTags"><span class="glyphicon glyphicon-plus"></span> Add</a> <a href="#" id="removeTags"><span class="glyphicon glyphicon-remove"></span> Remove</a>
+                </div>
+                <div class="tag-container tags-selected">
+                    <div class="tag-title">
+                        Selected Registration Types
+                    </div>
+                    <div class="tags">
+                        @foreach (var audience in Model.GetForm().Audiences)
+                        {
+                            <label class="control-label tag@(Model.Audiences.Contains(audience) ? " tag-visible" : " tag-hidden")" data-id="@audience.UId"><input type="checkbox" class="tag-input" data-id="@audience.UId" />@audience.Name</label>
+                        }
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Set</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="m_moveComponent">
+    <div class="modal-dialog">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 class="modal-title">Move Component</h3>
+        </div>
+
+        <div class="modal-body">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label class="col-sm-12 col-md-5 control-label">Target Panel:</label>
+                        <div class="col-sm-12 col-md-7">
+                            <select class="form-control" id="panel_m_moveComponent">
+                                @foreach (var page in Model.Page.Form.Pages.Where(p => p.Type == PageType.UserDefined).OrderBy(p => p.PageNumber))
+                                {
+                                    <optgroup label="Page @page.PageNumber: @page.Name.GetElipse(15)">
+                                        @foreach(var panel in page.Panels.OrderBy(p => p.Order))
+                                        {
+                                            <option value="@panel.UId">Panel @panel.Order: @panel.Name.GetElipse(25)</option>
+                                        }
+                                    </optgroup>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-default" id="btn_m_moveComponent">Set</button>
+        </div>
+    </div>
+</div>
+
+
+
+
+    <!--Modal for New Component-->
+    <div class="modal fade" id="newComponent">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3 class="modal-title">Select Component Type</h3>
+            </div>
+
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="panel-group" id="componentTypes">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <span class="panel-title">
+                                        <a data-toggle="collapse" href="#inputs" data-parent="#componentTypes">
+                                            Inputs <span class="caret"></span>
+                                        </a>
+                                    </span>
+                                </div>
+                                <div class="panel-collapse collapse" id="inputs">
+                                    <ul>
+                                        <li><a data-dismiss="modal" data-target="#newComponent" href="@Url.Action("Component", "FormBuilder", null, Request.Url.Scheme)" data-xhr-method="post" data-xhr-options='{"id":"@Model.UId","type":"input","subtype":"text"}'>Text Input</a></li>
+                                        <li><a data-dismiss="modal" data-target="#newComponent" href="@Url.Action("Component", "FormBuilder", null, Request.Url.Scheme)" data-xhr-method="post" data-xhr-options='{"id":"@Model.UId","type":"input","subtype":"date"}'>Date Input</a></li>
+                                        <li><a data-dismiss="modal" data-target="#newComponent" href="@Url.Action("Component", "FormBuilder", null, Request.Url.Scheme)" data-xhr-method="post" data-xhr-options='{"id":"@Model.UId","type":"input","subtype":"datetime"}'>Date Time Input</a></li>
+                                        <li><a data-dismiss="modal" data-target="#newComponent" href="@Url.Action("Component", "FormBuilder", null, Request.Url.Scheme)" data-xhr-method="post" data-xhr-options='{"id":"@Model.UId","type":"input","subtype":"time"}'>Time Input</a></li>
+                                        <li><a data-dismiss="modal" data-target="#newComponent" href="@Url.Action("Component", "FormBuilder", null, Request.Url.Scheme)" data-xhr-method="post" data-xhr-options='{"id":"@Model.UId","type":"input","subtype":"file"}'>File Input</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <span class="panel-title">
+                                        <a data-toggle="collapse" href="#dropdown" data-parent="#componentTypes">
+                                            Dropdowns <span class="caret"></span>
+                                        </a>
+                                    </span>
+                                </div>
+                                <div class="panel-collapse collapse" id="dropdown">
+                                    <ul>
+                                        <li><a data-dismiss="modal" data-target="#newComponent" href="@Url.Action("Component", "FormBuilder", null, Request.Url.Scheme)" data-xhr-method="post" data-xhr-options='{"id":"@Model.UId","type":"dropdown"}'>Empty Dropdown</a></li>
+                                        <li><a data-dismiss="modal" data-target="#newComponent" href="@Url.Action("Component", "FormBuilder", null, Request.Url.Scheme)" data-xhr-method="post" data-xhr-options='{"id":"@Model.UId","type":"dropdown","subtype":"country"}'>Country Dropdown</a></li>
+                                        <li><a data-dismiss="modal" data-target="#newComponent" href="@Url.Action("Component", "FormBuilder", null, Request.Url.Scheme)" data-xhr-method="post" data-xhr-options='{"id":"@Model.UId","type":"dropdown","subtype":"state"}'>State Dropdown</a></li>
+                                        <li><a data-dismiss="modal" data-target="#newComponent" href="@Url.Action("Component", "FormBuilder", null, Request.Url.Scheme)" data-xhr-method="post" data-xhr-options='{"id":"@Model.UId","type":"dropdown","subtype":"stateabbr"}'>State Abbreviations Dropdown</a></li>
+                                        <li><a data-dismiss="modal" data-target="#newComponent" href="@Url.Action("Component", "FormBuilder", null, Request.Url.Scheme)" data-xhr-method="post" data-xhr-options='{"id":"@Model.UId","type":"dropdown","subtype":"yesno"}'>Yes No Dropdown</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <span class="panel-title">
+                                        <a data-toggle="collapse" href="#numberselector" data-parent="#componentTypes">
+                                            Number Selector <span class="caret"></span>
+                                        </a>
+                                    </span>
+                                </div>
+                                <div class="panel-collapse collapse" id="numberselector">
+                                    <ul>
+                                        <li><a data-dismiss="modal" data-target="#newComponent" href="@Url.Action("Component", "FormBuilder", null, Request.Url.Scheme)" data-xhr-method="post" data-xhr-options='{"id":"@Model.UId","type":"numberselector"}'>Default</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <span class="panel-title">
+                                        <a data-toggle="collapse" href="#radioGroup" data-parent="#componentTypes">
+                                            Radio Groups <span class="caret"></span>
+                                        </a>
+                                    </span>
+                                </div>
+                                <div class="panel-collapse collapse" id="radioGroup">
+                                    <ul>
+                                        <li><a data-dismiss="modal" data-target="#newComponent" href="@Url.Action("Component", "FormBuilder", null, Request.Url.Scheme)" data-xhr-method="post" data-xhr-options='{"id":"@Model.UId","type":"radiogroup"}'>Empty Radio Group</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <span class="panel-title">
+                                        <a data-toggle="collapse" href="#checkboxGroup" data-parent="#componentTypes">
+                                            Checkbox Groups <span class="caret"></span>
+                                        </a>
+                                    </span>
+                                </div>
+                                <div class="panel-collapse collapse" id="checkboxGroup">
+                                    <ul>
+                                        <li><a data-dismiss="modal" data-target="#newComponent" href="@Url.Action("Component", "FormBuilder", null, Request.Url.Scheme)" data-xhr-method="post" data-xhr-options='{"id":"@Model.UId","type":"checkboxgroup"}'>Empty Checkbox Group</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <span class="panel-title">
+                                        <a data-toggle="collapse" href="#freeText" data-parent="#componentTypes">
+                                            Free Text <span class="caret"></span>
+                                        </a>
+                                    </span>
+                                </div>
+                                <div class="panel-collapse collapse" id="freeText">
+                                    <ul>
+                                        <li><a data-dismiss="modal" data-target="#newComponent" href="@Url.Action("Component", "FormBuilder", null, Request.Url.Scheme)" data-xhr-method="post" data-xhr-options='{"id":"@Model.UId","type":"freetext"}'>Free Text</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            @if (Model.Page.Form.Survey)
+                            {
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <span class="panel-title">
+                                            <a data-toggle="collapse" href="#surveyComp" data-parent="#componentTypes">
+                                                Survey Components <span class="caret"></span>
+                                            </a>
+                                        </span>
+                                    </div>
+                                    <div class="panel-collapse collapse" id="surveyComp">
+                                        <ul>
+                                            <li><a data-dismiss="modal" data-target="#newComponent" href="@Url.Action("Component", "FormBuilder", null, Request.Url.Scheme)" data-xhr-method="post" data-xhr-options='{"id":"@Model.UId","type":"rating"}'>Rating</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+
+}
+@using (Html.BeginForm("Panel", "FormBuilder", FormMethod.Post, new { @class = "form", role = "form", data_xhr_method = "put" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.UId)
+
+        <!--Options-->
+    <div class="col-md-4 col-lg-3 add-padding-vertical">
+        <!--Accordion-->
+        <div class="panel-group" id="accordion">
+
+            <!--Options 1-->
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <span class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#options-1">
+                            Admin Info <span class="caret"></span>
+                        </a>
+                    </span>
+                </div>
+                <div id="options-1" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        <div class="add-padding-vertical-5">
+                            <label class="control-label">Panel Name:</label>
+                            @Html.TextBoxFor(m => m.Name, new { @class = "form-control input-sm" })
+                        </div>
+                        <div class="add-padding-vertical-5">
+                            <label class="control-label">Panel Description:</label>
+                            @Html.TextBoxFor(m => m.Description, new { @class = "form-control input-sm" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--End Options 1-->
+            <!--Options 2-->
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <span class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#options-2">
+                            Include Conditions <span class="caret"></span>
+                        </a>
+                    </span>
+                </div>
+                <div id="options-2" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <div class="add-padding-vertical-5">
+                            <label class="control-label">RSVP:</label>
+                            <select class="form-control input-sm" name="RSVP">
+                                @foreach (RSVPType rsvpType in Enum.GetValues(typeof(RSVPType)))
+                                {
+                                    <option value="@((int)rsvpType)" @(Model.RSVP == rsvpType ? " selected=\"true\"" : "")>@rsvpType.GetStringValue()</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="add-padding-vertical-5">
+                            <a href="#" data-toggle="modal" data-target="#tagsSelect"><span class="glyphicon glyphicon-edit"></span> Registration Types</a>
+                            @Html.Hidden("audienceUIds", JsonConvert.SerializeObject(Model.Audiences.Select(a => a.UId).ToList()))
+                        </div>
+
+                        <div class="add-padding-vertical-5">
+                            @if (Model.Logics.Count > 0)
+                            {
+                                <a href="@Url.Action("PanelLogics", new { id = Model.UId })"><span class="glyphicon glyphicon-edit"></span> Page Load Logic</a>
+                            }
+                            else
+                            {
+                                <a href="@Url.Action("JLogics", new { id = Model.UId, onLoad = true })"><span class="glyphicon glyphicon-edit"></span> Page Load Logic</a>
+                            }
+                        </div>
+
+                        <div class="add-padding-vertical-5 checkbox">
+                            <label>
+                                @Html.CheckBoxFor(m => m.AdminOnly) Admin Only
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--End Options 2-->
+        </div>
+        <!--End Accordion-->
+    </div>
+        <!--End Options-->
+        <!--Functions-->
+    <div class="col-md-8 col-lg-9">
+
+        <!--Components-->
+        <div class="add-padding-bottom-5 text-medium text-color-2">
+            Panel Components
+        </div>
+
+        <div class="row add-padding-vertical-5 color-grey-2">
+            <!--Component Order-->
+            <div class="row">
+                <div class="col-sm-6">
+                    <a href="#" data-toggle="modal" data-target="#newComponent"><span class="glyphicon glyphicon-plus"></span> Add Component</a>
+                </div>
+                <div class="col-sm-6">
+                    <a href="#" id="addRow"><span class="glyphicon glyphicon-plus"></span> New Row</a>
+                </div>
+
+            </div>
+        </div>
+        <div class="row">
+            <div id="components" class="col-sm-12">
+                @{ var row = 1; var index = 0; }
+                @while (Model.Components.Where(c => c.Row == row).Count() > 0)
+                {
+                    <div class="row row-container">
+                        <div class="col-sm-12">
+                            <span class="row-number">Row @row</span>
+                        </div>
+                        <div class="col-sm-12">
+                            <ol class="component-row-@row component-sortable panel-component-reorder">
+                                @foreach (var c in Model.Components.Where(c => c.Row == row).OrderBy(c => c.Order).ToList())
+                                {
+                                    Guid cId;
+                                    <li>
+                                        <span class="glyphicon glyphicon-move icon-move"></span>
+                                        @( Guid.TryParse(c.Name, out cId) && !String.IsNullOrEmpty(c.LabelText) ? c.LabelText : c.Name) <a href="@Url.Action("Component", new { id = c.UId })"><span class="glyphicon glyphicon-edit"></span> Edit</a> <a href="#moveComponent" class="moveComponent" data-id="@c.UId"><span class="glyphicon glyphicon-move"></span> Move To</a> <a href="@Url.Action("Component", "FormBuilder", null, Request.Url.Scheme)" data-xhr-method="delete" data-xhr-options='{ "id": "@c.UId" }' data-xhr-oncomplete="refresh" data-xhr-failmessage="Failed to delete the item."><span class="glyphicon glyphicon-trash"></span> Delete</a>
+                                        @Html.Hidden("Components[" + index + "].UId", c.UId, new { @class = "component-UId" })@Html.Hidden("Components[" + index + "].Row", c.Row, new { @class = "component-row" })@Html.Hidden("Components[" + index + "].Order", c.Order, new { @class = "component-order" })
+                                    </li>
+                                    index++;
+                                }
+                            </ol>
+                        </div>
+                    </div>
+                    row++;
+                }
+            </div>
+            <!--End Component Order-->
+        </div>
+
+        <!--Save-->
+        <div class="add-padding-vertical">
+            <button type="submit" class="btn btn-default">
+                Save
+            </button>
+        </div>
+        <!--End Save-->
+
+    </div>
+        <!--End Functions-->
+}

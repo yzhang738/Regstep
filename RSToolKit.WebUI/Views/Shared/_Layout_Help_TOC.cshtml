@@ -1,0 +1,35 @@
+﻿@{
+    ViewBag.Title = "TOC | RS ToolKit Help Documents";
+    Layout = "~/Views/Shared/_Layout_Help.cshtml";
+}
+@section styles
+{
+    <style>
+        li.help-toc > a {
+            background: white;
+            color: #3e3e3e !important;
+        }
+
+            li.help-toc > a:hover {
+                background: white !important;
+                color: #3e3e3e !important;
+            }
+    </style>
+}
+@section scripts
+{
+    @RenderSection("scripts", required: false)
+}
+@section modals
+{
+    @RenderSection("modals", required: false)
+}
+
+<div class="col-xs-12 add-padding-bottom-5 add-border-bottom text-color-1">
+    <h2>
+        Table of Contents
+    </h2>
+</div>
+<div class="col-xs-12">
+    @RenderBody()
+</div>

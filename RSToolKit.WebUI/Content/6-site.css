@@ -1,0 +1,244 @@
+﻿/*Body*/
+body {
+	background: #3e3e3e;
+	color: #3E3E3E;
+    padding: 0 0 0 0 !important;	
+}
+/*End Body*/
+
+#breadcrumb {
+    font-size: 12px !important;
+}
+
+
+/*Layout*/
+.container-content {
+    min-height: 800px;
+}
+
+ul.nav-tabs {
+	border-bottom: none;
+}
+/*End Layout*/
+
+
+/*Accordian*/
+.panel-group {
+	margin-bottom: 0;
+}
+
+.panel-default {
+	border-radius: 0 !important;
+	border: none;
+	margin-top: 0 !important;
+}
+
+.panel {
+	background: #DDDDDD;
+}
+
+.panel-heading {
+	border-radius: 0;
+	color: white !important;
+	border-bottom: 1px solid white !important;
+	background: #8E2828 !important;
+}
+
+.panel-title {
+	font-size: 1em;
+}
+
+.panel-title a:hover {
+	color: white;
+}
+
+.panel-body {
+	border: none;
+	border-bottom: 1px solid white;
+}
+/*End Accordian*/
+
+
+/*Text*/
+.glyphicon-folder {
+	padding-right: 5px;
+}
+/*End Text*/
+
+
+/*Links & Buttons*/
+a:hover, .modal-link:hover {
+	text-decoration: none;
+	color: #7A0202;
+}
+
+.color-2 .modal-link {
+	color: #EEEEEE;
+}
+
+.color-2 .modal-link:hover {
+	color: white;
+}
+
+a.button-default {
+    display: inline-block;
+    background: #8E2828;
+	color: white;
+	border: none;
+	width: auto;
+    max-width: 275px;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+a.button-default:hover {
+    background: #7a0202;
+	color: white;
+	border: none;
+}
+
+.btn-default, .btn-default:hover, .btn-default:focus, .btn-default:active, .btn-default.active, .open .dropdown-toggle.btn-default {
+	background: #8E2828;
+	color: white;
+	border: none;
+	width: auto;
+    max-width: 275px;
+}
+
+.btn-default:hover, .btn-default:hover:hover, .btn-default:focus:hover, .btn-default:active:hover, .btn-default.active:hover, .open .dropdown-toggle.btn-default:hover {
+	background: #7A0202;
+	color: white;
+	border: none;
+	width: auto;
+    max-width: 275px;
+}
+
+.btn-group-header ul.dropdown-menu {
+	right: 0;
+	text-align: left;
+	min-width: 175px;
+	left: -25px;
+	padding-left: 5px;
+}
+
+.btn-header {
+	margin-top: 17px;
+}
+
+.btn-group-help ul.dropdown-menu {
+	right: 0;
+	text-align: left;
+	min-width: 170px;
+	left: -35px;
+	padding-left: 5px;
+}
+
+	@media screen and (max-width: 767px) {
+
+        header .text-align-right {
+            text-align: left;
+        }
+
+        .btn-group-header ul.dropdown-menu {
+            left: 0;
+        }
+
+        .btn-header {
+            margin-top: 0;
+        }
+
+		#page-title .text-align-right {
+			text-align: left;
+		}
+
+        .btn-group-help ul.dropdown-menu {
+			left: 0;
+		}
+
+		.btn-help {
+			margin-top: 10px;
+		}		
+	}
+
+a.btn.color-2:hover {
+	background: #7A0202 !important;
+}
+/*End Links & Buttons*/
+
+
+/*Forms*/
+label {
+	font-weight: inherit;
+	margin: 0;
+}
+/*End Forms*/
+
+
+/*Modals*/
+.modal-dialog {
+	background: white;
+}
+
+modal-content {
+    border: none;
+}
+
+.modal-title {
+	color: #7A0202;
+}
+
+.modal-body nav {
+	color: #DDDDDD;
+	background: #3E3E3E;
+	padding: 5px 5px 0 5px;
+}
+
+.modal-body nav li > a {
+	border: none !important;
+}
+
+.modal-body nav li > a:hover {
+	background: transparent;
+	color: white;
+}
+
+.modal-body nav li.active > a {
+	background: white;
+	color: #3E3E3E;
+}
+
+.modal-body nav li.active > a:hover {
+	background: white;
+	color: #3E3E3E;
+}
+
+.modal-tab-info {
+	border-left: 1px solid #DDDDDD;
+	border-right: 1px solid #DDDDDD;
+	border-bottom: 1px solid #DDDDDD;
+}
+/*End Modals*/
+
+/*RS Mail*/
+.email-editor {
+	overflow-x: auto;
+}
+/*End RS Mail*/
+
+
+/*RS FormBuilder*/
+table.table-formbuilder {
+}
+
+@media screen and (max-width: 479px) {
+	table.table-formbuilder {
+		display: block;
+		overflow-x: auto !important;
+	}
+}
+
+table.table-formbuilder td.form-listing {
+	padding-left: 40px;
+}
+/*RS End FormBuilder*/

@@ -1,0 +1,366 @@
+﻿@using RSToolKit.WebUI.Models.Views.FormEmailReport;
+@model GetView
+@{
+    Layout = "~/Views/Shared/_L_Cloud.cshtml";
+}
+@section scripts
+{
+    <script src="~/Scripts/Json/jsonSorting.js"></script>
+    <script src="~/Scripts/Json/jsonFilter.js"></script>
+    <script src="~/Scripts/FormEmailReport/report.js"></script>
+}
+@section styles
+{
+    <link href="~/Content/Bootstrap/datetimepicker.min.css" rel="stylesheet" />
+    <link href="~/Content/Bootstrap/rating.css" rel="stylesheet" />
+    <style type="text/css">
+        .report-qty-container {
+            padding: 5px 0;
+        }
+
+        .report-qty {
+            text-align: right;
+            font-size: 12px;
+        }
+
+        @@media screen and (max-width: 991px) {
+            .report-qty {
+                text-align: left;
+            }
+        }
+
+        .report-nav-container {
+            background: #8e2828;
+            padding-top: 2px;
+            padding-left: 2px;
+        }
+
+        nav#report-nav {
+            background: transparent;
+        }
+
+            nav#report-nav li.menu-header {
+                font-weight: bold;
+                text-decoration: underline;
+                padding-left: 5px;
+            }
+
+            nav#report-nav ul > li > a {
+                font-size: 1em;
+            }
+
+        .header-selection-window {
+            padding: 0;
+            font-size: 12px;
+            margin-bottom: 15px;
+        }
+
+        .headers-container {
+            margin-bottom: 0;
+        }
+
+        .headers-container-selected, .headers-container-available {
+            padding: 5px;
+            height: 500px;
+            overflow-y: scroll;
+        }
+
+        .header-selection-buttons {
+            padding-top: 200px;
+            text-align: center;
+        }
+
+        @@media screen and (max-width: 991px) {
+            .header-selection-window {
+                margin-bottom: 0;
+            }
+
+            .headers-container-selected, .headers-container-available {
+                height: auto;
+                min-height: 50px;
+                overflow-y: visible;
+            }
+
+            .header-selection-buttons {
+                padding-top: 15px;
+                padding-bottom: 15px;
+            }
+        }
+
+        #m_save_files {
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+        }
+
+        .report-file {
+            cursor: pointer;
+            padding: 5px;
+        }
+
+            .report-file:hover {
+                background-color: rgba(128, 128, 128, .4);
+            }
+
+        .form-messagebox {
+            color: red;
+        }
+
+        th.placeholder {
+            background-color: transparent;
+            color: red;
+            position: relative;
+            height: 100%;
+            border: none;
+        }
+
+            th.placeholder:before {
+                content: "∇";
+                position: absolute;
+                border: none;
+            }
+
+        #jTable_headerContext {
+            background-color: white;
+            padding: 5px;
+            border: 1px solid #000;
+            box-shadow: 10px 10px 5px #888888;
+        }
+
+        .labeled-chart-container {
+            padding-right: 10px;
+            border-right: 1px solid #ddd;
+            min-height: 350px;
+        }
+
+        .canvas-holder {
+            padding: 0 0;
+            margin: 0 0;
+        }
+
+        canvas {
+            width: 350px !important;
+        }
+
+        .legend {
+            font-size: 12px;
+        }
+
+            .legend ul.pie-legend {
+                padding-left: 0;
+                margin-bottom: 0;
+            }
+
+            .legend li {
+                display: block;
+                position: relative;
+                cursor: default;
+                line-height: 16px;
+                padding-left: 18px;
+                margin: 3px 0;
+                -webkit-transition: background-color 200ms ease-in-out;
+                -moz-transition: background-color 200ms ease-in-out;
+                -o-transition: background-color 200ms ease-in-out;
+                transition: background-color 200ms ease-in-out;
+            }
+
+                .legend li:hover {
+                    background-color: #fafafa;
+                }
+
+                .legend li span {
+                    display: block;
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    width: 16px;
+                    height: 100%;
+                    border-radius: 4px;
+                }
+    </style>
+}
+@section title
+{
+    <span class="pagedReport_tableName">@Model.FormName</span>
+}
+@section crumbs
+{
+    <a href="@Url.Action("Get")">Return to Form Reports List</a>
+}
+<input id="key" value="@Model.FormKey" type="hidden" />
+<div class="row">
+    <div class="col-xs-12">
+        Records Returned: <span class="recordsReturned"></span>
+    </div>
+</div>
+<div class="col-xs-12">
+    <!--Report Menu-->
+    <div class="report-nav-container">
+        <nav class="navbar navbar-utility" id="report-nav">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapse" data-toggle="collapse" data-target="#fileNav">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div class="collapse navbar-collapse" id="fileNav">
+                    <ul class="nav navbar-nav">
+                        <li>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Reports<span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li class="menu-header">Open</li>
+                                <li><a id="emailReport" class="email-report" href="@Url.Action("NewToken", "FormEmailReport", new { id = Model.FormKey }, Request.Url.Scheme)"><span class="glyphicon glyphicon-folder-open glyphicon-small"></span> Email Report</a></li>
+                                <li><a id="invitationReport" class="invitation-report" href="@Url.Action("NewToken", "FormEmailReport", new { id = Model.FormKey, options = new Dictionary<RSToolKit.Domain.Collections.TokenOption, string>() { { RSToolKit.Domain.Collections.TokenOption.FormReportType, "invitation" } } }, Request.Url.Scheme)"><span class="glyphicon glyphicon-folder-open glyphicon-small"></span> Invitation Report</a></li>
+                                <li><a href="#" id="downloadReport"><span class="glyphicon glyphicon-cloud-download glyphicon-small"></span> Download</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Fields<span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="#" id="fields_edit"><span class="glyphicon glyphicon-edit glyphicon-small"></span> Edit</a></li>
+                                <li><a href="#" id="fields_clearall"><span class="glyphicon glyphicon-remove glyphicon-small"></span> Clear All</a></li>
+                                <li><a href="#" id="fields_addall"><span class="glyphicon glyphicon-plus glyphicon-small"></span> Add All</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Sort By<span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="#" id="sortings_edit"><span class="glyphicon glyphicon-edit glyphicon-small"></span> Edit</a></li>
+                                <li><a href="#" id="sortings_clearall"><span class="glyphicon glyphicon-remove glyphicon-small"></span> Clear All</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Filters<span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="#" id="filters_edit"><span class="glyphicon glyphicon-edit glyphicon-small"></span> Edit</a></li>
+                                <li><a href="#" id="filters_clearall"><span class="glyphicon glyphicon-remove glyphicon-small"></span> Clear All</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Register<span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li>
+                                    <a href="@Url.Action("Start", "AdminRegister", new { id = Model.FormKey }, Request.Url.Scheme )" target="_blank"><span class="glyphicon glyphicon-play-circle"></span> Admin Register</a>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("Start", "Register", new { id = Model.FormKey, live = false })" target="_blank"><span class="glyphicon glyphicon-check"></span> Test Form</a>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("Start", "Register", new { id = Model.FormKey, live = true })" target="_blank"><span class="glyphicon glyphicon-check"></span> Live Form</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("List", "InventoryReport", new { id = Model.FormKey }, Request.Url.Scheme)"><span class="glyphicon glyphicon-list glyphicon-small"></span> Advanced Reports</a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("Get", "Capacity", new { id = Model.FormKey }, Request.Url.Scheme)"><span class="glyphicon glyphicon-list glyphicon-small"></span> Capacity Limits</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <!--End Report Menu-->
+    <!--Report Options-->
+    <div class="row add-padding-vertical-5 color-grey-2" id="report-options">
+        <div class="col-md-2 add-padding-vertical-5 jTable_standardOnly">
+            <label class="control-label">Quick Filters:</label><!--IF NOT Standard report then hide-->
+            <select class="form-control input-sm" id="formType">
+                <option value="all" selected="selected">None</option>
+                <option value="active">Active Registrations</option>
+                <option value="canceled">Cancelled Registrations</option>
+                <option value="incompletes">Incomplete Registrations</option>
+                @if ((User.IsInRole("Super Administrators") || User.IsInRole("Administrators")))
+                {
+                    <option value="deleted">Deleted Registrations</option>
+                }
+                <option value="unbalanced">Unbalanced Accounts</option>
+                <option value="refund">Refunds Due</option>
+                <option value="owed">Balance Owed</option>
+            </select>
+        </div>
+        <div class="col-md-2 add-padding-vertical-5">
+            <label class="control-label">Records Per Page:</label>
+            <input type="text" class="form-control" id="pageSize"/>
+        </div>
+        <div class="col-md-2 add-padding-vertical-5">
+            <label class="control-label">Page:</label>
+            <div class="input-group input-group-sm">
+                <!--
+                <span class="input-group-btn"><button id="pageLeft" class="btn btn-default jTable_pageLeft"><span class="glyphicon glyphicon-arrow-left"></span></button></span>
+                -->
+                <select class="form-control" id="pageSelect"></select>
+                <!--
+                <span class="input-group-btn"><button id="pageRight" class="btn btn-default jTable_pageRight"><span class="glyphicon glyphicon-arrow-right"></span></button></span>
+                -->
+            </div>
+        </div>
+    </div>
+    <!--End Report Options-->
+    <!--Report Data-->
+    <div id="mainHolder" class="row">
+        <div class="col-xs-12 text-small">
+            <section id="report"></section>
+            <section id="buttons">
+                <div class="col-sm-6 col-md-4 col-md-offset-2 col-lg-2 col-lg-offset-4">
+                    <button class="btn btn-default email-report" id="btn-email">Email Report</button>
+                </div>
+                <div class="col-sm-6 col-md-4 col-md-offset-2 col-lg-2 col-lg-offset-4">
+                    <button class="btn btn-default invitation-report" id="btn-invitation">Invitation Report</button>
+                </div>
+            </section>
+        </div>
+    </div>
+    <!--End Report Data-->
+</div>
+
+<div class="modal fade" id="headersModal">
+    <div class="modal-dialog modal-fill">
+        <div class="modal-header"><h3 class="modal-title">Report Fields</h3></div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-5 header-selection-window">
+                    <div class="headers-container headers-available">
+                        <div class="headers-title">Available Fields</div>
+                        <div class="headers-container-available" id="availableHeaders"></div>
+                    </div>
+                </div>
+                <div class="col-md-2 header-selection-buttons">
+                    <div class="headers-commands"><a href="#" class="add-header">Add <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span></a><br /><br /><a href="#" class="remove-header"><span class="glyphicon glyphicon-chevron-left glyphicon-small"></span></span> Remove</a></div>
+                </div>
+                <div class="col-md-5 header-selection-window">
+                    <div class="headers-container headers-selected">
+                        <div class="headers-title">Included Fields</div>
+                        <div class="headers-container-selected" id="selectedHeaders"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer"><button type="button" class="btn btn-default headers-set" id="setHeaders">Set</button></div>
+    </div>
+</div>
+<div class="modal fade" id="editModal">
+    <div class="modal-dialog modal-lg modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h3 class="modal-title">Edit Data</h3>
+        </div>
+        <div class="modal-body">
+            <div class="row" style="display: none;" id="editingProgress"><div class="progress"><div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"><span class="sr-only">Processing</span></div></div></div>
+            <div class="row editingData">
+                <div style="font-size: 12px; color: red;">
+                    <p>IMPORTANT: Editing this data will NOT automatically adjust related fields based on form logic. If this field affects subsequent entries, please review all fields after making this edit to identify other required edits.</p>
+                    <p>If you wish subsequent fields to update automatically, click on the confirmation number for this record, select Confirmation Link and then click Admin Confirmation. Use the Edit button on the confirmation page to proceed through the form step by step to ensure all automated adjustments are made. You must advance to the Review Page to ensure all adjustments applied.</p>
+                </div>
+            </div>
+            <div class="row editingData" style="display: none;" id="editingData"></div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Discard Changes</button>
+            <button type="button" class="btn btn-default" id="saveEdit">Save Changes</button>
+        </div>
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

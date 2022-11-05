@@ -1,0 +1,159 @@
+﻿body {
+    font-family: 'Carme', sans-serif;
+    font-size: 14px;
+    margin: 0;
+    padding: 0;
+}
+a:link {
+    color: #7A0202;
+    text-decoration: none;
+}
+a:visited {
+    color: #7A0202;
+    text-decoration: none;
+}
+a:active {
+    color: #7A0202;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+
+/**********/
+/* Header */
+/**********/
+
+section.header-logout {
+    padding-left: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+img.header-logo {
+    height: 60px;
+}
+
+/**************/
+/* End Header */
+/**************/
+
+/**************/
+/* Navigation */
+/**************/
+
+nav.nagivation {
+    margin: 0 auto;
+    overflow: hidden;
+    height: 25px;
+    margin-bottom: 15px;
+}
+
+    nav.navigation ul {
+        list-style-type: none;
+        float: left;
+        width: 100%;
+        padding: 0.25em 0;
+        margin: 0px;
+        height: 100%;
+    }
+        nav.navigation ul li {
+            display: block;
+            float: left;
+            margin-right: 40px;
+            font-size: 85%;
+            height: 100%;
+        }
+        nav.navigation ul li:hover {
+            background-color: #3E3E3E;
+        }
+    nav.navigation a:link {
+        color: white;
+        font-weight: bold !Important;
+        text-decoration: none !Important;
+    }
+    nav.navigation a:active {
+        color: white;
+        font-weight: bold !Important;
+        text-decoration: none !Important;
+    }
+    nav.navigation a:visited {
+        color: white;
+        font-weight: bold !Important;
+        text-decoration: none !Important;
+    }
+    nav.navigation a:hover {
+        text-decoration: none !Important;
+    }
+
+
+/******************/
+/* End Navigation */
+/******************/
+
+/*************/
+/* Universal */
+/*************/
+
+/*****************/
+/* End Universal */
+/*****************/
+
+/*******/
+/* Box */
+/*******/
+
+div.Box {
+    border: 2px solid #3E3E3E;
+    border-radius: 4px;
+    padding: 0px !Important;
+    margin-bottom: 15px;
+}
+
+    div.Box > header {
+        background-color: #3E3E3E;
+        font-size: 110%;
+        font-weight: bold;
+        text-align: center;
+        padding: 15px;
+        color: #FFFFFF;
+    }
+
+    div.Box > header a.box-header-link:active,
+    div.Box > header a.box-header-link:link,
+    div.Box > header a.box-header-link:visited,
+    div.Box > header span.psuedo-link
+    {
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 110%;
+    }
+
+    div.Box > header a.box-header-link:hover,
+    div.Box > header span.psuedo-link:hover {
+        text-decoration: underline;
+    }
+
+    span.psuedo-link {
+        cursor: pointer;
+    }
+
+    span.psuedo-link:hover {
+        text-decoration: underline;
+    }
+
+    div.Box > div {
+        padding: 15px;
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+
+    div.Box > footer {
+        background-color: #3E3E3E;
+        font-size: 95%;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 0px;
+        padding: 15px;
+    }

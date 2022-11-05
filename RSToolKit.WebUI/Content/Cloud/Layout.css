@@ -1,0 +1,113 @@
+﻿nav.navbar-utility li.cloud > a {
+  background: white !important;
+  color: #3E3E3E !important;
+}
+nav.navbar-utility ul > li.cloud > ul {
+  background: white;
+}
+@media screen and (max-width: 767px) {
+  nav.navbar-utility li.cloud > a {
+    background: transparent !important;
+    color: white !important;
+  }
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+.negative-balance {
+  color: #7a0202;
+}
+.negative-balance::before {
+  content: '(';
+}
+.negative-balance::after {
+  content: ')';
+}
+table.table-registration-data {
+  display: block;
+  height: 450px;
+  overflow: auto;
+}
+.table-cloud-data {
+  height: 450px;
+  overflow: auto;
+}
+table.table-registration-data th {
+  padding-right: 50px !important;
+  white-space: nowrap;
+  min-width: 150px;
+}
+.th-lock {
+  position: absolute;
+  top: 0;
+  line-height: 40px;
+}
+td.cloud-dashboard-icon-cell {
+  width: 5%;
+}
+table.table-dashboard td.left {
+  width: 75%;
+}
+table.table-dashboard td.right {
+  text-align: center;
+}
+.cloud-report-view-links .glyphicon {
+  font-size: 1.25em;
+}
+.cloud-report-view-links .glyphicon-download-alt,
+.cloud-report-view-links .glyphicon-print,
+.cloud-report-view-links .glyphicon-signal,
+.cloud-report-view-links .glyphicon-share-alt,
+.cloud-report-view-links .glyphicon-star {
+  padding-left: 22px;
+}
+@media screen and (max-width: 767px) {
+  .cloud-report-view-links {
+    text-align: left;
+    padding-top: 15px;
+  }
+  .cloud-report-view-links .glyphicon {
+    padding: 0 50px 5px 0;
+  }
+}
+th.registrant-header {
+  font-size: 18px;
+  color: #8e2828;
+  font-weight: normal !important;
+  padding-top: 15px !important;
+}
+table.filter-table {
+  border-bottom: none !important;
+}
+table.filter-table thead tr th:nth-child(1) {
+  width: 100px;
+  white-space: nowrap;
+}
+table tr.placeholder {
+  position: relative;
+  margin: 0;
+  border: none;
+}
+table tr.placeholder:before {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+  border: 5px solid transparent;
+  border-left-color: #7a0202;
+  margin-top: -5px;
+  left: 2px;
+  border-right: none;
+}
+.item-editable {
+  cursor: pointer;
+}
+.item-editable:hover {
+  background-color: #7a0202 !important;
+  color: white !important;
+}
+.rectify-error {
+  background-color: #8e2828 !important;
+  color: white;
+}
+/*# sourceMappingURL=Layout.css.map */

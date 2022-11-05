@@ -1,0 +1,55 @@
+﻿@model RSToolKit.WebUI.Models.LoginModel
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout_Login.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    <div class="row add-padding-vertical">
+        <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4 add-padding-bottom-5">
+            <img style="width: 150px;" src="~/images/common/regstep.png" alt="RegStep" />
+        </div>
+        <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4 color-1 text-color-white rounded-top text-medium add-padding-vertical-5">
+            RS Toolkit Login
+        </div>
+        <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4 color-grey-2 rounded-bottom">
+            <div class="add-padding-vertical-5">
+                @Html.ValidationSummary()
+            </div>
+            <div class="add-padding-vertical-5">
+                <input class="form-control input-sm" name="Username" placeholder="Username" />
+            </div>
+            <div class="add-padding-vertical-5">
+                <input type="password" class="form-control input-sm" name="Password" placeholder="Password" autocomplete="off" />
+            </div>
+            <div class="add-padding-vertical-5">
+                <div class="form-group">
+                    <label for="RememberMe">@Html.CheckBoxFor(m => m.RememberMe) Remember Me</label>
+                </div>
+            </div>
+            <div class="add-padding-vertical-5">
+                <div class="form-group">
+                    <button type="submit" class="btn btn-default">Submit</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4" style="font-size: 10px;">
+            <div class="row">
+                <div class="col-xs-6">
+                    &copy; 2013-@DateTime.UtcNow.Year RegStep Technologies
+                </div>
+                <div class="col-xs-6 text-align-right">
+                    <a class="text-color-1" href="http://www.regstep.com">www.regstep.com</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="row add-padding-vertical">
+        <div style="font-size: 12px;" class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4 text-align-center">
+            Need to access an event launched prior to October 2014? Login to <a class="text-color-1" href="https://www.registrationassistant.com/p/p_login.asp">RegistrationAssistant</a>.
+        </div>
+    </div>
+}
+

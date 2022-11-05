@@ -1,0 +1,100 @@
+﻿@model ViewBase
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>@Model.Title</title>
+
+    <meta name="description" content="@Model.Title" />
+    <meta name="keywords" content="@Model.Title" />
+    <meta name="author" content="RegStep Technologies" />
+
+    <!--CSS-->
+    <link href="~/Content/Bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/Registration/Static.min.css" rel="stylesheet" />
+    <link href="~/Content/Bootstrap/datetimepicker.min.css" rel="stylesheet" />
+    <link href="~/Content/Bootstrap/rating.css" rel="stylesheet" />
+    <style type="text/css">
+            @RenderSection("styles", required: true)
+    </style>
+</head>
+
+<body>
+    <input type="hidden" id="toolkitGlobal_jsonAntiForgeryToken" value="@Html.JsonAntiforgeryToken()">
+    <input type="hidden" id="toolkitGlobal_companyId" value="@((ViewBag.User as User).GetCurrentCompanyKey().ToString())" />
+    <!--Wrapper-->
+    <div class="container-fluid page-wrapper">
+        <div class="container form-wrapper">
+
+            <!--Header-->
+            <div class="container-fluid form-header">
+                @RenderSection("header", required: true)
+            </div>
+            <!--End Header-->
+            <!--Info Bar-->
+            <div class="container-fluid form-info-bar">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <span class="shopping-cart">
+                            @RenderSection("shoppingCart", required: true)
+                        </span>
+                    </div>
+                    <div class="col-sm-6 text-right">
+                        <span class="page-number">
+                            @RenderSection("pageNumber", required: true)
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <!--End Info Bar-->
+            <!--Content Area-->
+            <div class="container-fluid form-content-area">
+                <div class="row">
+                    <div class="col-xs-12" id="errorMessage">
+                        <!--Error Notifier-->
+                        @RenderSection("errorMessage", required: false)
+                        <!--End Error Notifier-->
+                        @RenderBody()
+                    </div>
+                </div>
+            </div>
+            <!--End Content Area-->
+            <!--Footer-->
+            <div class="container-fluid form-footer">
+                @RenderSection("footer", required: true)
+            </div>
+            <!--End Footer-->
+
+        </div>
+        <!--RS-->
+        @if (((RSToolKit.Domain.Entities.Form)ViewBag.Form).CompanyKey.ToString() != "be2f9c3b-39fa-46e9-95e1-f9b9d08ab227" && ((RSToolKit.Domain.Entities.Form)ViewBag.Form).CompanyKey.ToString() != "abc14fa9-87a3-45e0-8a24-ef9da51c9522")
+        {
+            <div class="rs-footer">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="rs-footer-section">
+                                <a class="rs-footer-link" href="http://www.regstep.com" target="_blank">Powered by <span class="rs-footer-reg">Reg</span>Step</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        <!--End RS-->
+    </div>
+    <!--End Wrapper-->
+    @Scripts.Render("~/bundles/scripts/jquery")
+    @Scripts.Render("~/bundles/scripts/bootstrap")
+    @Scripts.Render("~/bundles/scripts/extensions")
+    @Scripts.Render("~/bundles/scripts/toolkit")
+    <script src="~/Scripts/Registration/register.js"></script>
+    <script src="~/Scripts/Registration/components.js"></script>
+    <script src="~/Scripts/Bootstrap/Plugins/rating.js"></script>
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

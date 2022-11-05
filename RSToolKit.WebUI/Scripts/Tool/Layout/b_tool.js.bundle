@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<bundle xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://vswebessentials.com/schemas/v1/bundle.xsd">
+  <settings>
+    <!--Determines if the bundle file should be automatically optimized after creation/update.-->
+    <minify>true</minify>
+    <!--Determine whether to generate/re-generate this bundle on building the solution.-->
+    <runOnBuild>false</runOnBuild>
+    <!--Specifies a custom subfolder to save files to. By default, compiled output will be placed in the same folder and nested under the original file.-->
+    <outputDirectory />
+  </settings>
+  <!--The order of the <file> elements determines the order of the files in the bundle.-->
+  <files>
+	  <file>/Scripts/Tool/Layout/globalVariables.js</file>
+    <file>/Scripts/versioning.js</file>
+    <file>/Scripts/jquery-2.1.4.js</file>
+	  <file>/Scripts/jQuery/Plugins/jquery-color.js</file>
+	  <file>/Scripts/jQuery/Plugins/jsonData.js</file>
+	  <file>/Scripts/bootstrap.js</file>
+    <file>/Scripts/Tool/Layout/extensions.js</file>
+    <file>/Scripts/Tool/Layout/browserGap.js</file>
+    <file>/Scripts/Tool/Layout/prettyProcessing.js</file>
+    <file>/Scripts/Tool/Layout/breadCrumb.js</file>
+    <file>/Scripts/Tool/Layout/restful.js</file>
+    <file>/Scripts/Moment/moment.js</file>
+    <file>/Scripts/Bootstrap/Plugins/datetimepicker/bootstrap-datetimepicker.js</file>
+	  <file>/Scripts/Tool/contactUpload.js</file>
+  </files>
+</bundle>
+	

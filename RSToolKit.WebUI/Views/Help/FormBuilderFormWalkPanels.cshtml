@@ -1,0 +1,141 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout_Help_FormBuilder.cshtml";
+}
+@section scripts {
+    <script>
+        $(function () {
+            $("#popover-send-email").popover({
+                html: true,
+                placement: 'top',
+                trigger: 'focus',
+                title: 'Send Email',
+                content: function () {
+                    return $('#popover-send-email-content').html();
+                }
+            });
+        });
+    </script>
+}
+@section modals
+{
+}
+
+<div class="add-padding-vertical-5 add-border-bottom">
+    <div class="help-breadcrumb">
+        <a href="~/Help/FormBuilder">FormBuilder</a> <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span>
+        RegStep Forms
+    </div>
+</div>
+
+<div class="add-padding-top help-text">
+    <h2 class="add-padding-bottom-5">
+        Form Panels
+    </h2>
+    <p>
+        Each Page consists of at least one Panel. Panels contain components that collect registrant data. Grouping Components into Panels allows you to clearly define registration sections, create less logic as you can apply logic to the entire Panel as opposed to each Component, and keep your project organized in FormBuilder.
+    </p>
+    <p>
+        See below for more information on Panels, Components, and Items.
+    </p>
+</div>
+
+<div class="add-padding-vertical-2em">
+    <div class="screen-shot">
+        <div class="screen-shot-text screen-shot-header">
+            <div class="row text-align-center">
+                <div class="col-sm-4">
+                    <a class="text-color-white" href="FormBuilderFormWalkPageTypes">
+                        Page Types
+                    </a>
+                </div>
+                <div class="col-sm-4 text-underline">
+                    Panels &amp Components
+                </div>
+                <div class="col-sm-4">
+                    <a class="text-color-white" href="FormBuilderFormWalkPanels">
+                        Prices &amp; Capacity Limits
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="screen-shot-body">
+            <!--UI Markup-->
+            <div class="row">
+                <div class="col-xs-12 add-padding-vertical">
+                    <div class="add-padding-vertical text-color-1">
+                        <h3>
+                            Panels
+                        </h3>
+                    </div>
+                    <table class="table diagram">
+                        <tbody>
+                            <tr>
+                                <td class="diagram-form diagram-header">
+                                    Annual Conference
+                                </td>
+                                <td rowspan="4" class="diagram-notes">
+                                    <p>
+                                        The first page is <span class="text-bold">always</span> the Start Page. On this page, the user enters their email.
+                                    </p>
+                                    <p>
+                                        A continuation email is sent to the user. Only one email is allowed per record so once a registration is started, the only way to continue is via that link. This ensures your registrants' personal data is secure.
+                                    </p>
+                                    <p>
+                                        When the user enters their email, the form queries your Contact List to pre-populate any data contained there.
+                                    </p>
+                                    <p>
+                                        If registration access is restricted, the form will query your authorized list to see if this email is included. If not, the form will not allow the user to register.
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="diagram-form diagram-info">
+                                    <table width="100%">
+                                        <tr>
+                                            <td class="diagram-form-half"></td>
+                                            <td align="right" class="diagram-form-half">
+                                                Start
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="diagram-form diagram-content">
+                                    <table width="100%">
+                                        <tr>
+                                            <td class="diagram-form-half diagram-form-content">
+                                                <label class="control-label">
+                                                    Enter your email
+                                                </label>
+                                                <input class="form-control input-sm" />
+                                            </td>
+                                            <td class="diagram-form-half diagram-form-content"></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" class="diagram-form-content">
+                                                <button class="btn btn-default">Next</button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="diagram-form diagram-footer">
+                                    Visit our website.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>          
+
+            </div>
+            <!--End UI Markup-->
+        </div>
+        <div class="screen-shot-text screen-shot-footer">
+            Click on the topics at the top of this section to read more.
+        </div>
+    </div>
+</div>
+
+

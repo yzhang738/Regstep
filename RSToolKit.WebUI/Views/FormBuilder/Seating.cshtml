@@ -1,0 +1,112 @@
+﻿@using RSToolKit.Domain.Entities;
+@model Seating
+@{
+    Layout = "~/Views/Shared/_Layout_FormBuilder.cshtml";
+}
+@section scripts
+{
+
+    <script type="text/javascript">
+        var formId = "@Model.Form.UId";
+        var seatingId = "@Model.UId";
+    </script>
+}
+@section styles
+{
+}
+@section title {
+    Edit Capacity Limit
+}
+@section breadcrumbs {
+    @Html.ActionLink("Forms", "Index", "FormBuilder")
+    <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span> @Html.ActionLink((Model.Form.Name.Length < 20 ? Model.Form.Name : Model.Form.Name.Substring(0, 20)), "Form", "FormBuilder", new { id = Model.Form.UId }, null)
+    <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span> @Html.ActionLink("Capacity Limits", "Seatings", "FormBuilder", new { id = Model.Form.UId }, null)
+    <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span> @Model.Name
+}
+@section modals
+{
+}
+@using (Html.BeginForm("Seating", "FormBuilder", FormMethod.Post, new { @class = "form", role = "form", data_xhr_method = "put" }))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(m => m.UId)
+    <!--Options-->
+    <div class="col-md-4 col-lg-3 add-padding-vertical">
+        <!--Accordion-->
+        <div class="panel-group" id="accordion">
+
+            <!--Options 1-->
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <span class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#options-1">
+                            Admin Info <span class="caret"></span>
+                        </a>
+                    </span>
+                </div>
+                <div id="options-1" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        <div class="add-padding-vertical-5">
+                            <label class="control-label">Name:</label>
+                            <input class="form-control input-sm" type="text" name="Name" value="@Model.Name" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--End Options 1-->
+            <!--Options 2-->
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <span class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#options-2">
+                            Options <span class="caret"></span>
+                        </a>
+                    </span>
+                </div>
+                <div id="options-2" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <div class="add-padding-vertical-5">
+                            <label class="control-label">Available Units:</label>
+                            <input class="form-control input-sm" type="number" name="MaxSeats" value="@Model.MaxSeats" />
+                        </div>
+                        <div class="add-padding-vertical-5">
+                            <label>
+                                @Html.CheckBoxFor(m => m.Waitlistable) Waitlist Enabled
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--End Options 2-->
+
+        </div>
+        <!--End Accordion-->
+    </div>
+    <!--End Options-->
+    <!--Display Options-->
+    <div class="col-md-8 col-lg-9">
+        <div class="add-padding-bottom-5 text-medium text-color-2">
+            Display Options
+        </div>
+        <div class="add-padding-vertical-5 add-padding-horizontal add-margin-bottom color-grey-2">
+            <div class="add-padding-vertical-5">
+                <label class="control-label">At Capacity Label:</label>
+                <input class="form-control input-sm" type="text" name="FullLabel" value="@Model.FullLabel" />
+            </div>
+            <div class="add-padding-vertical-5">
+                <label class="control-label">Waitlist Label:</label>
+                <input class="form-control input-sm" type="text" name="WaitlistLabel" value="@Model.WaitlistLabel" />
+            </div>
+        </div>
+
+        <!--Save-->
+        <div class="add-padding-vertical">
+            <button type="submit" class="btn btn-default">
+                Save
+            </button>
+        </div>
+        <!--End Save-->
+    </div>
+    <!--End Display Options-->
+}

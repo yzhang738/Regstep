@@ -1,0 +1,74 @@
+﻿@model RSToolKit.WebUI.Models.EditUserModel
+@{
+    ViewBag.Title = "Edit";
+}
+
+@section scripts
+{
+
+    <script src="~/Scripts/Bootstrap/Plugins/bootstrap-datetimepicker.min.js"></script>
+    <script src="~/Scripts/jQuery/Plugins/formvalidate.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('#birthdatePicker').datetimepicker({
+                language: 'en'
+            });
+        });
+    </script>
+}
+
+@section styles
+{
+    @Styles.Render("~/less/bootstrap/datetimepicker")
+}
+
+@using(Html.BeginForm("Edit", "Account", FormMethod.Post, new { @class = "form-horizontal", data_validation = "true" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.Id)
+    <div class="form-group">
+        <label class="col-lg-2 col-lg-offset-3 control-label">Username</label>
+        <p class="col-lg-4 form-control-static">@Model.Username@Html.HiddenFor(m => m.Username)</p>
+    </div>
+    <div class="form-group">
+        <label class="col-lg-2 col-lg-offset-3 control-label">First Name</label>
+        <div class="col-lg-4">@Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })</div>
+    </div>
+    <div class="form-group">
+        <label class="col-lg-2 col-lg-offset-3 control-label">Last Name</label>
+        <div class="col-lg-4">@Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })</div>
+    </div>
+    <div class="form-group">
+        <label class="col-lg-2 col-lg-offset-3 control-label">Email</label>
+        <div class="col-lg-4">@Html.TextBoxFor(m => m.Email, new { @class = "form-control", data_validation = "email", data_required = "true" })</div>
+    </div>
+    <div class="form-group">
+        <label class="col-lg-2 col-lg-offset-3 control-label">Confirm Email</label>
+        <div class="col-lg-4">@Html.TextBox("ConfirmEmail", "", new { @class = "form-control", data_confirmation = "Email" })</div>
+    </div>
+    <div class="form-group">
+        <label class="col-lg-2 col-lg-offset-3 control-label">Phone Number</label>
+        <div class="col-lg-4">@Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control" })</div>
+    </div>
+    <div class="form-group">
+        <label class="col-lg-2 col-lg-offset-3 control-label">Time Offset</label>
+        <div class="col-lg-4">@Html.TextBoxFor(m => m.UTCOffset, new { @class = "form-control", data_validation = "float", data_errormessage = "Must be an int or decimal representing hours." })</div>
+    </div>
+    <div class="form-group">
+        <label class="col-lg-2 col-lg-offset-3 control-label">Birthdate</label>
+        <div class="col-lg-4">
+            <div class="input-group" id="birthdatePicker">
+                <input type="text" data-format="MM/dd/yyyy" name="Birthdate" class="form-control" value="@Model.Birthdate"/>
+                <span class="input-group-addon">
+                    <span data-time-icon="glyphicon-time" data-date-icon="glyphicon-calendar" class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-2 col-md-offset-7">
+            <input type="submit" class="btn btn-primary" value="Save" />
+        </div>
+    </div>
+}
+

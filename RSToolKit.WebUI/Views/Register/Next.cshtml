@@ -1,0 +1,60 @@
+﻿@model RegistrationHtml
+@{
+    ViewBag.Title = Model.Form.Name;
+    ViewBag.WrapperClass = Model.Registrant.Type == RSToolKit.Domain.Entities.RegistrationType.Test ? "form-test" : "form-live";
+    Layout = "~/Views/Shared/_Layout_Registration.cshtml";
+}
+@section pageNumber
+{
+    @Model.RenderPageNumbers()
+}
+@section shoppingCart
+{
+    @Model.RenderShoppingCart()
+}
+@section header
+{
+    @Model.RenderHeader()
+}
+@section footer
+{
+    @Model.RenderFooter()
+}
+@section customStyles
+{
+    @Model.RenderFormStyle()
+}
+@section scripts {
+    @if (Model.Registrant.Type == RSToolKit.Domain.Entities.RegistrationType.Test)
+    {
+        <script src="~/Scripts/Registration/FillRandom.js"></script>
+        <script src="~/Scripts/Registration/chance.js"></script>
+    }
+}
+@section errorMessage
+{
+    @{ var errors = Model.Errors.Where(e => e.Id == ""); }
+    <div class="form-error-warning" @Html.Raw(Model.Errors.Count() > 0 ? "" : " style=\"display: none;\"")>
+        @if (errors.Count() > 0)
+        {
+            foreach (var error in errors)
+            {
+                @:<span class="glyphicon glyphicon-warning-sign"></span> @error.Message
+            }
+        }
+        else
+        {
+            @:<span class="glyphicon glyphicon-warning-sign"></span> There are problems with your selections. Please see notes below to correct your registration before moving forward.
+        }
+    </div>
+}
+@using (Html.BeginForm("Next", "Register", FormMethod.Post, new { id = "form", enctype = "multipart/form-data", data_form_containerClass = "form-component", data_form_warning = ".form-error-warning" }))
+{
+    @Html.AntiForgeryToken()
+    @Model.RenderHiddens()
+    foreach (var panel in Model.Page.Panels.OrderBy(p => p.Order))
+    {
+        @Model.RenderPanel(panel)
+    }
+    @Html.Partial("P_RegistrationFormNavigation", Model)
+}

@@ -1,0 +1,125 @@
+﻿/* Bootstrap Extensions */
+
+.modal-save-sprite {
+    width: 110px;
+}
+
+.no-border {
+    border: none !Important;
+}
+
+.margin-bottom-remove {
+    margin-bottom: 0px !Important;
+}
+
+.padding-bottom-remove {
+    padding-bottom: 0px !Important;
+}
+
+.hide {
+    display: none;
+}
+
+div.center {
+    display: table;
+    margin: auto;
+}
+
+.modal-dialog {
+    background-color: #FFFFFF;
+}
+
+.margin-bottom-sm {
+    margin-bottom: 10px;
+}
+
+.row {
+    padding: 5px;
+}
+.float-right {
+    float: right;
+}
+.float-left {
+    float: left;
+}
+
+.border-radius-none {
+    border-radius: 0px;
+}
+
+.text-rsred {
+    color: #7A0202;
+}
+.text-white {
+    color: #FFFFFF;
+}
+
+.background-rsred {
+    background: none repeat scroll 0 0 #7A0202;
+}
+.background-rsgrey {
+    background: none repeat scroll 0 0 #3E3E3E;
+    background-color: #3E3E3E;
+}
+
+.no-wrap {
+    text-wrap: none;
+    white-space: nowrap;
+}
+
+.container-main {
+    margin-top: 50px;
+}
+
+.fixed-top {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    z-index: 999;
+}
+
+span.error-bubble {
+    border-radius: 10px;
+    background-color: #FFFFFF;
+    margin: 2px;
+    padding: 2px 2px;
+    color: #7A0202;
+    font-size: 6pt;
+    line-height: 6pt;
+    position: absolute;
+    top: 2px;
+    right: -5px;
+}
+
+.context-menu {
+    min-width: 50px;
+    padding: 5px;
+    position: fixed;
+    background-color: white;
+    border: solid 2px black;
+    z-index: 1000;
+    display: none;
+}
+    .context-menu > div {
+        width: 100%;
+        color: black;
+        font-size: 10pt;
+        cursor: pointer;
+    }
+    .context-menu > div:hover {
+        text-decoration: underline;
+    }
+
+.pointer {
+    cursor: pointer;
+}
+
+.vertical-text {
+	transform: rotate(90deg);
+    -webkit-transform: rotate(90deg); 
+    -moz-transform: rotate(90deg); 
+    -ms-transform: rotate(90deg); 
+    -o-transform: rotate(90deg); 
+    transform: rotate(90deg);
+	transform-origin: left top 0;
+}

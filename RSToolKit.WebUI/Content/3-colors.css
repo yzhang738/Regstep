@@ -1,0 +1,347 @@
+﻿/*Greys:
+1 EEEEEE 238,238,238
+2 DDDDDD 221,221,221
+3 7A7A7A 122,122,122
+4 3E3E3E 62,62,62 RS Grey
+5 161616 22,22,22
+*/
+
+/*Colors:
+1 7A0202 122,2,2 RS Red
+2 8E2828 
+3 0000FF 0,0,255
+4 FFFF00 255,255,0
+5 FF00FF 255,0,255
+6 00FFFF 0,255,255
+7 660066 102,0,102
+8 006600 0,102,0
+*/
+
+/*Element Background Color - Solid*/
+.color-white {
+	background: #FFFFFF !important;
+}
+
+.color-black {
+	background: #000000 !important;
+}
+
+.color-grey-1 {
+	background: #EEEEEE !important;
+}
+
+.color-grey-2 {
+	background: #DDDDDD !important;
+}
+
+.color-grey-3 {
+	background: #7A7A7A !important;
+}
+
+.color-grey-4 {
+	background: #3E3E3E !important;
+}
+
+.color-grey-5 {
+	background: #161616 !important;
+}
+
+.color-1 {
+	background: #7A0202 !important;
+}
+
+.color-2 {
+	background: #8E2828 !important;
+}
+
+.color-3 {
+	background: #0000FF !important;
+}
+
+.color-4 {
+	background: #FFFF00 !important;
+}
+
+.color-5 {
+	background: #FF00FF !important;
+}
+
+.color-6 {
+	background: #00FFFF !important;	
+}
+
+.color-7 {
+	background: #660066 !important;
+}
+
+.color-8 {
+	background: #006600 !important;
+}
+/*End Element Background Color - Solid*/
+
+
+/*Element Background Color - Transparency*/
+.overlay-color-white {
+	background: rgba(255,255,255,.5) !important;
+}
+
+.overlay-color-black {
+	background: rgba(0,0,0,.5) !important;
+}
+
+.overlay-color-grey-1 {
+	background: rgba(238,238,238,.5) !important;
+}
+
+.overlay-color-grey-2 {
+	background: rgba(221,221,221,.5) !important;
+}
+
+.overlay-color-grey-3 {
+	background: rgba(122,122,122,.5) !important;
+}
+
+.overlay-color-grey-4 {
+	background: rgba(62,62,62,.5) !important;
+}
+
+.overlay-color-grey-5 {
+	background: rgba(22,22,22,.5) !important;
+}
+
+.overlay-color-1 {
+	background: rgba(122,2,2,.5) !important;
+}
+
+.overlay-color-2 {
+	background: rgba(0,255,0,.5) !important;
+}
+
+.overlay-color-3 {
+	background: rgba(0,0,255,.5) !important;
+}
+
+.overlay-color-4 {
+	background: rgba(255,255,0,.5) !important;
+}
+
+.overlay-color-5 {
+	background: rgba(255,0,255,.5) !important;
+}
+
+.overlay-color-6 {
+	background: rgba(0,255,255,.5) !important;
+}
+
+.overlay-color-7 {
+	background: rgba(102,0,102,.5) !important;
+}
+
+.overlay-color-8 {
+	background: rgba(0,102,0,.5) !important;
+}
+/* End Element Background Color - Transparency*/
+
+
+/*Element Text Color*/
+.text-color-white {
+	color: #FFFFFF !important;
+}
+
+.text-color-black {
+	color: #000000 !important;
+}
+
+.text-color-grey-1 {
+	color: #EEEEEE !important;
+}
+
+.text-color-grey-2 {
+	color: #DDDDDD !important;
+}
+
+.text-color-grey-3 {
+	color: #7A7A7A !important;
+}
+
+.text-color-grey-4 {
+	color: #3E3E3E !important;
+}
+
+.text-color-grey-5 {
+	color: #161616 !important;
+}
+
+.text-color-1 {
+	color: #7A0202 !important;
+}
+
+.text-color-2 {
+	color: #8E2828 !important;
+}
+
+.text-color-3 {
+	color: #0000FF !important;
+}
+
+.text-color-4 {
+	color: #FFFF00 !important;
+}
+
+.text-color-5 {
+	color: #FF00FF !important;
+}
+
+.text-color-6 {	
+	color: #00FFFF !important;
+}
+
+.text-color-7 {
+	color: #660066 !important;
+}
+
+.text-color-8 {
+	color: #006600 !important;
+}
+/*End Element Text Color*/
+
+
+/*Element Border Color*/
+.border-color-white {
+	border-color: #FFFFFF !important;
+}
+
+.border-color-black {
+	border-color: #000000 !important;
+}
+
+.border-color-grey-1 {
+	border-color: #EEEEEE !important;
+}
+
+.border-color-grey-2 {
+	border-color: #DDDDDD !important;
+}
+
+.border-color-grey-3 {
+	border-color: #7A7A7A !important;
+}
+
+.border-color-grey-4 {
+	border-color: #3E3E3E !important;
+}
+
+.border-color-grey-5 {
+	border-color: #161616 !important;
+}
+
+.border-color-1 {
+	border-color: #7A0202 !important;
+}
+
+.border-color-2 {
+	border-color: #8E2828 !important;
+}
+
+.border-color-3 {
+	border-color: #0000FF !important;
+}
+
+.border-color-4 {
+	border-color: #FFFF00 !important;
+}
+
+.border-color-5 {
+	border-color: #FF00FF !important;
+}
+
+.border-color-6 {
+	border-color: #00FFFF !important;	
+}
+
+.border-color-7 {
+	border-color: #660066 !important;
+}
+
+.border-color-8 {
+	border-color: #006600 !important;
+}
+/*End Element Border Color*/
+
+
+/*Button Colors*/
+button.btn-color-white {
+	background: #FFFFFF !important;
+	border: none !important;
+}
+
+button.btn-color-black {
+	background: #000000 !important;
+	border: none !important;
+}
+
+button.btn-color-grey-1 {
+	background: #EEEEEE!important;
+	border: none !important;
+}
+
+button.btn-color-grey-2 {
+	background: #DDDDDD !important;
+	border: none !important;
+}
+
+button.btn-color-grey-3 {
+	background: #7A7A7A !important;
+	border: none !important;
+}
+
+button.btn-color-grey-4 {
+	background: #3E3E3E !important;
+	border: none !important;
+}
+
+button.btn-color-grey-5 {
+	background: #161616 !important;
+	border: none !important;
+}
+
+button.btn-color-1 {
+	background: #7A0202 !important;
+	border: none !important;
+}
+
+button.btn-color-2 {
+	background: #8E2828 !important;
+	border: none !important;
+}
+
+button.btn-color-3 {
+	background: #0000FF !important;
+	border: none !important;
+}
+
+button.btn-color-4 {
+	background: #FFFF00 !important;
+	border: none !important;
+}
+
+button.btn-color-5 {
+	background: #FF00FF !important;
+	border: none !important;
+}
+
+button.btn-color-6 {
+	background: #00FFFF !important;
+	border: none !important;	
+}
+
+button.btn-color-7 {
+	background: #660066 !important;
+	border: none !important;
+}
+
+button.btn-color-8 {
+	background: #006600 !important;
+	border: none !important;
+}
+/*End Button Colors

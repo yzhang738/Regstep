@@ -1,0 +1,47 @@
+﻿@using RSToolKit.Domain.Entities;
+@using RSToolKit.Domain;
+@using RSToolKit.Domain.Entities.Clients;
+@model Tuple<Guid, string>
+@{
+    Layout = "~/Views/Shared/_Layout_FormBuilder.cshtml";
+}
+@section scripts
+{
+    <script src="~/Scripts/jQuery/Plugins/sortable.js"></script>
+    <script src="~/Scripts/Chart.min.js"></script>
+    <script src="~/Scripts/Tool/Sortings.js"></script>
+    <script src="~/Scripts/Tool/Filters.js"></script>
+    <script src="~/Scripts/Tool/jTable.js"></script>
+    <script src="~/Scripts/tool/POFilter.js"></script>
+    <script src="~/Scripts/FormBuilder/JLogic.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var logic = new POFilter('@Model.Item1');
+            logic.Load('@Model.Item1', '@Model.Item2');
+            $('#saveLogic').on('click', function () {
+                logic.Save();
+            });
+        });
+</script>
+}
+@section styles
+{
+}
+@section title {
+    Edit Logic
+}
+@section breadcrumbs {
+    @Html.Raw(((User)ViewBag.User).BreadCrumbs.GetBreadTrail(Url))
+}
+@section modals
+{
+}
+<div class="row">
+    <div class="col-xs-12">
+        <button class="btn btn-default" id="saveLogic">Save</button>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12" id="filters">
+    </div>
+</div>

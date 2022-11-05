@@ -1,0 +1,53 @@
+﻿.area-holder {
+  position: relative;
+}
+.area-holder:hover {
+  box-shadow: 0 0 3px 5px #f2e1f2;
+  z-index: 1000;
+}
+.area-commands {
+  background-color: #7a0202;
+  padding: 5px 5px;
+  position: absolute;
+  color: #ffffff;
+  right: 0;
+  top: 0;
+  z-index: 100;
+}
+.area-commands span {
+  font-size: 9pt;
+  z-index: 100;
+}
+.area-commands .glyphicon {
+  cursor: pointer;
+}
+.email-area td {
+  position: relative;
+}
+.area-cmd {
+  background-color: #3e3e3e;
+  padding: 5px 5px;
+  position: absolute;
+  color: #ffffff;
+  left: 0;
+  top: 0;
+  z-index: 100;
+}
+.area-cmd span {
+  font-size: 9pt;
+  z-index: 100;
+}
+.area-cmd .glyphicon {
+  cursor: pointer;
+}
+.email-edit {
+  margin: auto;
+}
+.email-backing {
+  background-color: #5e5e5e;
+}
+.email-setting {
+  background-color: none;
+  box-shadow: 0 0 3px 5px #ffffff;
+}
+/*# sourceMappingURL=EditEmail.css.map */

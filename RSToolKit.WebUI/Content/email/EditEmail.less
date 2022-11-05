@@ -1,0 +1,59 @@
+﻿@import "../Variables.less";
+
+@email-holder-glow-color:                   #f2e1f2;
+@email-glow-color:                          #ffffff;
+
+.area-holder {
+    position: relative;
+    &:hover {
+        box-shadow: 0 0 3px 5px @email-holder-glow-color;
+        z-index: 1000;
+    }
+}
+.area-commands {
+    span {
+        font-size: 9pt;
+        z-index: 100;
+    }
+    .glyphicon {
+        cursor: pointer;
+    }
+    background-color: @rsRed;
+    padding: 5px 5px;
+    position: absolute;
+    color: @white;
+    right: 0;
+    top: 0;
+    z-index: 100;
+}
+.email-area {
+    td {
+        position: relative;
+    }
+}
+.area-cmd {
+    span {
+        font-size: 9pt;
+        z-index: 100;
+    }
+    .glyphicon {
+        cursor: pointer;
+    }
+    background-color: @gray;
+    padding: 5px 5px;
+    position: absolute;
+    color: @white;
+    left: 0;
+    top: 0;
+    z-index: 100;
+}
+.email-edit {
+    margin: auto;
+}
+.email-backing {
+    background-color: @lightGray;
+}
+.email-setting {
+    background-color: none;
+        box-shadow: 0 0 3px 5px @email-glow-color;
+}

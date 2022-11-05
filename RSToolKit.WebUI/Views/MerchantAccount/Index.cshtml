@@ -1,0 +1,193 @@
+﻿@using RSToolKit.Domain.Entities.MerchantAccount;
+@model MerchantAccountInfo
+@{
+    ViewBag.Title = "RegStep Cloud - Merchant Account";
+    Layout = "~/Views/Shared/_L_Cloud.cshtml";
+    var userLabel = "Username";
+    var passLabel = "Password";
+    if (Model.Descriminator == "ipay")
+    {
+        userLabel = "Company Number";
+        passLabel = "Pin";
+    }
+    else if (Model.Descriminator == "payeezy")
+    {
+        userLabel = "Merchant Reference";
+        passLabel = "Api Key";
+    }
+}
+@section title {
+    Merchant Account: @Model.Name
+}
+@section crumbs {
+    @Html.Partial("P_Trail", new TrailModel(ViewBag.Trail))
+}
+@section scripts {
+    <script src="~/Scripts/MerchantAccount/merchantAccount.js"></script>
+}
+<form action="~/MerchantAccount/Put" id="form" role="form">
+    @Html.HiddenFor(m => m.UId)
+    <div class="row add-padding-vertical add-border-vertical">
+        <div class="col-xs-12">
+            <div class="col-sm-8 col-sm-offset-2 add-padding-vertical">
+                <div class="color-grey-2 add-padding-horizontal add-padding-vertical">
+                    <p>The <span id="usernameInfo">Username</span> and <span id="passwordInfo">Password</span> are stored using symmetrical encryption in the database.  You are accessing this page over a secure socket layer (SSL) and you can check the certificate authority.  If you would like to contact regstep about security of your credentials, please do so.</p>
+                </div>
+            </div>
+        </div>
+        <!--Options-->
+        <div class="col-md-4 col-lg-3 add-padding-vertical">
+            <!--Accordion-->
+            <div class="panel-group" id="accordion">
+                <!--Options 1-->
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <span class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#options-1">
+                                Admin Information <span class="caret"></span>
+                            </a>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </span>
+                    </div>
+                    <div id="options-1" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            <div class="add-padding-vertical-5">
+                                <label class="control-label" id="usernameLabel">Descriptive Name:</label>
+                                @Html.TextBoxFor(m => m.Name, new { @class = "form-control input-sm" })
+                            </div>
+
+                            <div class="add-padding-vertical-5">
+                                <label class="control-label" id="passwordLabel">Account Type:</label>
+                                @Html.DropDownList("Descriminator", Model.Types(), new { @class = "form-control input-sm" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--End Options 1-->
+                <!--Options 2-->
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <span class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#options-2">
+                                Login Information <span class="caret"></span>
+                            </a>
+                        </span>
+                    </div>
+                    <div id="options-2" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            <div class="add-padding-vertical-5">
+                                <label class="control-label" id="usernameLabel">@userLabel:</label>
+                                @Html.TextBoxFor(m => m.UserName, new { @class = "form-control input-sm" })
+                            </div>
+
+                            <div class="add-padding-vertical-5">
+                                <label class="control-label" id="passwordLabel">@passLabel:</label>
+                                @Html.TextBoxFor(m => m.Key, new { @class = "form-control input-sm" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--End Options 2-->
+            </div>
+            <!--End Accordion-->
+
+        </div>
+        <div class="col-md-8 col-lg-9 add-padding-vertical" id="parameters">
+            @if (Model.Descriminator == "ipay")
+            {
+                <div class="row">
+                    <div class="col-lg-12">
+                        <label class="control-label"><input type="checkbox" class="checkbox-inline" value="True" name="Parameters[0].Value" @(Model.GetParameter("secure") == "True" ? Html.Raw("checked='checked'") : Html.Raw("")) /> Use Secure Socket</label>
+                        <input type="hidden" name="Parameters[0].Value" value="False" />
+                        <input type="hidden" name="Parameters[0].Key" value="secure" />
+                    </div>
+                </div>
+                <div class="row add-padding-vertical">
+                    <div class="col-lg-12">
+                        <label class="control-label">Encryption Type:</label>
+                        <select class="form-control" name="Parameters[1].Value" id="iPayEncryptionType">
+                            <option value="0" @(Model.GetParameter("encryption") == "0" ? Html.Raw("selected='selected'") : Html.Raw(""))>None</option>
+                            <option value="1" @(Model.GetParameter("encryption") == "1" ? Html.Raw("selected='selected'") : Html.Raw(""))>Triple DES</option>
+                            <option value="2" @(Model.GetParameter("encryption") == "2" ? Html.Raw("selected='selected'") : Html.Raw(""))>Rijndael</option>
+                            <option value="3" @(Model.GetParameter("encryption") == "3" ? Html.Raw("selected='selected'") : Html.Raw(""))>RC2</option>
+                            <option value="4" @(Model.GetParameter("encryption") == "4" ? Html.Raw("selected='selected'") : Html.Raw(""))>DES</option>
+                        </select>
+                        <input type="hidden" name="Parameters[1].Key" value="encryption" />
+                    </div>
+                </div>
+                var encryptionType = Model.GetParameter("encryption");
+                if (String.IsNullOrWhiteSpace(encryptionType))
+                {
+                    encryptionType = "0";
+                }
+                <div class="row add-padding-vertical iPayKey" id="iPayKey1" @(encryptionType != "0" ? Html.Raw("") : Html.Raw("style='display:none;'"))>
+                    <div class="col-lg-12">
+                        <label class="control-label">Encryption Key 1:</label>
+                        <input type="text" class="form-control" name="Parameters[2].Value" value="@Model.GetParameter("key1")" />
+                        <input type="hidden" name="Parameters[2].Key" value="key1" />
+                    </div>
+                </div>
+                <div class="row add-padding-vertical iPayKey" id="iPayKey2" @(encryptionType == "1" ? Html.Raw("") : Html.Raw("style='display:none;'"))>
+                    <div class="col-lg-12">
+                        <label class="control-label">Encryption Key 2:</label>
+                        <input type="text" class="form-control" name="Parameters[3].Value" value="@Model.GetParameter("key2")" />
+                        <input type="hidden" name="Parameters[3].Key" value="key2" />
+                    </div>
+                </div>
+                <div class="row add-padding-vertical iPayKey" id="iPayKey3" @(encryptionType == "1" ? Html.Raw("") : Html.Raw("style='display:none;'"))>
+                    <div class="col-lg-12">
+                        <label class="control-label">Encryption Key 3:</label>
+                        <input type="text" class="form-control" name="Parameters[4].Value" value="@Model.GetParameter("key3")" />
+                        <input type="hidden" name="Parameters[4].Key" value="key3" />
+                    </div>
+                </div>
+                <div class="row add-padding-vertical">
+                    <div class="col-lg-12">
+                        <label class="control-label">Currency Indicator:</label>
+                        <input type="text" class="form-control" name="Parameters[5].Value" value="@Model.GetParameter("currencyindicator")" />
+                        <input type="hidden" name="Parameters[5].Key" value="currencyindicator" />
+                    </div>
+                </div>
+                <div class="row add-padding-vertical">
+                    <div class="col-lg-12">
+                        <label class="control-label">Terminal Id:</label>
+                        <input type="text" class="form-control" name="Parameters[6].Value" value="@Model.GetParameter("terminalid")" />
+                        <input type="hidden" name="Parameters[6].Key" value="terminalid" />
+                    </div>
+                </div>
+                <div class="row add-padding-vertical">
+                    <div class="col-lg-12">
+                        <label class="control-label">Amex Specific Company Number:</label>
+                        <input type="text" class="form-control" name="Parameters[7].Value" value="@Model.GetParameter("amexcompanynumber")" />
+                        <input type="hidden" name="Parameters[7].Key" value="amexcompanynumber" />
+                    </div>
+                </div>
+            }
+            @if (Model.Descriminator == "payeezy")
+            {
+                <div class="row add-padding-vertical">
+                    <div class="col-lg-12">
+                        <label class="control-label">Currency Code:</label>
+                        <input type="text" class="form-control" name="Parameters[0].Value" value="USD" />
+                        <input type="hidden" name="Parameters[0].Key" value="currencycode" />
+                    </div>
+                </div>
+                <div class="row add-padding-vertical">
+                    <div class="col-lg-12">
+                        <label class="control-label">Api Secret:</label>
+                        <input type="text" class="form-control" name="Parameters[1].Value" value="" />
+                        <input type="hidden" name="Parameters[1].Key" value="apisecret" />
+                    </div>
+                </div>
+                <div class="row add-padding-vertical">
+                    <div class="col-lg-12">
+                        <label class="control-label">Token:</label>
+                        <input type="text" class="form-control" name="Parameters[2].Value" value="" />
+                        <input type="hidden" name="Parameters[2].Key" value="token" />
+                    </div>
+                </div>
+            }
+        </div>
+<!--End Options-->
+    </div>
+</form>

@@ -1,0 +1,27 @@
+﻿@import "bootstrap-datetimepicker-build.less";
+
+.active {
+    background-color: @brand-primary;
+}
+.date .glyphicon-calendar {
+    display: inline-block;
+    margin-bottom: 0; // For input.btn
+    font-weight: @btn-font-weight;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    background-image: none; // Reset unusual Firefox-on-Android default style; see https://github.com/necolas/normalize.css/issues/214
+    border: 1px solid @gray-dark;
+    background-color: white;
+    white-space: nowrap;
+    .button-size(@padding-base-vertical; @padding-base-horizontal; @font-size-base; @line-height-base; @border-radius-base);
+
+}
+
+
+.button-size(@padding-vertical; @padding-horizontal; @font-size; @line-height; @border-radius) {
+    padding: @padding-vertical @padding-horizontal;
+    font-size: @font-size;
+    line-height: @line-height;
+    border-radius: @border-radius;
+}

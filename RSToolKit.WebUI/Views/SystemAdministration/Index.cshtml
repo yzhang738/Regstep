@@ -1,0 +1,42 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout_SystemAdministration.cshtml";
+}
+@section title {
+    System Administration Functions
+}
+@section breadcrumbs {
+    Home
+}
+<div class="color-grey-2 add-padding-vertical-10 col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 col-sm-12 col-sm-offset-0">
+    Actions
+</div>
+<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 col-sm-12 col-sm-offset-0">
+    <div>
+        @Html.ActionLink("Smtp Servers", "SmtpServers")
+    </div>
+    <div>
+        <a href="@Url.Action("List", "Company")">Companies</a>
+    </div>
+    <div>System Maintenance Methods</div>
+    <div>
+        <a href="@Url.Action("FixPermisions", "SystemAdministration", null, Request.Url.Scheme)" data-xhr-method="post">Fix Permissions</a>
+    </div>
+    <div>
+        <a href="@Url.Action("UpdateAccounts", "SystemAdministration", null, Request.Url.Scheme)" data-xhr-method="post">UpdateAccounts</a>
+    </div>
+    <div>
+        @Html.ActionLink("Fix Companies", "FixCompanies")
+    </div>
+    <div>
+        @Html.ActionLink("Update Styles", "UpdateCompanyStyles")
+    </div>
+    <div>
+        @Html.ActionLink("Email Templates", "EmailTemplates")
+    </div>
+    <div>
+        @Html.ActionLink("Styles", "Styles")
+    </div>
+    <div>
+        @Html.ActionLink("Log", "Logs")
+    </div>
+</div>

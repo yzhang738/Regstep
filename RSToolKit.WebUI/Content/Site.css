@@ -1,0 +1,138 @@
+﻿body {
+  font-family: 'Carme', sans-serif;
+  font-size: 14px;
+  margin: 0;
+  padding: 0;
+}
+a,
+a:link,
+a:visited,
+a:active {
+  color: #7a0202;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+/**********/
+/* Header */
+/**********/
+section.header-logout {
+  padding-left: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+img.header-logo {
+  height: 60px;
+}
+/**************/
+/* End Header */
+/**************/
+/**************/
+/* Navigation */
+/**************/
+nav.nagivation {
+  margin: 0 auto;
+  overflow: hidden;
+  height: 25px;
+  margin-bottom: 15px;
+}
+nav.nagivation ul {
+  list-style-type: none;
+  float: left;
+  width: 100%;
+  padding: 0.25em 0;
+  margin: 0;
+  height: 100%;
+}
+nav.nagivation ul li {
+  display: block;
+  float: left;
+  margin-right: 40px;
+  font-size: 85%;
+  height: 100%;
+}
+nav.nagivation ul li:hover {
+  background-color: #3e3e3e;
+}
+nav.nagivation a,
+nav.nagivation a:link,
+nav.nagivation a:active,
+nav.nagivation a:visited {
+  color: #ffffff;
+  font-weight: bold !important;
+  text-decoration: none !important;
+}
+nav.nagivation a:hover {
+  text-decoration: none !important;
+}
+#changeCompanyDialog > .modal-dialog {
+  background-color: #ffffff;
+}
+/******************/
+/* End Navigation */
+/******************/
+/*************/
+/* Universal */
+/*************/
+span.psuedo-link {
+  cursor: pointer;
+}
+span.psuedo-link:hover {
+  text-decoration: underline;
+}
+/*****************/
+/* End Universal */
+/*****************/
+/*******/
+/* Box */
+/*******/
+div.Box {
+  border: 2px solid #3e3e3e;
+  border-radius: 4px;
+  padding: 0 !Important;
+  margin-bottom: 15px;
+}
+div.Box > header {
+  background-color: #3e3e3e;
+  font-size: 110%;
+  font-weight: bold;
+  text-align: center;
+  padding: 15px;
+  color: #ffffff;
+}
+div.Box > header a.box-header-link,
+div.Box > header a.box-header-link:active,
+div.Box > header a.box-header-link:link,
+div.Box > header a.box-header-link:visited {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 110%;
+}
+div.Box > header a.box-header-link:hover {
+  text-decoration: underline;
+}
+div.Box > header span.psuedo-link {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 110%;
+}
+div.Box > header span.psuedo-link:hover {
+  text-decoration: underline;
+}
+div.Box > div {
+  padding: 15px;
+  margin-left: 0;
+  margin-right: 0;
+}
+div.Box > footer {
+  background-color: #3e3e3e;
+  font-size: 95%;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 0;
+  padding: 15px;
+}
+/*# sourceMappingURL=Site.css.map */

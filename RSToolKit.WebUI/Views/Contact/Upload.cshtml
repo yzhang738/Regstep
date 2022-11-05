@@ -1,0 +1,42 @@
+﻿@using RSToolKit.WebUI.Models.Views.Contact;
+@model UploadView
+@{
+    Layout = "~/Views/Shared/_L_Cloud.cshtml";
+}
+@section scripts
+{
+<script src="~/Scripts/Contact/upload.js"></script>
+}
+@section styles
+{
+}
+@section title
+{
+    Contact Upload
+}
+@section crumbs
+{
+}
+<form action="@Url.Action("Upload", "Contact", null)" method="post" id="upload">
+    <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4">
+        <div class="row">
+            <div class="col-md-6 add-padding-bottom-10 color-grey-2">
+                <label class="control-label">Sheet:</label>
+                <select class="form-control" name="id">
+                    <option value="">Global List</option>
+                    @foreach (var list in Model.SavedLists)
+                    {
+                        <option value="@list.Key">@list.Label</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="row add-padding-top">
+            <div class="col-xs-12">
+                <label class="control-label">File:</label>
+                <input type="file" name="file" />
+            </div>
+        </div>
+        <button type="submit" class="btn btn-default">Upload</button>
+    </div>
+</form>

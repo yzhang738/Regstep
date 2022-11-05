@@ -1,0 +1,20 @@
+﻿@model RegistrationHtml
+<!--Button Panel-->
+<div class="row form-btn-panel">
+    <div class="col-xs-12">
+        <div class="row">
+          <!--Button Nav Back-->
+            <div class="col-sm-6 col-md-4 col-lg-3 form-btn">
+                <a class="btn-rs btn-navigation" href="@Url.Action("Back", "Register", new { id = Model.Registrant.UId, pageNumber = Model.Page.PageNumber }, Request.Url.Scheme)">Back</a>
+            </div>
+            <!--End Button Nav Back-->
+            <!--Button Nav Next-->
+            <div class="col-sm-6 col-md-4 col-lg-3 form-btn">
+                <a href="#" class="btn-rs btn-navigation" onclick="$('#form').submit()">Next</a>
+            </div>
+            <!--End Button Nav Next-->
+        </div>
+    </div>
+</div>
+<!--Button Panel-->
+

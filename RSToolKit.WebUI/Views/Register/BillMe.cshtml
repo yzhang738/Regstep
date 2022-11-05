@@ -1,0 +1,80 @@
+﻿@model RSToolKit.Domain.Entities.Registrant
+@{
+    var RegHtml = (RegistrationHtml)ViewBag.RegHtml;
+    ViewBag.WrapperClass = "form-live";
+    Layout = "~/Views/Shared/_Layout_Registration.cshtml";
+}
+@section pageNumber
+{
+    Bill Me
+}
+@section shoppingCart
+{
+}
+@section header
+{
+    @RegHtml.RenderHeader()
+}
+@section footer
+{
+    @RegHtml.RenderFooter()
+}
+@section customStyles
+{
+    @RegHtml.RenderFormStyle()
+}
+@section errorMessage{
+}
+<link href="~/Content/Registration/TransactionPrint.min.css" rel="stylesheet" />
+
+<form action="~/Register/BillMe" method="post">
+    @Html.AntiForgeryToken()
+    @Html.Hidden("id", Model.UId)
+    @Html.Hidden("payingAgentName", "")
+
+    <div class="row form-panel">
+        <div class="col-xs-12">
+            <div class="row form-panel-row">
+                <div class="col-xs-12 form-component">
+                    <p>
+                        If you have a Purchase Order number for this payment, please enter it below.
+                    </p>                    
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-4 col-lg-3 form-component print print-panel">
+                <div class="form-component-row">
+                    <label class="control-label"><span class="form-component-label">PO Number:</span></label>
+                </div>
+                <input name="payingAgentNumber" type="text" class="input-sm form-control form-component-input" />
+            </div>
+        </div>        
+    </div>
+
+    <div class="row form-panel">
+        <div class="col-xs-12">
+            <div class="row form-panel-row">
+                <div class="col-xs-12 form-component">
+                    <p>
+                        If you need to send a copy of your invoice to your accounting department or supervisor, please enter the email of the person to copy below.
+                    </p>
+                </div>
+                <div class="col-sm-6 col-md-4 col-lg-3 form-component print print-panel">
+                    <div class="form-component-row">
+                        <label class="control-label"><span class="form-component-label">Copy email to:</span></label>
+                    </div>
+                    <input name="email" type="text" class="input-sm form-control form-component-input" />
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row form-btn-panel">
+        <div class="col-xs-12">
+            <div class="row">
+                <div class="col-sm-6 col-md-4 col-lg-3 form-btn">
+                    <a class="btn-rs btn-navigation" href="javascript:{}" onclick="$('form').submit();">Next</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,191 @@
+﻿@using RSToolKit.WebUI.Infrastructure;
+@using RSToolKit.Domain;
+@using Microsoft.AspNet.Identity;
+@model Company
+@{
+    Layout = "~/Views/Shared/_Layout_CompanyAdmin.cshtml";
+    var Repository = (FormsRepository)ViewBag.Repository;
+    var Context = (EFDbContext)Repository.Context;
+    var roleManager = (AppRoleManager)ViewBag.RM;
+    var userManager = (AppUserManager)ViewBag.UM;
+    var companyAdministrator = roleManager.FindByName("Company Administrators");
+}
+@section scripts
+{
+<script src="~/Scripts/CompanyAdmin/Users.js"></script>
+}
+@section styles
+{
+}
+@section title {
+    @Model.Name
+}
+@section breadcrumbs {
+    <a href="@Url.Action("Index", "CompanyAdmin", null, Request.Url.Scheme)">@Model.Name.First20()</a>
+    <span class="glyphicon glyphicon-chevron-right"></span> Company Users
+}
+@section modals {
+<div class="modal fade" id="addGroup" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-header">
+            <h3>Add Group</h3>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-sm-12">
+                    <label class="control-label">Select group to add</label>
+                    <select id="addGroupSelect" class="form-control input-sm">
+                        @foreach (var group in Model.CustomGroups)
+                        {
+                            <option value="@group.UId">@group.Name</option>
+                        }
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#addGroup">Cancel</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#addGroup" data-url="@Url.Action("SetCompanyGroup", "CompanyAdmin", null, Request.Url.Scheme)" data-redirect="refresh" id="setGroup">Add</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addRole" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-header">
+            <h3>Add Group</h3>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-sm-12">
+                    <label class="control-label">Select role to add</label>
+                    <select id="addRoleSelect" class="form-control input-sm">
+                        @foreach (var role in Model.AvailableRoles)
+                        {
+                            <option value="@role.Role.Name">@role.Role.Name</option>
+                        }
+                    </select>
+
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#addRole">Cancel</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#addRole" data-url="@Url.Action("Role", "CompanyAdmin", null, Request.Url.Scheme)" data-redirect="refresh" id="setRole">Add</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addUser" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-header">
+            <h3>Add User</h3>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-xs-12">
+                    @using (Html.BeginForm("User", "CompanyAdmin", FormMethod.Post, new { @class = "form", role = "form form-horizontal", data_xhr_method = "post", data_xhr_oncomplete = "refresh" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div class="add-padding-bottom">
+                            <label class="control-label">Username</label>
+                            <input class="form-control" name="username" />
+                        </div>
+                        <div class="add-padding-bottom">
+                            <label class="control-label">Email</label>
+                            <input class="form-control" name="email" autocomplete="off" />                          
+                        </div>
+                        <div class="add-padding-bottom">
+                            <label class="control-label">First Name</label>
+                            <input class="form-control" name="firstname" autocomplete="off" />                           
+                        </div>
+                        <div class="add-padding-bottom">
+                            <label class="control-label ">Last Name</label>
+                            <input class="form-control" name="lastname" autocomplete="off" />
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-default" id="submitNewUser">Create User</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#addUser">Cancel</button>
+        </div>
+    </div>
+</div>
+
+
+}
+
+    <div class="col-xs-12">
+        <div class="add-padding-bottom-5 text-medium text-color-2">
+            Company Account Users 
+        </div>
+        <div class="row add-padding-vertical-5 color-grey-2">
+            <div class="col-xs-12">
+                <a href="#" data-toggle="modal" data-target="#addUser"><span class="glyphicon glyphicon-plus"></span> New User</a>
+            </div>            
+        </div>
+        <div class="row text-small">
+            <div class="col-xs-12">
+                <div class="table-responsive">
+                    <table class="table table-striped table-company-users">
+                        <thead>
+                            <tr>
+                                <th>User Name</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Groups</th>
+                                <th>Roles</th>
+                                <th>Company Administrators</th>
+                                <th>Delete User</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var user in Model.Users.OrderBy(u => u.UserName))
+                            {
+                                <tr>
+                                    <td>@user.UserName</td>
+                                    <td>@user.LastName, @user.FirstName</td>
+                                    <td>@user.Email</td>
+                                    <td>
+                                        <div class="comma-after">
+                                            @foreach (var group in user.CustomGroups.OrderBy(c => c.Name))
+                                            {
+                                                <span class="comma">@group.Name<a href="@Url.Action("SetCompanyGroup", "CompanyAdmin", null, Request.Url.Scheme)" data-xhr-method="delete" data-xhr-options='{"id":"@user.UId","groupKey":"@group.UId"}' data-xhr-oncomplete="refresh" data-xhr-noconfirm="true"><span class="glyphicon glyphicon-trash"></span></a></span>
+                                            }
+                                        </div>
+                                        <a href="#" data-user="@user.UId" class="addGroup" data-toggle="modal" data-target="#addGroup"><span class="glyphicon glyphicon-plus"></span> Group</a>
+                                    </td>
+                                    <td>
+                                        <div class="comma-after">
+                                            @foreach (var role in userManager.GetRoles(user.UId.ToString()).OrderBy(r => r))
+                                            {
+                                                if (role != "Super Administrators" && role != "System Administrators" && role != "Administrators" && role != "Company Administrators" && role != "Programmers" && role != "Testers")
+                                                {
+                                                    <span class="comma">@role <a href="@Url.Action("Role", "CompanyAdmin", null, Request.Url.Scheme)" data-xhr-method="delete" data-xhr-options='{"id":"@user.UId","role":"@role"}' data-xhr-oncomplete="refresh" data-xhr-noconfirm="true"><span class="glyphicon glyphicon-trash"></span></a></span>
+                                                }
+                                                else
+                                                {
+                                                    if (role != "Company Administrators")
+                                                    {
+                                                        <span class="comma">@role</span>
+                                                    }
+                                                }
+                                            }
+                                        </div>
+                                        <a href="#" data-user="@user.UId" class="addRole" data-toggle="modal" data-target="#addRole"><span class="glyphicon glyphicon-plus"></span> Role</a>
+                                    </td>
+
+                                    <td>@Html.Raw(user.Roles.Where(r => r.RoleId == companyAdministrator.Id).Count() == 1 ? "<a href=\"" + Url.Action("CompanyAdmin", "CompanyAdmin", null, Request.Url.Scheme) + "\" data-xhr-method=\"delete\" data-xhr-options='{\"id\":\"" + user.UId + "\"}' data-xhr-noconfirm=\"true\" data-xhr-oncomplete=\"refresh\">Remove As Administrator</a>" : "<a href=\"" + Url.Action("CompanyAdmin", "CompanyAdmin", null, Request.Url.Scheme) + "\" data-xhr-method=\"post\" data-xhr-options='{\"id\":\"" + user.UId + "\"}' data-xhr-oncomplete=\"refresh\">Set As Administrator</a>")</td>
+                                    <td><a href="@Url.Action("User", "CompanyAdmin", null, Request.Url.Scheme)" data-xhr-method="delete" data-xhr-options='{"id":"@user.UId"}' data-xhr-oncomplete="refresh" data-xhr-noconfirm="true"><span class="glyphicon glyphicon-trash"></span> Delete</a></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>

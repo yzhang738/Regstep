@@ -1,0 +1,461 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout_Help_FormBuilder.cshtml";
+}
+@section scripts {
+}
+@section modals
+{
+}
+
+<div class="add-padding-vertical-5 add-border-bottom">
+    <div class="help-breadcrumb">
+        <a href="~/Help/FormBuilder">FormBuilder</a> <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span>
+        RegStep Forms
+    </div>
+</div>
+
+<div class="add-padding-top help-text">
+    <h2 class="add-padding-bottom-5">
+        Form Page Types
+    </h2>
+    <p>
+        Forms consist of the Start Page, RSVP Page, Audience Page, Custom Pages, Payment Pages, and Confirmation Page.
+    </p>
+    <p>
+        Some pages are dynamically hidden automatically. For example when the Shopping Cart total is 0, Payment Pages are skipped. Custom Pages can be hidden based on RSVP, Audience, and Custom Logic.
+    </p>
+    <p>
+        See below for more information on each page type.
+    </p>
+</div>
+
+<div class="add-padding-vertical-2em">
+    <div class="screen-shot">
+        <div class="screen-shot-text screen-shot-header">
+            <div class="row text-align-center">
+                <div class="col-sm-4">
+                    <a class="text-color-white" href="FormBuilderFormWalk">
+                        Pages
+                    </a>
+                </div>
+                <div class="col-sm-4 text-underline">
+                    Page Types
+                </div>
+                <div class="col-sm-4">
+                    <a class="text-color-white" href="FormBuilderFormWalkPanels">
+                        Panels &amp; Components
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="screen-shot-body">
+            <!--UI Markup-->
+            <div class="row">
+                <div class="col-xs-12 add-padding-vertical">
+                    <div class="add-padding-vertical text-color-1">
+                        <h3>
+                            Start Page
+                        </h3>
+                    </div>
+                    <table class="table diagram">
+                        <tbody>
+                            <tr>
+                                <td class="diagram-form diagram-header">
+                                    Annual Conference
+                                </td>
+                                <td rowspan="4" class="diagram-notes">
+                                    <p>
+                                        The first page is <span class="text-bold">always</span> the Start Page. On this page, the user enters their email.
+                                    </p>
+                                    <p>
+                                        A continuation email is sent to the user. Only one email is allowed per record so once a registration is started, the only way to continue is via that link. This ensures your registrants' personal data is secure.
+                                    </p>
+                                    <p>
+                                        When the user enters their email, the form queries your Contact List to pre-populate any data contained there.
+                                    </p>
+                                    <p>
+                                        If registration access is restricted, the form will query your authorized list to see if this email is included. If not, the form will not allow the user to register.
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="diagram-form diagram-info">
+                                    <table width="100%">
+                                        <tr>
+                                            <td class="diagram-form-half"></td>
+                                            <td align="right" class="diagram-form-half">
+                                                Start
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="diagram-form diagram-content">
+                                    <table width="100%">
+                                        <tr>
+                                            <td class="diagram-form-half diagram-form-content">
+                                                <label class="control-label">
+                                                    Enter your email
+                                                </label>
+                                                <input class="form-control input-sm" />
+                                            </td>
+                                            <td class="diagram-form-half diagram-form-content"></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" class="diagram-form-content">
+                                                <button class="btn btn-default">Next</button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="diagram-form diagram-footer">
+                                    Visit our website.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="col-xs-12 add-padding-vertical">
+                    <div class="add-padding-vertical text-color-1">
+                        <h3>
+                            RSVP Page
+                        </h3>
+                    </div>
+                    <table class="table diagram">
+                        <tbody>
+                            <tr>
+                                <td class="diagram-form diagram-header">
+                                    Annual Conference
+                                </td>
+                                <td rowspan="4" class="diagram-notes">
+                                    <p>
+                                        The next page, <b>if enabled</b>, is the RSVP Page. Here the user will select whether to Accept or Decline your invitation. You can create multi-track registration based on the RSVP selection.
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="diagram-form diagram-info">
+                                    <table width="100%">
+                                        <tr>
+                                            <td class="diagram-form-half"></td>
+                                            <td align="right" class="diagram-form-half">
+                                                RSVP
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="diagram-form diagram-content">
+                                    <table width="100%">
+                                        <tr>
+                                            <td class="diagram-form-half diagram-form-content">
+                                                <label class="control-label">
+                                                    Please RSVP
+                                                </label>
+                                            </td>
+                                            <td class="diagram-form-half diagram-form-content"></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" class="diagram-form-content">
+                                                <button class="btn btn-default">Accept</button>
+                                                <button class="btn btn-default">Decline</button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="diagram-form diagram-footer">
+                                    Visit our website.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="col-xs-12 add-padding-vertical">
+                    <div class="add-padding-vertical text-color-1">
+                        <h3>
+                            Audience Page
+                        </h3>
+                    </div>
+                    <table class="table diagram">
+                        <tbody>
+                            <tr>
+                                <td class="diagram-form diagram-header">
+                                    Annual Conference
+                                </td>
+                                <td rowspan="4" class="diagram-notes">
+                                    <p>
+                                        The next page, <b>if enabled</b>, is the Audience Page. Here the user will select their registration type. You can create multi-track registration based on the Audience selection.
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="diagram-form diagram-info">
+                                    <table width="100%">
+                                        <tr>
+                                            <td class="diagram-form-half"></td>
+                                            <td align="right" class="diagram-form-half">
+                                                Audience Selection
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="diagram-form diagram-content">
+                                    <table width="100%">
+                                        <tr>
+                                            <td class="diagram-form-half diagram-form-content">
+                                                <label class="control-label">
+                                                    Please Select Your Registration Type
+                                                </label>
+                                            </td>
+                                            <td class="diagram-form-half diagram-form-content"></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" class="diagram-form-content">
+                                                <button class="btn btn-default">Customer</button>
+                                                <button class="btn btn-default">Vendor</button>
+                                                <button class="btn btn-default">Employee</button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="diagram-form diagram-footer">
+                                    Visit our website.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="col-xs-12 add-padding-vertical">
+                    <div class="add-padding-vertical text-color-1">
+                        <h3>
+                            Custom Pages
+                        </h3>
+                    </div>
+                    <table class="table diagram">
+                        <tbody>
+                            <tr>
+                                <td class="diagram-form diagram-header">
+                                    Annual Conference
+                                </td>
+                                <td rowspan="4" class="diagram-notes">
+                                    <p>
+                                        The next page(s) are all of the Custom Pages that you create. There is not a maximum page limit. Inside each page you will include the Panels and Components to collect the information you need.
+                                    </p>
+                                    <p>
+                                        Read more about Panels and components on the next steps.
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="diagram-form diagram-info">
+                                    <table width="100%">
+                                        <tr>
+                                            <td class="diagram-form-half"></td>
+                                            <td align="right" class="diagram-form-half">
+                                                Page 3 of 6
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="diagram-form diagram-content">
+                                    <table width="100%">
+                                        <tr>
+                                            <td class="diagram-form-half diagram-form-content">
+                                                <label class="control-label">
+                                                    Name
+                                                </label>
+                                                <input class="form-control input-sm" />
+                                            </td>
+                                            <td class="diagram-form-half diagram-form-content">
+                                                <label class="control-label">
+                                                    Phone
+                                                </label>
+                                                <input class="form-control input-sm" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" class="diagram-form-content">
+                                                <button class="btn btn-default">Back</button>
+                                                <button class="btn btn-default">Next</button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="diagram-form diagram-footer">
+                                    Visit our website.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="col-xs-12 add-padding-vertical">
+                    <div class="add-padding-vertical text-color-1">
+                        <h3>
+                            Payment Pages
+                        </h3>
+                    </div>
+                    <table class="table diagram">
+                        <tbody>
+                            <tr>
+                                <td class="diagram-form diagram-header">
+                                    Annual Conference
+                                </td>
+                                <td rowspan="4" class="diagram-notes">                                    
+                                    <p>
+                                        If your form has registration fees, the user will see a series of pages to complete their registration. First they will see a discount code page to enter any promotional codes you have distributed. Then they will see a shopping cart summary and payment choices. You can enable payment by credit card, bill me, or both. Based on that selection, the user will see one to two more pages to complete the registration.
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="diagram-form diagram-info">
+                                    <table width="100%">
+                                        <tr>
+                                            <td class="diagram-form-half"></td>
+                                            <td align="right" class="diagram-form-half">
+                                                Payment
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="diagram-form diagram-content">
+                                    <table width="100%">
+                                        <tr>
+                                            <td class="diagram-form-half diagram-form-content">
+                                                <label class="control-label">
+                                                    Credit Card Number
+                                                </label>
+                                                <input class="form-control input-sm" />
+                                            </td>
+                                            <td class="diagram-form-half diagram-form-content">
+                                                <label class="control-label">
+                                                    CVV Code
+                                                </label>
+                                                <input class="form-control input-sm" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" class="diagram-form-content">
+                                                <button class="btn btn-default">Back</button>
+                                                <button class="btn btn-default">Next</button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="diagram-form diagram-footer">
+                                    Visit our website.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="col-xs-12 add-padding-vertical">
+                    <div class="add-padding-vertical text-color-1">
+                        <h3>
+                            Confirmation Page
+                        </h3>
+                    </div>
+                    <table class="table diagram">
+                        <tbody>
+                            <tr>
+                                <td class="diagram-form diagram-header">
+                                    Annual Conference
+                                </td>
+                                <td rowspan="4" class="diagram-notes">
+                                    <p>
+                                        The confirmation page provides three tabs. The first tab allows you to display a custom confirmation message, provide event details, and include links to important websites. The second tab provides billing and payment summaries for the record. The last tab provides a full list of the registrant's selections.
+                                    </p>
+                                    <p>
+                                        You can enable user cancellations and edits so that your registrants can process those requests automatically through the system.
+                                    </p>
+                                    <p>
+                                        The user will receive a confirmation email with a link back to this page.
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="diagram-form diagram-info">
+                                    <table width="100%">
+                                        <tr>
+                                            <td class="diagram-form-half">
+                                                <u>Event Info</u>&nbsp;&nbsp;&nbsp;Billing/Payments&nbsp;&nbsp;&nbsp;Registration Summary
+                                            </td>
+                                            <td align="right" class="diagram-form-half">
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="diagram-form diagram-content">
+                                    <table width="100%">
+                                        <tr>
+                                            <td class="diagram-form-half diagram-form-content">
+                                                Thank you for registering for the Annual Conference.
+                                                <br />
+                                                <br />Visit the event website for more details.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" class="diagram-form-content">
+                                                <button class="btn btn-default">Edit</button>
+                                                <button class="btn btn-default">Cancel</button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="diagram-form diagram-footer">
+                                    Visit our website.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+            <!--End UI Markup-->
+        </div>
+        <div class="screen-shot-text screen-shot-footer">
+            Click on the topics at the top of this section to read more.
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

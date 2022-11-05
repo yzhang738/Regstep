@@ -1,0 +1,70 @@
+﻿@using System.Collections;
+@using RSToolKit.Domain.Entities;
+@using RSToolKit.Domain;
+@using RSToolKit.Domain.Entities.Components;
+@using RSToolKit.Domain.Logging;
+@model Log
+@{
+    Layout = "~/Views/Shared/_Layout_SystemAdministration.cshtml";
+}
+@section scripts
+{
+}
+@section styles
+{
+}
+@section title
+{
+    Log @Model.SortingId
+    @if (ViewBag.LogUser != null)
+    {
+        @: for @(((RSToolKit.Domain.Entities.Clients.User)ViewBag.LogUser).UserName)
+    }
+}
+@section breadcrumbs
+{
+    @Html.Raw(((User)ViewBag.User).BreadCrumbs.GetBreadTrail(Url))
+}
+@section modals
+{
+}
+<div class="col-xs-12">
+    <!--Report Data-->
+    <div id="mainHolder" class="row">
+        <div class="col-xs-12">
+            <b>Message:</b> @Model.Message
+        </div>
+        @if (!String.IsNullOrWhiteSpace(Model.Exception))
+        {
+            <div class="col-xs-12">
+                @{
+                    LogNote lastNote = null;
+                    if (Model.LogNotes.Count > 0)
+                    {
+                        lastNote = Model.LogNotes.OrderByDescending(l => l.Date).Last();
+                    }
+                    var lastStatus = lastNote != null ? lastNote.Status.GetStringValue() : LogStatus.Unresolved.GetStringValue();
+                }
+                <b>Status: </b> @lastStatus
+            </div>
+            <div class="col-xs-12">
+                <textarea style="width: 100%; min-height: 750px;" disabled>@Model.Exception</textarea>
+            </div>
+            <div class="col-xs-12">
+                @foreach (var note in Model.LogNotes.OrderBy(l => l.Date))
+                {
+                    <div class="col-xs-12">
+                        @Html.UserDate(note.Date, "rs_s") by @note.User.UserName
+                    </div>
+                    <div class="col-xs-12">
+                        @note.Status.GetStringValue()
+                    </div>
+                    <div class="col-xs-12 text-small">
+                        @Html.Raw(note.Note)
+                    </div>
+                }
+            </div>
+        }
+    </div>
+    <!--End Report Data-->
+</div>

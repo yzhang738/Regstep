@@ -1,0 +1,4 @@
+﻿div.toggle-edit > span {
+    cursor: pointer;
+    border-bottom: 2px dashed #7E0202;
+}

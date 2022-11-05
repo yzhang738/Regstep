@@ -1,0 +1,62 @@
+﻿@using RSToolKit.WebUI.Models.Views.Register;
+@model CheckOutView
+@{
+    Layout = "~/Views/Shared/_L_AdminRegister.cshtml";
+}
+@section pageNumber
+{
+    Shopping Cart
+}
+@section shoppingCart
+{
+}
+@section header
+{
+    @Model.Header
+}
+@section footer
+{
+    @Model.Footer
+}
+@section styles
+{
+    @Model.Styles
+}
+<div style="position: fixed; top: 0; left: 0; width: 100%; background-color: rgba(0, 0, 0, .5); color: #fc3333; font-size: 14pt;" class="text-center">Admin Registration</div>
+<div class="row form-panel">
+    <div class="col-xs-12 form-component">
+        If you have an outstanding balance that needs to be payed, select a payment option below. Otherwise, select "Continue".
+    </div>
+</div>
+
+<div class="row form-panel">
+    <div class="col-xs-12">
+        <div class="row">
+            <div class="col-xs-12 form-component">
+                <div style="color: black; font-size: 20px; padding-bottom: 10px;">
+                    Shopping Cart
+                </div>
+                @Model.Invoice
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row form-btn-panel">
+    <div class="col-xs-12">
+        <div class="row">
+            @if (Model.Payments)
+            {
+                <div class="col-sm-6 col-md-4 col-lg-3 form-btn">
+                    @Html.ActionLink("Credit Card", "Charge", "AdminRegister", new { id = Model.RegistrantId }, new { @class = "btn-rs btn-navigation" })
+                </div>
+            }
+            <div class="col-sm-6 col-md-4 col-lg-3 form-btn">
+                @Html.ActionLink("Bill Me", "BillMe", "AdminRegister", new { id = Model.RegistrantId }, new { @class = "btn-rs btn-navigation" })
+            </div>
+            <div class="col-sm-6 col-md-4 col-lg-3 form-btn">
+                @Html.ActionLink("Continue", "Confirmation", "AdminRegister", new { id = Model.RegistrantId, changeStatus = true }, new { @class = "btn-rs btn-navigation" })
+            </div>
+        </div>
+    </div>
+</div>

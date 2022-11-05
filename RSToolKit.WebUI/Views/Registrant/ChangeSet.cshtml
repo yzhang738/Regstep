@@ -1,0 +1,40 @@
+﻿@using System.Collections;
+@using RSToolKit.Domain.Entities;
+@using RSToolKit.Domain;
+@using RSToolKit.Domain.Entities.Components;
+@model Registrant
+@{
+    Layout = "~/Views/Shared/_L_Cloud.cshtml";
+}
+@section scripts
+{
+    <script src="~/Scripts/Registrant/changeSet.js"></script>
+}
+@section styles
+{
+    <style type="text/css">
+        table.table-registration-data {
+	        display: block;
+            height: 450px;
+            overflow: auto;	
+        }
+    </style>
+}
+@section title
+{
+    @Model.FullName: Change Log
+}
+@section crumbs
+{
+    @Html.Partial("P_Trail", new TrailModel(ViewBag.Trail))
+}
+<input type="hidden" id="registrant_id" value="@Model.SortingId" />
+<div class="col-xs-12">
+    <!--Report Data-->
+    <div id="mainHolder" class="row">
+        <div class="col-xs-12 text-small" id="changeLogTableHolder">
+            <table class="table table-striped table-registration-data" id="changeLog"></table>
+        </div>
+    </div>
+    <!--End Report Data-->
+</div>

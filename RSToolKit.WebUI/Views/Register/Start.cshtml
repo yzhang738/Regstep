@@ -1,0 +1,104 @@
+﻿@using RSToolKit.Domain.Engines;
+@model Tuple<RegistrationHtml, bool>
+@{
+    ViewBag.Title = Model.Item1.Form.Name;
+    ViewBag.WrapperClass = "form-live";
+    Layout = "~/Views/Shared/_Layout_Registration.cshtml";
+    var contact = ViewBag.Contact ?? -1;
+    var token = ViewBag.Token ?? Guid.Empty;
+}
+
+@section pageNumber
+{
+    Start
+}
+@section shoppingCart
+{
+    @Model.Item1.RenderShoppingCart()
+}
+@section header
+{
+    @Model.Item1.RenderHeader()
+}
+@section footer
+{
+    @Model.Item1.RenderFooter()
+}
+@section customStyles
+{
+    @Model.Item1.RenderFormStyle()
+}
+@using (Html.BeginForm("Start", "Register", FormMethod.Post, new { id = "form" }))
+{
+    @Html.AntiForgeryToken()
+    @Model.Item1.RenderHiddens()
+    <input type="hidden" name="contactId" value="@contact" />
+    <input type="hidden" name="loginToken" value="@token" />
+    <input type="hidden" name="Live" value="@Model.Item2.ToString()" />
+    <input type="hidden" name="FormKey" value="@Model.Item1.Form.UId" />
+    <div class="row form-panel">
+        <div class="col-xs-12">
+            <div class="row form-panel-row">
+                <div class="col-xs-12 form-component">
+                    @if (String.IsNullOrWhiteSpace(Model.Item1.Form.Start))
+                    {
+                    <b>Important Note</b>
+                    <ul>
+                        <li style="padding-top: 5px;">
+                            Only one registration/survey record is allowed per email. Each registration/survey record requires a unique email.
+                        </li>
+                        <li style="padding-top: 5px;">
+                            If you are completing the registration or survey response on behalf of others, please input <b>their email</b> below. You will have the opportunity to enter your email during registration so that you are CCed on event communications.
+                        </li>
+                    </ul>
+                    }
+                    else
+                    {
+                        @Html.Raw(Model.Item1.Form.Parse(Model.Item1.Form.Start))
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row form-panel">
+        <div class="col-xs-12">
+            <div class="row form-panel-row">
+                <div class="col-sm-6 col-md-4 form-component required-component">
+                    @if (ViewBag.Error != null)
+                    {
+                        <div class="form-component-error" style="color: red;">@((string)ViewBag.Error)</div>
+                    }
+                    <div class="form-component-row">
+                        <label class="control-label"><span class="form-component-label">Email</span></label>
+                    </div>
+                    <input type="text" class="form-control input-sm fomt-text-input" value="@ViewBag.Email" name="Email" data-component-regex="^.+\@@(\[?)[a-zA-Z0-9\-\.]+\.([a-zA-Z]{2,3}|[0-9]{1,3})(\]?)$" data-component-required="true" data-component-error="You must provide a valid email." />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row form-btn-panel">
+        <div class="col-xs-12">
+            <div class="row">
+                <div class="col-sm-6 col-md-4 col-lg-3 form-btn">
+                    <a class="btn-rs btn-navigation" href="#" onclick="$('#form').submit()">
+                        Begin
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        //<![CDATA[
+        function get_form(element) {
+            while (element) {
+                element = element.parentNode
+                if (element.tagName.toLowerCase() == "form") {
+                    //alert( element ) //debug/test
+                    return element
+                }
+            }
+            return 0; //error: no form found in ancestors
+        }
+        //]]>
+    </script>
+}

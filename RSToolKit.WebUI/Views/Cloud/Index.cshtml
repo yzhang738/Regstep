@@ -1,0 +1,244 @@
+﻿@using RSToolKit.Domain;
+@model CloudIndex
+@{
+    ViewBag.Title = "RegStep Cloud - Dashboard";
+    Layout = "~/Views/Shared/_L_Cloud.cshtml";
+    var context = ViewBag.Context as EFDbContext;
+}
+@section scripts
+{
+    <script src="~/Scripts/Cloud/index.js"></script>
+}
+@section title
+{
+    RegStep Cloud Dashboard
+}
+@section crumbs {
+    @Html.Partial("P_Trail", new TrailModel(ViewBag.Trail))
+}
+    <!--Left Content-->
+    <div class="col-sm-6">
+        <!--Notifications-->
+        <div class="row add-padding-vertical">
+            <div class="col-xs-12 color-grey-1 rounded">
+                <h3 class="add-padding-vertical">
+                    Notifications
+                </h3>
+                <div class="rounded add-border border-color-2 color-white add-margin-bottom">
+                    <table class="table">
+                        <tbody id="notifications">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!--End Notifications-->
+        <!--Favorite Reports-->
+        <div class="row add-padding-vertical">
+            <div class="col-xs-12 color-grey-1 rounded">
+                <h3 class="add-padding-vertical">
+                    Favorite Reports
+                </h3>
+                <div class="rounded add-border border-color-2 color-white add-margin-bottom">
+                    <table class="table">
+                        @if (Model.FavoriteReports.Count() == 0 && Model.GlobalReports.Count == 0)
+                        {
+                            <tr>
+                                <td colspan="2">No Favorite Reports</td>
+                            </tr>
+                        }
+                        @foreach (var global in Model.GlobalReports)
+                        {
+                            <tr>
+                                <td class="cloud-dashboard-icon-cell">
+                                    <span class="glyphicon glyphicon-star text-color-1"></span>
+                                </td>
+                                <td>
+                                    <a href="@Url.Action("View", "GlobalReport", new { id = global.Id }, Request.Url.Scheme)">@global.Name <i>global</i></a>
+                                </td>
+                            </tr>
+                        }
+                        @foreach (var tuple in Model.FavoriteReports)
+                        {
+                            var report = tuple.Item2;
+                            var t_form = tuple.Item1;
+                            <tr>
+                                <td class="cloud-dashboard-icon-cell">
+                                    <span class="glyphicon glyphicon-star text-color-1"></span>
+                                </td>
+                                <td>
+                                    @if (report is ReportData)
+                                    {
+                                        <a href="@Url.Action("Get", "FormReport", new { id = report.SortingId }, Request.Url.Scheme)">@t_form.Name: @report.Name</a>
+                                    }
+                                    else
+                                    {
+                                        <a href="@Url.Action("View", "InventoryReport", new { id = report.UId }, Request.Url.Scheme)">@t_form.Name: @report.Name</a>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!--End Favorite Reports-->
+    </div>
+    <!--End Left Content-->
+    <!--Live Projects-->
+    <div class="col-sm-6">
+        <div class="row add-padding-vertical">
+            <div class="col-xs-12 color-grey-1 rounded">
+                <h3 class="add-padding-vertical">
+                    Active Projects
+                </h3>
+                @foreach (var form in Model.LiveForms)
+                {
+                    <div class="rounded add-border border-color-2 color-white add-margin-bottom">
+                        <h4 class="add-padding-horizontal add-padding-vertical-5 text-color-1">
+                            @form.Name
+                        </h4>
+                        <table class="table table-dashboard form-process" id="@form.SortingId">
+                            <tbody>
+                                <tr class="registrations">
+                                    <td class="left">
+                                        Registrations:
+                                    </td>
+                                    <td class="right">
+                                        <div class="progress">
+                                            <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                                                <span class="sr-only">Calculating</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="registrationsActive">
+                                    <td class="left">
+                                        Active:
+                                    </td>
+                                    <td class="right">
+                                        <div class="progress">
+                                            <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                                                <span class="sr-only">Calculating</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="registrationsCancelled">
+                                    <td class="left">
+                                        Cancelled:
+                                    </td>
+                                    <td class="right">
+                                        <div class="progress">
+                                            <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                                                <span class="sr-only">Calculating</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="sales">
+                                    <td class="left">
+                                        Sales:
+                                    </td>
+                                    <td class="right">
+                                        <div class="progress">
+                                            <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                                                <span class="sr-only">Calculating</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="collected">
+                                    <td class="left">
+                                        Collected:
+                                    </td>
+                                    <td class="right">
+                                        <div class="progress">
+                                            <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                                                <span class="sr-only">Calculating</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="adjustments">
+                                    <td class="left">
+                                        Adjustments:
+                                    </td>
+                                    <td class="right">
+                                        <div class="progress">
+                                            <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                                                <span class="sr-only">Calculating</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="outstanding">
+                                    <td class="left">
+                                        Outstanding:
+                                    </td>
+                                    <td class="right">
+                                        <div class="progress">
+                                            <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                                                <span class="sr-only">Calculating</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                @if (form.EmailList != null)
+                                {
+                                    <tr>
+                                        <td colspan="2"><b>INVITATION EMAIL</b></td>
+                                    </tr>
+                                    <tr class="invitationSends">
+                                        <td class="left">
+                                            Unique Sends:
+                                        </td>
+                                        <td class="right">
+                                            <div class="progress">
+                                                <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                                                    <span class="sr-only">Calculating</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="invitationOpens">
+                                        <td class="left">
+                                            Unique Opens:
+                                        </td>
+                                        <td class="right">
+                                            <div class="progress">
+                                                <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                                                    <span class="sr-only">Calculating</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="invitationBounces">
+                                        <td class="left">
+                                            Unique Bounces:
+                                        </td>
+                                        <td class="right">
+                                            <div class="progress">
+                                                <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                                                    <span class="sr-only">Calculating</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        <div class="dropdown btn-group">
+                            <button type="button" data-toggle="dropdown" role="button" class="btn btn-default btn-xs dropdown-toggle">View <span class="caret"></span></button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li>
+                                    @Html.ActionLink("Reports", "Get", "FormReport", new { id = form.UId }, null)
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <!--Live Projects-->

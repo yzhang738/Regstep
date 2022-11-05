@@ -1,0 +1,73 @@
+﻿@using RSToolKit.Domain.Entities.Components;
+@model RegistrationHtml
+@{
+    ViewBag.Title = Model.Form.Name;
+    ViewBag.WrapperClass = "form-live";
+    Layout = "~/Views/Shared/_Layout_Registration.cshtml";
+}
+
+@section pageNumber
+{
+    Restricted Access
+}
+@section shoppingCart
+{
+}
+@section header
+{
+    @Model.RenderHeader()
+}
+@section footer
+{
+    @Model.RenderFooter()
+}
+@section customStyles
+{
+    @Model.RenderFormStyle()
+}
+@section scripts
+{
+    <script src="~/Scripts/Bootstrap/Plugins/processing.js"></script>
+    <script src="~/Scripts/Tool/restful.js"></script>
+}
+<div class="row form-panel">
+    <div class="col-xs-12">
+        <div class="row">
+            <div class="col-xs-12">
+                <h2>
+                    Registration Restricted
+                </h2>
+                <p>
+                    Your email was not found on the Authorized Registrant List. Please try a different email address. If the email you entered should be included on the authorized list, please contact the event coordinator. 
+                </p>
+                @Model.Form.CoordinatorName
+                <br />@Model.Form.CoordinatorPhone
+                <br /><a href="mailto:@Model.Form.CoordinatorEmail" target="_blank">@Model.Form.CoordinatorEmail</a>     
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row form-btn-panel">
+    <div class="col-xs-12">
+        <div class="row">
+            <!--Button Nav Back-->
+            <div class="col-sm-4 col-md-3 col-lg-2 form-btn">
+            </div>
+            <!--End Button Nav Back-->
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="processingModal" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" style="background: white;">
+        <div class="modal-header">
+            <h3>Processing...</h3>
+        </div>
+        <div class="modal-body">
+            <div class="progress">
+                <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                    <span class="sr-only">Processing</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

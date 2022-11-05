@@ -1,0 +1,354 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout_Help_Cloud.cshtml";
+}
+@section scripts {
+    <script>
+        $(function () {
+            $("#popover-page-records").popover({
+                html: true,
+                placement: 'top',
+                trigger: 'focus',
+                title: 'Page Records',
+                content: function () {
+                    return $('#popover-page-records-content').html();
+                }
+            });
+            $("#popover-standard").popover({
+                html: true,
+                placement: 'top',
+                trigger: 'focus',
+                template: '<div class="popover popover-large" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>',
+                title: 'Standard Reports',
+                content: function () {
+                    return $('#popover-standard-content').html();
+                }
+            });
+            $("#popover-view").popover({
+                html: true,
+                placement: 'top',
+                trigger: 'focus',
+                title: 'Full Page View',
+                content: function () {
+                    return $('#popover-view-content').html();
+                }
+            });
+            $("#popover-download").popover({
+                html: true,
+                placement: 'top',
+                trigger: 'focus',
+                title: 'Download',
+                content: function () {
+                    return $('#popover-download-content').html();
+                }
+            });
+            $("#popover-custom").popover({
+                html: true,
+                placement: 'top',
+                trigger: 'focus',
+                title: 'Custom Reports',
+                content: function () {
+                    return $('#popover-custom-content').html();
+                }
+            });
+            $("#popover-data").popover({
+                html: true,
+                placement: 'top',
+                trigger: 'focus',
+                title: 'Registration Data',
+                content: function () {
+                    return $('#popover-data-content').html();
+                }
+            });
+            $("#popover-data-edit").popover({
+                html: true,
+                placement: 'top',
+                trigger: 'focus',
+                title: 'Edit Registration Data',
+                content: function () {
+                    return $('#popover-data-edit-content').html();
+                }
+            });
+        });
+    </script>
+}
+
+<div class="add-padding-vertical-5 add-border-bottom">
+    <div class="help-breadcrumb">
+        <a href="~/Help/Cloud">Cloud</a> <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span>
+        <a href="~/Help/CloudFormReports">Registration Report List</a> <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span>
+        View Registration Report <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span>
+        <a href="~/Help/CloudSingleFormReports">Custom Report List</a> | <a href="~/Help/CloudRegistrant">Manage Registration</a>
+    </div>
+</div>
+
+<div class="add-padding-top help-text">
+    <h2 class="add-padding-bottom-5">
+        Registration Report
+    </h2>
+    <p>
+        Select from a list of Standard reports to filter your registration records. View the report full screen or download the report. Click on any custom form field to edit the information.
+    </p>
+    <p>
+        Click on <a class="text-color-2" href="~/Help/CloudSingleFormReports">Custom Reports</a> create, edit, or delete Custom Reports.
+    </p>
+    <p>
+        Click on any confirmation number to view the <a class="text-color-2" href="~/Help/CloudRegistrant">Manage Registration</a> page for that record.
+    </p>
+    <p>
+        Click <span class="glyphicon glyphicon-info-sign text-color-1"></span> below for more details.
+    </p>
+</div>
+
+<div class="add-padding-vertical-2em">
+    <div class="screen-shot">
+        <div class="screen-shot-text screen-shot-header">
+            User Interface
+        </div>
+        <div class="screen-shot-body">
+            <!--UI Markup-->
+            <div class="container-fluid color-white add-padding-vertical">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <!--Page Title-->
+                        <div class="row add-padding-bottom" id="page-title">
+                            <div class="col-sm-6">
+                                <h2 class="text-color-1">
+                                    Annual Conference
+                                </h2>
+                            </div>
+                            <div class="col-sm-6 text-align-right">
+                                <div class="btn-group btn-group-help">
+                                    <button type="button" class="btn btn-default btn-help dropdown-toggle" data-toggle="dropdown">
+                                        Help & Training <span class="caret"></span>
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!--End Page Title-->
+                        <!--Breadcrumb-->
+                        <div id="breadcrumb" class="row add-padding-vertical-5 add-border-vertical border-color-grey-2">
+                            <div class="col-xs-12">
+                                <a>Cloud Dashboard</a> <span class="glyphicon glyphicon-chevron-right"></span>
+                                <a>Registration Reports</a> <span class="glyphicon glyphicon-chevron-right"></span> Registration Report
+                            </div>
+                        </div>
+                        <!--End Breadcrumb-->
+                        <!--Work Area-->
+                        <div class="row add-padding-vertical">
+                            <div class="col-xs-12">
+                                <!--Form Options-->
+                                <div class="add-padding-bottom-5 text-medium text-color-2">
+                                    Report Options
+                                </div>
+                                <div class="row add-padding-vertical-5 color-grey-2">
+                                    <div class="col-sm-6 col-md-3 col-lg-2">
+                                        <div class="add-padding-vertical-5">
+                                            <label class="control-label">Standard Reports:</label> <a tabindex="0" id="popover-standard" class="help-info help-info-rsred"><span class="glyphicon glyphicon-info-sign"></span></a>
+                                            <select class="form-control input-sm">
+                                                <option>All Registrations</option>
+                                                <option>Active Registrations</option>
+                                                <option>Cancelled Registrations</option>
+                                                <option>Incomplete Registrations</option>
+                                                <option>Unbalanced Accounts</option>
+                                                <option>Refunds Due</option>
+                                                <option>Balance Owed</option>
+                                                <option>RSVP Count</option>
+                                                <option>RSVP Accept</option>
+                                                <option>RSVP Decline</option>
+                                                <option>Audience Count</option>
+                                            </select>
+                                        </div>
+                                        <div id="popover-standard-content" style="display: none;">
+                                            <p>
+                                                Use the dropdown to choose a standard report. Standard reports can be Roster Reports (display records), Inventory Reports (display quantities), or Financial Reports (provide Confirmation, Email, and Balance status only).  Every Standard Roster report displays every field from the form. Available standard reports are:
+                                            </p>
+                                            <p>
+                                                <span class="text-bold">All Registrations (Roster):</span> Displays the records for all Active (Submitted) and Cancelled registrations.
+                                            </p>
+                                            <p>
+                                                <span class="text-bold">Active Registrations (Roster):</span> Displays the records for all Active (Submitted) registrations.
+                                            </p>
+                                            <p>
+                                                <span class="text-bold">Cancelled Registrations (Roster):</span> Displays the records for all Cancelled registrations.
+                                            </p>
+                                            <p>
+                                                <span class="text-bold">Incomplete Registrations (Roster):</span> Displays the records for all Incomplete registrations.
+                                            </p>
+                                            <p>
+                                                <span class="text-bold">Unbalanced Accounts (Financial):</span> Displays all records where a refund is due or a balance is owed.
+                                            </p>
+                                            <p>
+                                                <span class="text-bold">Refunds Due (Financial):</span> Displays all records where a refund is due.
+                                            </p>
+                                            <p>
+                                                <span class="text-bold">Balance Owed (Financial):</span> Displays all records where a balance is owed.
+                                            </p>
+                                            <p>
+                                                <span class="text-bold">RSVP Count (Inventory):</span> Displays total Active (Submitted) registrations and number of those that Accepted and Declined.
+                                            </p>
+                                            <p>
+                                                <span class="text-bold">RSVP Accept (Roster):</span> Displays all records where status is Active (Submitted) and RSVP is Accept.
+                                            </p>
+                                            <p>
+                                                <span class="text-bold">RSVP Decline (Roster):</span> Displays all records where status is Active (Submitted) and RSVP is Decline.
+                                            </p>
+                                            <span class="text-bold">Audience Count (Inventory):</span> Displays total Active (Submitted) registrations and number of each audience.
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-3 col-lg-2">
+                                        <div class="add-padding-vertical-5">
+                                            <a><span class="glyphicon glyphicon-eye-open"></span> Full Page View</a> <a tabindex="0" id="popover-view" class="help-info help-info-rsred"><span class="glyphicon glyphicon-info-sign"></span></a>
+                                            <br />
+                                            <a><span class="glyphicon glyphicon-cloud-download"></span> Download</a> <a tabindex="0" id="popover-download" class="help-info help-info-rsred"><span class="glyphicon glyphicon-info-sign"></span></a>
+                                        </div>
+                                        <div id="popover-view-content" style="display: none;">
+                                            Displays the report in a new window with company logo, form name, and report name as the header. The data is displayed larger and fills entire screen. Full Page View is not interactive; it is read only.
+                                        </div>
+                                        <div id="popover-download-content" style="display: none;">
+                                            Downloads the report as an excel file
+                                        </div>
+                                    </div>
+                                    <div class="clearfix visible-sm-block"></div>
+                                    <div class="col-sm-6 col-md-3 col-lg-2">
+                                        <div class="add-padding-vertical-5">
+                                            <a><span class="glyphicon glyphicon-list"></span> Custom Reports</a> <a tabindex="0" id="popover-custom" class="help-info help-info-rsred"><span class="glyphicon glyphicon-info-sign"></span></a>
+                                            <br />
+                                            &nbsp;
+                                        </div>
+                                        <div id="popover-custom-content" style="display: none;">
+                                            <p>
+                                                Custom reports allow you to create your own Roster or Inventory reports. This link takes you to the list of available Custom Reports.
+                                            </p>
+                                            <a href="~/Help/CloudSingleFormReports">Go to Custom Reports</a>
+                                        </div>
+                                    </div>
+                                    <div class="clearfix visible-sm-block visible-md-block"></div>
+                                    <div class="col-sm-6 col-md-3 col-lg-2 col-lg-offset-2">
+                                        <div class="add-padding-vertical-5">
+                                            <label class="control-label">Records Per Page:</label> <a tabindex="0" id="popover-page-records" class="help-info help-info-rsred"><span class="glyphicon glyphicon-info-sign"></span></a>
+                                            <input type="text" class="form-control input-sm" data-form-validation="number" value="25" />
+                                        </div>
+                                        <div id="popover-page-records-content" style="display: none;">
+                                            Enter the number of records you wish to display and then click outside of the input to change the number of records per page. Use the Page arrows to advance page by page or use the dropdown to select a specific page.
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-3 col-lg-2">
+                                        <div class="add-padding-vertical-5">
+                                            <label class="control-label">Page:</label>
+                                            <div class="input-group input-group-sm">
+                                                <div class="input-group-addon cursor-pointer"><span class="glyphicon glyphicon-arrow-left"></span></div>
+                                                <select class="form-control input-sm">
+                                                    <option value="1">1</option>
+                                                </select>
+                                                <div class="input-group-addon cursor-pointer"><span class="glyphicon glyphicon-arrow-right"></span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="mainHolder" class="row add-padding-vertical-2em">
+                                    <div class="col-xs-12 text-small">
+                                        <section>
+                                            <table class="table table-striped table-registration-data">
+                                                <thead>
+                                                    <tr id="registrantHeader"></tr>
+                                                    <tr id="registrantHeaderAll">
+                                                        <th>
+                                                            Confirmation Number <a tabindex="0" id="popover-data" class="help-info help-info-rsred"><span class="glyphicon glyphicon-info-sign"></span></a>
+                                                            <div id="popover-data-content" style="display: none;">
+                                                                <p>
+                                                                    When viewing Roster Reports, click on the confirmation number to manage the registration record.
+                                                                </p>
+                                                                <a href="~/Help/CloudRegistrant">Go to Manage Registration</a>
+                                                            </div>
+                                                        </th>
+                                                        <th>
+                                                            Registration Date
+                                                        </th>
+                                                        <th>
+                                                            Status
+                                                        </th>
+                                                        <th>
+                                                            Email
+                                                        </th>
+                                                        <th>
+                                                            RSVP
+                                                        </th>
+                                                        <th>Audience</th>
+                                                        <th>Company</th>
+                                                        <th>Title</th>
+                                                        <th>FirstName</th>
+                                                        <th>LastName</th>
+                                                        <th>Golf</th>
+                                                        <th>Saturday Activity</th>
+                                                        <th>ArriveDate</th>
+                                                        <th>DepartDate</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>AB87C</td>
+                                                        <td>8/1/2014 8:00 AM</td>
+                                                        <td>Submitted</td>
+                                                        <td>john.doe@regstep.com</td>
+                                                        <td>Accept</td>
+                                                        <td>Customer</td>
+                                                        <td>
+                                                            RegStep <a tabindex="0" id="popover-data-edit" class="help-info help-info-rsred"><span class="glyphicon glyphicon-info-sign"></span></a>
+                                                            <div id="popover-data-edit-content" style="display: none;">
+                                                                <p>
+                                                                    To make changes to the data for any field, click on the information you wish to change. A pop-up window will display with the field and applicable selections. Input your edit and click <b>Save</b>.
+                                                                </p>
+                                                            </div>
+                                                        </td>
+                                                        <td>Vice President</td>
+                                                        <td>John</td>
+                                                        <td>Doe</td>
+                                                        <td>Yes</td>
+                                                        <td>City Tour</td>
+                                                        <td>4/3/2015</td>
+                                                        <td>4/8/2015</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>BBG87T</td>
+                                                        <td>8/10/2014 1130:00 AM</td>
+                                                        <td>Submitted</td>
+                                                        <td>jane.doe@company.com</td>
+                                                        <td>Decline</td>
+                                                        <td>Employee</td>
+                                                        <td>Company Co</td>
+                                                        <td>President</td>
+                                                        <td>Jane</td>
+                                                        <td>Doe</td>
+                                                        <td>No</td>
+                                                        <td>Museum Tour</td>
+                                                        <td>4/4/2015</td>
+                                                        <td>4/7/2015</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </section>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--End Work Area-->
+                    </div>
+                </div>
+            </div>
+            <!--End UI Markup-->
+        </div>
+        <div class="screen-shot-text screen-shot-footer">
+            Click on <span class="glyphicon glyphicon-info-sign"></span> to read more about each section and function.
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+

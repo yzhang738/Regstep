@@ -1,0 +1,55 @@
+﻿@import "../Variables";
+@import "../Bootstrap/variables";
+
+div.logic-group {
+    cursor: pointer;
+    z-index: 31;
+    &:hover {
+        background-color: @alert-danger-text;
+    }
+    div.logic-statements {
+        padding-left: 25px;
+        font-family: Courier New, Courier, monospace;
+        background-color: black;
+        color: white;
+        div.logic-statement {
+            cursor: pointer;
+            &:hover {
+                background-color: gray;
+            }
+            span.logic-statement-variable, span.logic-statement-test, span.logic-statement-value {
+                margin-right: 10px;
+            }
+            z-index: 41;
+        }
+    }
+}
+
+div.logic-commands {
+    cursor: pointer;
+    z-index: 31;
+    div.logic-command {
+        background-color: black;
+        padding-left: 25px;
+        font-family: Courier New, Courier, monospace;
+        color: white;
+        &:hover {
+            background-color: gray;
+        }
+        span.logic-command-parameters {
+            &::before {
+                content: "(";
+            }
+            &::after {
+                content: ")";
+            }
+            .logic-command-parameter:nth-last-child(n+2){
+                span.logic-command-parameter-view {
+                    &::after {
+                        content: ", ";
+                    }
+                }
+            }
+        }
+    }
+}

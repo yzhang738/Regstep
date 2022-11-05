@@ -1,0 +1,37 @@
+﻿@using RSToolKit.Domain.Engines;
+@model RegistrationHtml
+@{
+    ViewBag.Title = Model.Form.Name;
+    ViewBag.WrapperClass = "form-live";
+    Layout = "~/Views/Shared/_Layout_Registration.cshtml";
+}
+
+@section pageNumber
+{
+    Thank You
+}
+@section shoppingCart
+{
+    @Model.RenderShoppingCart()
+}
+@section header
+{
+    @Model.RenderHeader()
+}
+@section footer
+{
+    @Model.RenderFooter()
+}
+@section customStyles
+{
+    @Model.RenderFormStyle()
+}
+    <div class="form-panel row">
+        <div class="col-xs-12">
+            <div class="row form-panel-row">
+                <div class="col-sm-12 form-component required-component">
+                    @(Html.Raw(Model.Form.Parse((Model.Page.Panels[0].Components[0] as RSToolKit.Domain.Entities.Components.FreeText).Html)))
+                </div>
+            </div>
+        </div>
+    </div>

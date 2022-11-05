@@ -1,0 +1,56 @@
+﻿@using RSToolKit.Domain.Entities.Reports;
+@model List<Tuple<Form, List<object>>>
+@{
+    ViewBag.Title = "RS Cloud - ";
+    var trail = ViewBag.Trail as RSToolKit.Domain.Entities.Navigation.Trail<RSToolKit.Domain.Entities.Navigation.Pheromone>;
+    Layout = "~/Views/Shared/_L_Cloud.cshtml";
+    var expanded = true;
+}
+@section title { Reports for @ViewBag.User.GetCurrentCompany().Name }
+@section crumbs {
+    @if (trail != null)
+    {
+        @Html.Partial("P_Trail", new TrailModel(trail))
+    }
+}
+<div class="row">
+    <div class="panel-group" id="acc_forms" role="tablist" aria-multiselectable="true">
+        @foreach (var formData in Model)
+        {
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="heading_@formData.Item1.SortingId.ToString()">
+                    <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#acc_forms" aria-controls="@formData.Item1.SortingId.ToString()" href="#@formData.Item1.SortingId.ToString()" aria-expanded="@(expanded ? "true" : "false")">@formData.Item1.Name</a>
+                    </h4>
+                </div>
+                <div id="@formData.Item1.SortingId.ToString()" class="panel-collapse collapse@(expanded ? " in" : "")" role="tabpanel" aria-labelledby="heading_@formData.Item1.SortingId.ToString()">
+                    <div class="panel-body">
+                        <table class="table table-striped">
+                            <tbody>
+                                <tr>
+                                    <td><a href="@Url.Action("Get", new { id = formData.Item1.UId.ToString() })">Standard Reports</a></td>
+                                </tr>
+                                @foreach (var report in formData.Item2)
+                                {
+                                    <tr>
+                                        <td>
+                                            @if (report is ReportData)
+                                            {
+                                                <a href="@Url.Action("Get", new { id = ((ReportData)report).SortingId.ToString() })">@(((ReportData)report).Name)</a>
+                                            }
+                                            else if (report is GlobalReport)
+                                            {
+                                                <a href="@Url.Action("View", "GlobalReport", new { id = ((GlobalReport)report).Id.ToString() })">@(((GlobalReport)report).Name) <sub>global</sub></a>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            expanded = false;
+        }
+    </div>
+</div>

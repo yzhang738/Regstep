@@ -1,0 +1,756 @@
+﻿@using RSToolKit.Domain.Entities;
+@using System.Globalization;
+@using RSToolKit.Domain;
+@using RSToolKit.Domain.Entities.MerchantAccount;
+@model RSToolKit.Domain.Entities.Form
+@{
+    Layout = "~/Views/Shared/_Layout_FormBuilder.cshtml";
+    var Repository = (FormsRepository)ViewBag.Repository;
+    var merchantAccounts = Repository.Search<MerchantAccountInfo>(m => 1 == 1).ToList();
+    var headers = Repository.Search<ContactHeader>(c => c.CompanyKey == Model.CompanyKey).ToList();
+    var selectedLoginHeaders = new List<Tuple<long, string>>();
+    foreach (var selected in Model.LoginHeaders)
+    {
+        if (selected == -1)
+        {
+            selectedLoginHeaders.Add(new Tuple<long, string>(-1, "Email"));
+            continue;
+        }
+        var lH = headers.FirstOrDefault(h => h.SortingId == selected);
+        if (lH != null)
+        {
+            selectedLoginHeaders.Add(new Tuple<long, string>(lH.SortingId, lH.Name));
+        }
+    }
+    <script type="text/javascript">
+        var f_survey = @(Model.Survey ? "true" : "false");
+    </script>
+}
+@section scripts
+{
+    <script src="~/Scripts/Bootstrap/Plugins/nitrox.js"></script>
+    <script src="~/Scripts/FormBuilder/EditForm.js"></script>
+    <script type="text/javascript">
+        var formId = "@Model.UId";
+        var tags = @Html.Raw(JsonConvert.SerializeObject(Model.Tags.Select(t => t.UId)));
+    </script>
+}
+@section styles
+{
+}
+@section title {
+    @Model.Name <a href="@Url.Action("Permissions", "Security", new { id = Model.UId })"><span class="glyphicon glyphicon-cog"></span></a>
+}
+@section breadcrumbs {
+    @Html.ActionLink("Forms", "Index", "FormBuilder")
+    <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span> @Model.Name
+}
+@using (Html.BeginForm("Form", "FormBuilder", FormMethod.Post, new { @class = "form-horizontal", role = "form", data_xhr_method = "put" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.UId)
+    @Html.Hidden("tags", JsonConvert.SerializeObject(Model.Tags.Select(t => t.UId).ToList()))
+    @Html.HiddenFor(m => m.Open)
+    @Html.HiddenFor(m => m.Close)
+    <!--Options-->
+    <div class="col-md-4 col-lg-3 add-padding-vertical">
+        <!--Accordion-->
+        <div class="panel-group" id="accordion">
+
+            <!--Options 1-->
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <span class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#options-1">
+                            Admin Info <span class="caret"></span>
+                        </a>
+                    </span>
+                </div>
+                <div id="options-1" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        <div class="add-padding-vertical-5">
+                            <label class="control-label">Event Id:</label>
+                            <p class="static">@Model.SortingId</p>
+                        </div>
+                        <div class="add-padding-vertical-5">
+                            <label class="control-label">Form Name:</label>
+                            @Html.TextBoxFor(m => m.Name, new { @class = "form-control input-sm" })
+                        </div>
+                        <div class="add-padding-vertical-5">
+                            <label class="control-label">Form Description:</label>
+                            @Html.TextBoxFor(m => m.Description, new { @class = "form-control input-sm" })
+                        </div>
+                        <div class="add-padding-vertical-5">
+                            <label class="control-label">Coordinator Name:</label>
+                            @Html.TextBoxFor(m => m.CoordinatorName, new { @class = "form-control input-sm" })
+                        </div>
+                        <div class="add-padding-vertical-5">
+                            <label class="control-label">Coordinator Email:</label>
+                            @Html.TextBoxFor(m => m.CoordinatorEmail, new { @class = "form-control input-sm" })
+                        </div>
+                        <div class="add-padding-vertical-5">
+                            <label class="control-label">Coordinator Phone:</label>
+                            @Html.TextBoxFor(m => m.CoordinatorPhone, new { @class = "form-control input-sm" })
+                        </div>
+
+                        <div class="add-padding-vertical-5">
+                            <label class="control-label">Form Culture:</label>
+                            <select class="form-control input-sm" typeof="text" name="CultureString" value="@Model.CultureString">
+                                <optgroup label="Common">
+                                    <option value="en-us"@(Model.Culture.Name == "en-US" ? " selected=true" : "")>USA</option>
+                                </optgroup>
+                                <optgroup label="All">
+                                    @foreach (var culture in CultureInfo.GetCultures(CultureTypes.AllCultures))
+                                    {
+                                        if (culture.Name != "en-US")
+                                        {
+                                            <option value="@culture.Name"@(Model.Culture.Name == culture.Name ? " selected=true" : "")>@culture.DisplayName</option>
+                                        }
+                                    }
+                                </optgroup>
+                            </select>
+
+                        </div>
+                        <div class="add-padding-vertical-5">
+                            <label class="control-label">Date Created:</label>
+                            <span>@RSHtml.UserDateString((User)ViewBag.User, Model.DateCreated, System.Globalization.CultureInfo.CurrentCulture)</span>@Html.HiddenFor(m => m.DateCreated)
+                        </div>
+                        <div class="add-padding-vertical-5">
+                            <label class="control-label">Last Modified:</label>
+                            <span>@RSHtml.UserDateString((User)ViewBag.User, Model.DateModified, System.Globalization.CultureInfo.CurrentCulture)</span>@Html.HiddenFor(m => m.DateModified)
+                        </div>
+                        <div class="add-padding-vertical-5">
+                            <label class="control-label">Event Start:</label>
+                            @Html.TextBoxFor(m => m.EventStart, new { @class = "datetimepicker form-control" })
+                        </div>
+                        <div class="add-padding-vertical-5">
+                            <label class="control-label">Event End:</label>
+                            @Html.TextBoxFor(m => m.EventEnd, new { @class = "datetimepicker form-control" })
+                        </div>
+                        <div class="add-padding-vertical-5">
+                            <label class="control-label">Time Zone:</label>
+                            <select id="EventTimeZone" class="form-control" name="EventTimeZone" value="@Model.EventTimeZone"></select>
+                        </div>
+                        <div class="add-padding-vertical-5">
+                            <label class="control-label">Location:</label>
+                            @Html.TextBoxFor(m => m.Location, new { @class = "form-control" })
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!--End Options 1-->
+            <!--Options 2-->
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <span class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#options-2">
+                            Report Filters <span class="caret"></span>
+                        </a>
+                    </span>
+                </div>
+                <div id="options-2" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <div class="add-padding-vertical-5">
+                            <label class="control-label">Folder:</label>
+                            <span class="modal-link" data-toggle="modal" data-target="#folderSelect">
+                                <span class="glyphicon glyphicon-edit"></span> <span id="folderName">@RSHtml.GetFolderName(Model)</span>
+                            </span>
+                        </div>
+                        <div class="add-padding-vertical-5">
+                            <div class="form-group">
+                                <label class="control-label col-xs-2 col-sm-3 col-lg-2" style="text-align: left;">Type:</label>
+                                <div class="col-xs-6 col-sm-8 col-md-9 col-lg-6">
+                                    <select class="form-control input-sm" name="TypeKey">
+                                        <option value="" @(!Model.TypeKey.HasValue ? " selected" : "")>None</option>
+                                        @{
+                                            var types = Repository.Search<NodeType>(t => t.CompanyKey == Model.Company.UId).ToList();
+                                            foreach (var type in types)
+                                            {
+                                                <option value="@type.UId" @((Model.TypeKey.HasValue && Model.TypeKey == type.UId) ? " selected" : "")>@type.Name</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="add-padding-vertical-5">
+                            <label class="control-label">Tags:</label>
+                            <span class="modal-link" data-toggle="modal" data-target="#tagsSelect">
+                                <span class="glyphicon glyphicon-edit"></span> Edit
+                            </span>
+                            <div id="selectedTags" class="Hidden">
+                                @foreach (var tag in Model.Tags)
+                                {
+                                    <div id="@tag.UId">@tag.Name</div>
+                                }
+                                <input type="hidden" name="TagList" value="@Newtonsoft.Json.JsonConvert.SerializeObject(Model.Tags.Select(t => t.UId).ToArray())" />
+                            </div>
+                        </div>
+                        <div class="add-padding-vertical-5">
+                            <div class="row">
+                                <label class="control-label">Form Start Date:</label>
+                                <p class="form-control-static inline" id="OpenStatic">@RSHtml.UserDateString((User)ViewBag.User, Model.Open)</p>
+                                <div class='date inline add-padding-horizontal' id='dtPickerOpen'>
+                                    <input type="text" style="display: none;" value="@RSHtml.UserDateString((User)ViewBag.User, Model.Open)" class="form-control" />
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--End Options 2-->
+            <!--Options 3-->
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <span class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#options-3">
+                            Form Access <span class="caret"></span>
+                        </a>
+                    </span>
+                </div>
+                <div id="options-3" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        @if (Model.Survey)
+                        {
+                        <div class="add-padding-vertical-5">
+                            <label class="control-label">Mapped to Form:</label>
+                            <select class="form-control input-sm" name="ParentForm">
+                                <option value="" @(Model.ParentFormKey == null ? " selected" : "")>No Map</option>
+                                @foreach (var form in ViewBag.Forms as IEnumerable<Form>)
+                                {
+                                <option value="@form.UId" @(Model.ParentFormKey == form.UId ? " selected" : "")>@form.Name.GetElipse(25)</option>
+                                }
+                            </select>
+                        </div>
+                        }
+                        <div class="add-padding-vertical-5">
+                            <label class="control-label">Form Status:</label>
+                            <select class="form-control input-sm" name="Status">
+                                <option value="0" @((int)Model.Status == 0 ? " selected" : "")>Development</option>
+                                <option value="1" @((int)Model.Status == 1 ? " selected" : "")>Ready</option>
+                                <option value="2" @((int)Model.Status == 2 ? " selected" : "")>Active</option>
+                                <option value="3" @((int)Model.Status == 3 ? " selected" : "")>Closed</option>
+                                <option value="4" @((int)Model.Status == 4 ? " selected" : "")>Complete</option>
+                                <option value="5" @((int)Model.Status == 5 ? " selected" : "")>Payment Complete</option>
+                                <option value="6" @((int)Model.Status == 6 ? " selected" : "")>Archive</option>
+                                <option value="-1" @((int)Model.Status == -1 ? " selected" : "")>Maintenance</option>
+                            </select>
+                        </div>
+                        <div class="add-padding-vertical-5">
+                            <label class="control-label">Access Type:</label>
+                            <select id="accessType" class="form-control input-sm" name="AccessType">
+                                <option value="0" @((int)Model.AccessType == 0 ? " selected" : "")>Open</option>
+                                <option value="1" @((int)Model.AccessType == 1 ? " selected" : "")>Restricted</option>
+                                <option value="2" @((int)Model.AccessType == 2 ? " selected" : "")>Custom Log In</option>
+                            </select>
+                        </div>
+                        <!--#region Custom Log In-->
+                        <div class="add-padding-vertical-5 access-custom-login"@(Model.AccessType != FormAccessType.CustomLogIn ? Html.Raw(" style=\"display:none;\"") : Html.Raw(""))>
+                            <label class="control-label">Access Columns:</label>
+                            <select class="form-control input-sm" id="accessColumn">
+                                <option value="-1">Email</option>
+                                @foreach (var col in headers.OrderBy(c => c.Name))
+                                {
+                                    <option value="@col.SortingId">@col.Name</option>
+                                }
+                            </select>
+                            <button class="btn btn-default" id="addAccessColumn">Add</button>
+                        </div>
+                        <div class="add-padding-vertical-5 access-custom-login"@(Model.AccessType != FormAccessType.CustomLogIn ? Html.Raw(" style=\"display:none;\"") : Html.Raw(""))>
+                            <ul id="custom-login-columns">
+                                @for (var i = 0; i < selectedLoginHeaders.Count; i++)
+                                {
+                                    <li id="ColumnHeader_@i"><input type="hidden" name="LoginHeaders[@i]" value="@selectedLoginHeaders[i].Item1" />@selectedLoginHeaders[i].Item2 <span class="remove-column text-danger text-underline cursor-pointer">remove</span></li>
+                                }
+                            </ul>
+
+                        </div>
+                        <!--#endregion-->
+                        <!--Restricted List-->
+                        <div class="add-padding-vertical-5">
+                            <label class="control-label">Restriction List:</label>
+                            <select class="form-control input-sm" name="EmailListKey">
+                                <option value="">- - -</option>
+                                <optgroup label="Static Lists">Static Lists</optgroup>
+                                @foreach (var list in Repository.Search<SavedList>(s => s.CompanyKey == Model.CompanyKey))
+                                {
+                                    <option value="@list.UId" @(list.UId == Model.InvitationListKey ? "selected=\"true\"" : "")>@list.Name</option>
+                                }
+                                <optgroup label="Dynamic Lists">Dynamic Lists</optgroup>
+                                @foreach (var list in Repository.Search<SavedEmailTable>(s => s.CompanyKey == Model.CompanyKey))
+                                {
+                                    <option value="@list.UId" @(list.UId == Model.ContactReportKey ? "selected=\"true\"" : "")>@list.Name</option>
+                                }
+                                @foreach (var list in Repository.Search<ContactReport>(s => s.CompanyKey == Model.CompanyKey))
+                                {
+                                    <option value="@list.UId" @(list.UId == Model.ContactReportKey ? "selected=\"true\"" : "")>@list.Name</option>
+                                }
+                            </select>
+                        </div>
+                        <!--End Restricted List-->
+                        <div class="add-padding-vertical-5">
+                            <div class="row">
+                                <label class="control-label">Form Close Date:</label>
+                                <p class="form-control-static inline" id="CloseStatic">@RSHtml.UserDateString((User)ViewBag.User, Model.Close)</p>
+                                <div class='date inline add-padding-horizontal' id='dtPickerClose'>
+                                    <input type="text" style="display: none;" value="@RSHtml.UserDateString((User)ViewBag.User, Model.Close)" class="form-control" />
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </div>
+                            </div>
+                        </div>
+                        @if (!Model.Survey)
+                        {
+                        <div class="add-padding-vertical-5">
+                            <label>
+                                @Html.CheckBoxFor(m => m.Editable) Enable Edit
+                            </label>
+                        </div>
+                        <div class="add-padding-vertical-5">
+                            <label>
+                                @Html.CheckBoxFor(m => m.Cancelable) Enable Cancel
+                            </label>
+                        </div>
+                        }
+                    </div>
+                </div>
+            </div>
+            <!--End Options 3-->
+            <!--Options 4-->
+            @if (!Model.Survey)
+            {
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <span class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#options-4">
+                            Registration Fees <span class="caret"></span>
+                        </a>
+                    </span>
+                </div>
+                <div id="options-4" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <div class="add-padding-vertical-5">
+                            <label class="control-label">Payment Options:</label>
+                            <select class="form-control input-sm" name="BillingOption">
+                                <option value="-1" @((int)Model.BillingOption == -1 ? " selected" : "")>None</option>
+                                <option value="0" @((int)Model.BillingOption == 0 ? " selected" : "")>Credit Card and Bill Me</option>
+                                <option value="1" @((int)Model.BillingOption == 1 ? " selected" : "")>Credit Card Only</option>
+                                <option value="2" @((int)Model.BillingOption == 2 ? " selected" : "")>Bill Me Only</option>
+                            </select>
+                        </div>
+
+                        <div class="add-padding-vertical-5">
+                            <label class="control-label">Currency:</label>
+                            <select class="form-control input-sm" name="Currency">
+                                @foreach (Currency c in Enum.GetValues(typeof(Currency)))
+                                {
+
+                                    <option value="@((int)c)" @(c == Model.Currency ? " selected=true" : "")>@c.GetStringValue() @c.GetCurrencySymbol()</option>
+                                }
+                            </select>
+
+                        </div>
+
+                        <div class="add-padding-vertical-5">
+                            <label class="control-label">Base Fee:</label>
+                            @Html.TextBoxFor(m => m.Price, new { @class = "form-control input-sm" })
+                        </div>
+
+                        <div class="add-padding-vertical-5">
+                            <label class="control-label">Tax:</label>
+                            <input type="text" class="form-control input-sm" name="Tax" value="@Model.Tax" />
+                        </div>
+
+                        <div class="add-padding-vertical-5">
+                            <label class="control-label">Tax Description:</label>
+                            <input type="text" class="form-control input-sm" name="TaxDescription" value="@Model.TaxDescription" />
+                        </div>
+
+                        <div class="add-padding-vertical-5">
+                            <label class="control-label">Merchant Account:</label>
+                            <select class="form-control input-sm" name="MerchantAccountKey">
+                                <option value="">Pick An Account</option>
+                                @foreach (var merchant in merchantAccounts.Where(m => m.CompanyKey == Model.CompanyKey).OrderBy(m => m.Name))
+                                {
+                                    <option value="@merchant.UId" @(Model.MerchantAccountKey == merchant.UId ? " selected=\"selected\"" : "")>@merchant.Name</option>
+                                }
+                                @foreach (var comp in merchantAccounts.Select(m => m.Company).Where(c => c.UId != Model.CompanyKey).Distinct().OrderBy(c => c.Name))
+                                {
+                                    <optgroup label="@comp.Name">
+                                        @foreach (var merchant in merchantAccounts.Where(m => m.CompanyKey == comp.UId).OrderBy(m => m.Name))
+                                        {
+                                            <option value="@merchant.UId" @(Model.MerchantAccountKey == merchant.UId ? " selected=\"selected\"" : "")>@merchant.Name on @merchant.Company.Name</option>
+                                        }
+                                    </optgroup>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="add-padding-vertical-5">
+                            <label class="control-label">Hide Shopping Cart:</label>
+                            @Html.CheckBoxFor(m => m.DisableShoppingCart)
+                        </div>
+
+                        <div class="add-padding-vertical-5">
+                            <a href="@Url.Action("PromotionCodes", new { id = Model.UId })"><span class="glyphicon glyphicon-edit"></span> Promotion / Discount Codes</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            }
+            <!--End Options 4-->
+        </div>
+        <!--End Accordion-->
+    </div>
+    <!--End Options-->
+    <!--Functions-->
+    <div class="col-md-8 col-lg-9">
+
+        <!--Form Options-->
+        <div class="add-padding-bottom-5 text-medium text-color-2">
+            Form Options
+        </div>
+        <div class="row add-padding-vertical-5 color-grey-2">
+
+            <div class="col-sm-6 col-lg-3">
+                <div class="add-padding-vertical-5">
+                    <span class="modal-link">
+                        <a href="@Url.Action("Seatings", "FormBuilder", new { id = Model.UId })"><span class="glyphicon glyphicon-edit"></span> Capacity Limits</a>
+                    </span>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-lg-3">
+                <div class="add-padding-vertical-5">
+                    <span class="modal-link">
+                        <a href="@Url.Action("Audiences", "FormBuilder", new { id = Model.UId })"><span class="glyphicon glyphicon-edit"></span> Audiences</a>
+                    </span>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-lg-3">
+                <div class="add-padding-vertical-5">
+                    <span class="modal-link">
+                        <a href="@Url.Action("ContentBlocks", "FormBuilder", new { id = Model.UId })"><span class="glyphicon glyphicon-edit"></span> Content Blocks</a>
+                    </span>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-lg-3">
+                <div class="add-padding-vertical-5">
+                    <span class="modal-link">
+                        <a href="@Url.Action("ContentLogics", "FormBuilder", new { id = Model.UId })"><span class="glyphicon glyphicon-edit"></span> Content Logic</a>
+                    </span>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-lg-3">
+                <div class="add-padding-vertical-5">
+                    <span class="modal-link">
+                        <a href="@Url.Action("Styles", "FormBuilder", new { id = Model.UId })"><span class="glyphicon glyphicon-edit"></span> Form Style</a>
+                    </span>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-lg-3">
+                <div class="add-padding-vertical-5">
+                    <span class="modal-link">
+                        <a href="@Url.Action("Header", "FormBuilder", new { id = Model.UId })"><span class="glyphicon glyphicon-edit"></span> Header</a>
+                    </span>
+                </div>
+                <div class="add-padding-vertical-5">
+                    <span class="modal-link">
+                        <a href="@Url.Action("Footer", "FormBuilder", new { id = Model.UId })"><span class="glyphicon glyphicon-edit"></span> Footer</a>
+                    </span>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-lg-3">
+                <div class="add-padding-vertical-5">
+                    <span class="modal-link">
+                        <a href="@Url.Action("Start", "FormBuilder", new { id = Model.UId })"><span class="glyphicon glyphicon-edit"></span> Start Page</a>
+                    </span>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-lg-3">
+                <div class="add-padding-vertical-5">
+                    <span class="modal-link">
+                        <a href="@Url.Action("UnderMaintenance", "FormBuilder", new { id = Model.UId })"><span class="glyphicon glyphicon-edit"></span> Maintenance Message</a>
+                    </span>
+                </div>
+            </div>
+
+
+            <div class="col-sm-6 col-lg-3">
+                <div class="add-padding-vertical-5">
+                    <span class="modal-link">
+                        <a href="@Url.Action("FormClosed", "FormBuilder", new { id = Model.UId })"><span class="glyphicon glyphicon-edit"></span> Form Closed Message</a>
+                    </span>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-lg-3">
+                <div class="add-padding-vertical-5">
+                    <span class="modal-link">
+                        <a href="@Url.Action("Start", "Register", new { id = Model.UId, live = false })" target="_blank"><span class="glyphicon glyphicon-check"></span> Test Form</a>
+                    </span>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-lg-3">
+                <div class="add-padding-vertical-5">
+                    <span class="modal-link">
+                        <a href="@Url.Action("Start", "Register", new { id = Model.UId, live = true })" target="_blank"><span class="glyphicon glyphicon-play-circle"></span> Live Form</a>
+                    </span>
+                </div>
+            </div>
+
+            @if (User.IsInRole("Super Administrators") || User.IsInRole("Administrators"))
+            {
+                <div class="col-sm-6 col-lg-3">
+                    <div class="nitrox add-margin-vertical-5">
+                        <div class="nitrox-cover"></div>
+                        <div class="nitrox-action">
+                            <a href="@Url.Action("ClearRegistrations", "FormBuilder", null, Request.Url.Scheme)" data-xhr-method="delete" data-xhr-oncomplete="nothing" data-xhr-confirm="Clearing registrations removes all live and test registrations and cannot be undone.  Are you sure you want to do this?" data-xhr-options='{"id":"@Model.UId"}'><span class="glyphicon glyphicon-warning-sign"></span> Clear All Registrations</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <!--End Form Options-->
+        <!--Pages-->
+        <div class="add-padding-top-2em add-padding-bottom-5 text-medium text-color-2">
+            Form Pages
+        </div>
+
+        <div class="row add-padding-vertical-5 color-grey-2">
+            <!--Add Page-->
+            <div class="col-xs-12">
+                <span class="modal-link">
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <a href="@Url.Action("Page", "FormBuilder", null, Request.Url.Scheme)" data-xhr-method="post" data-xhr-options='{"id": "@Model.UId"}'>Add Page</a>
+                </span>
+            </div>
+        </div>
+
+        <!--Page Table-->
+        <div class="row">
+            <ol class="pages-not-sortable list-unstyled pages-start form-pages">
+                @{ var page = Model.Pages.FirstOrDefault(p => p.Type == PageType.RSVP); var pageNumber = 0; }
+                @if (page != null)
+                {
+                    ++pageNumber;
+                <li class="form-page page-rsvp" data-id="@page.UId">
+                    <div class="form-page-body row">
+                        @Html.Hidden("pages[0].UId", page.UId)
+                        @Html.Hidden("pages[0].PageNumber", page.PageNumber)
+                        <div class="col-xs-2 form-page-number">Page 1:</div>
+                        <div class="col-xs-4 form-page-name">@page.Name</div>
+                        <div class="col-xs-2 form-page-enabled"><label class="control-label">@Html.CheckBox("pages[0].Enabled", page.Enabled) Enabled</label></div>
+                        <div class="col-xs-2 form-page-actions">
+                            <a href="@Url.Action("Page", new { id = page.UId })"><span class="glyphicon glyphicon-edit"></span> Edit</a>
+                        </div>
+                        <div class="col-xs-2 form-page-info">
+                            @if (page.AdminOnly)
+                            {
+                                <span class="badge page-info">Admin Only</span>
+                            }
+                        </div>
+                    </div>
+                </li>
+                }
+                @{ page = Model.Pages.FirstOrDefault(p => p.Type == PageType.Audience); }
+                @if (page != null)
+                {
+                    ++pageNumber;
+                <li class="form-page page-audience" data-id="@page.UId">
+                    <div class="form-page-body row">
+                        @Html.Hidden("pages[1].UId", page.UId)
+                        @Html.Hidden("pages[1].PageNumber", page.PageNumber)
+                        <div class="col-xs-2 form-page-number">Page 2:</div>
+                        <div class="col-xs-4 form-page-name">@page.Name</div>
+                        <div class="col-xs-2 form-page-enabled"><label class="control-label">@Html.CheckBox("pages[1].Enabled", page.Enabled) Enabled</label></div>
+                        <div class="col-xs-2 form-page-actions">
+                            <a href="@Url.Action("Page", new { id = page.UId })"><span class="glyphicon glyphicon-edit"></span> Edit</a>
+                        </div>
+                        <div class="col-xs-2 form-page-info">
+                            @if (page.AdminOnly)
+                            {
+                                <span class="badge page-info">Admin Only</span>
+                            }
+                            @switch (page.RSVP)
+                            {
+                                case RSVPType.Accept:
+                                    <span class="badge page-info">RSVP: Accept</span>
+                                    break;
+                                case RSVPType.Decline:
+                                <span class="badge page-info">RSVP: Decline</span>
+                                    break;
+                                case RSVPType.None:
+                                default:
+                                    break;
+                            }
+                        </div>
+                    </div>
+                </li>
+                }
+            </ol>
+            <ol class="pages-sortable row list-unstyled form-pages">
+                @{ var pi = pageNumber; }
+                @foreach (var userPage in Model.Pages.Where(p => p.Type == PageType.UserDefined).OrderBy(p => p.PageNumber).ToList())
+                {
+                    <li class="form-page page-user-page" data-id="@userPage.UId">
+                        <div class="form-page-body row">
+                            @Html.Hidden("pages[" + pi + "].UId", userPage.UId)
+                            @Html.Hidden("pages[" + pi + "].PageNumber", userPage.PageNumber, new { @class = "page-number" })
+                            <div class="col-xs-2"><span class="glyphicon glyphicon-move icon-move"></span> <span class="form-page-number">Page @userPage.PageNumber:</span></div>
+                            <div class="col-xs-4 form-page-name">@userPage.Name</div>
+                            <div class="col-xs-2 form-page-enabled"><label class="control-label">@Html.CheckBox("pages[" + pi + "].Enabled", userPage.Enabled) Enabled</label></div>
+                            <div class="col-xs-2 form-page-actions">
+                                <a href="@Url.Action("Page", new { id = userPage.UId })"><span class="glyphicon glyphicon-edit"></span> Edit</a>
+                            </div>
+                            <div class="col-xs-2 form-page-actions">                                   
+                                <a href="@Url.Action("Page", "FormBuilder", null, Request.Url.Scheme)" data-xhr-method="delete" data-xhr-options='{ "id": "@userPage.UId" }' data-xhr-oncomplete="refresh"><span class="glyphicon glyphicon-trash"></span> Delete</a>
+                            </div>
+                            <div class="col-xs-2 form-page-info">
+                                @if (userPage.AdminOnly)
+                                {
+                                    <span class="badge page-info">Admin Only</span>
+                                }
+                                @switch (userPage.RSVP)
+                                {
+                                    case RSVPType.Accept:
+                                        <span class="badge page-info">RSVP: Accept</span>
+                                        break;
+                                    case RSVPType.Decline:
+                                    <span class="badge page-info">RSVP: Decline</span>
+                                        break;
+                                    case RSVPType.None:
+                                    default:
+                                        break;
+                                }
+                            </div>
+                        </div>
+                    </li>
+                    pi++;
+                }
+            </ol>
+            <ol class="pages-not-sortable row list-unstyled pages-end form-pages">
+                @{ page = Model.Pages.FirstOrDefault(p => p.Type == PageType.Confirmation); }
+                @if (page != null)
+                {
+                <li class="form-page page-audience" data-id="@page.UId">
+                    <div class="form-page-body row">
+                        @Html.Hidden("pages[" + pi + "].UId", page.UId)
+                        @Html.Hidden("pages[" + pi + "].PageNumber", page.PageNumber)
+                        <div class="col-xs-2 form-page-number">Page @(pi + 1):</div>
+                        <div class="col-xs-4 form-page-name">@page.Name</div>
+                        <div class="col-xs-2 form-page-enabled"><label class="control-label">@Html.CheckBox("pages[" + pi + "].Enabled", page.Enabled) Enabled</label></div>
+                        <div class="col-xs-2 form-page-actions">
+                            <a href="@Url.Action("Page", new { id = page.UId })"><span class="glyphicon glyphicon-edit"></span> Edit</a>
+                        </div>
+                        <div class="col-xs-2 form-page-info">
+                        @if (page.AdminOnly)
+                        {
+                            <span class="badge page-info">Admin Only</span>
+                        }
+                        @switch (page.RSVP)
+                        {
+                            case RSVPType.Accept:
+                                <span class="badge page-info">RSVP: Accept</span>
+                                break;
+                            case RSVPType.Decline:
+                            <span class="badge page-info">RSVP: Decline</span>
+                                break;
+                            case RSVPType.None:
+                            default:
+                                break;
+                        }
+                        </div>
+                    </div>
+                </li>
+                }
+            </ol>
+        </div>
+        <!--End Page Table-->
+        <!--End Pages-->
+        <!--Save-->
+        <div class="add-padding-vertical">
+            <button type="submit" class="btn btn-default">
+                Save
+            </button>
+        </div>
+        <!--End Save-->
+
+    </div>
+    <!--End Functions-->
+}
+@section modals
+{
+    <!--Modal for Folder Selection-->
+    <div class="modal fade" id="folderSelect">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3 class="modal-title">Folder Select</h3>
+            </div>
+
+            <div class="modal-body">
+                <div class="container-fluid">
+                    @RSHtml.RenderFolderSelect((Guid)ViewBag.Company, Model)
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!--Modal for Tags-->
+    <div class="modal fade" id="tagsSelect">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3 class="modal-title">Folder Select</h3>
+            </div>
+
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="tag-container tags-notSelected">
+                        <div class="tag-title">
+                            Available Tags
+                        </div>
+                        <div class="tags">
+                            @foreach (var tag in Repository.Search<Tag>(t => t.CompanyKey == Model.CompanyKey))
+                            {
+                                <label class="control-label tag@(Model.Tags.Contains(tag) ? " tag-hidden" : " tag-visible")" data-id="@tag.UId"><input type="checkbox" class="tag-input" data-id="@tag.UId" />@tag.Name</label>
+                            }
+                        </div>
+                    </div>
+                    <div class="tag-commands">
+                        <a href="#" id="addTags"><span class="glyphicon glyphicon-plus"></span> Add</a> <a href="#" id="removeTags"><span class="glyphicon glyphicon-remove"></span> Remove</a>
+                    </div>
+                    <div class="tag-container tags-selected">
+                        <div class="tag-title">
+                            Selected Tags
+                        </div>
+                        <div class="tags">
+                            @foreach (var tag in Repository.Search<Tag>(t => t.CompanyKey == Model.CompanyKey))
+                            {
+                                <label class="control-label tag@(Model.Tags.Contains(tag) ? " tag-visible" : " tag-hidden")" data-id="@tag.UId"><input type="checkbox" class="tag-input" data-id="@tag.UId" />@tag.Name</label>
+                            }
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Set</button>
+            </div>
+        </div>
+    </div>
+}

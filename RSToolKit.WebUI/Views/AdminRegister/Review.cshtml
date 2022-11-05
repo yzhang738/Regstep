@@ -1,0 +1,51 @@
+﻿@using RSToolKit.WebUI.Models.Views.Register;
+@model ReviewView
+@{
+    Layout = "~/Views/Shared/_L_AdminRegister.cshtml";
+}
+@section pageNumber
+{
+    Review
+}
+@section shoppingCart
+{
+    @Model.ShoppingCart
+}
+@section header
+{
+    @Model.Header
+}
+@section footer
+{
+    @Model.Footer
+}
+@section styles
+{
+    @Model.Styles
+}
+<div style="position: fixed; top: 0; left: 0; width: 100%; background-color: rgba(0, 0, 0, .5); color: #fc3333; font-size: 14pt;" class="text-center">Admin Registration</div>
+<div class="row form-panel" style="background: white !important;">
+    <div class="col-xs-12 form-component" style="padding-bottom: 10px; color: black !important;">
+        <h3>Review Your Selections</h3>
+        Click <b>Next</b> below to complete your registration or <b>Back</b> to make changes to your entries.
+    </div>
+    <div class="col-xs-12">
+        @Model.Summary
+    </div>
+</div>
+<div class="row form-btn-panel">
+    <div class="col-xs-12">
+        <div class="row">
+            <!--Button Nav Back-->
+            <div class="col-sm-6 col-md-4 col-lg-3 form-btn">
+                <a class="btn-rs btn-navigation" href="@Url.Action("Page", "AdminRegister", new { id = Model.RegistrantId, page = Model.PreviousPage }, Request.Url.Scheme)">Back</a>
+            </div>
+            <!--End Button Nav Back-->
+            <!--Button Nav Next-->
+            <div class="col-sm-6 col-md-4 col-lg-3 form-btn">
+                <a class="btn-rs btn-navigation" href="@Url.Action("Page", "AdminRegister", new { id = Model.RegistrantId, page = -2 }, Request.Url.Scheme)">Next</a>
+            </div>
+            <!--End Button Nav Next-->
+        </div>
+    </div>
+</div>

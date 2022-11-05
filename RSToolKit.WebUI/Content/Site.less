@@ -1,0 +1,152 @@
+﻿@import "Variables.less";
+
+body {
+    font-family: @fonts;
+    font-size: @font-size;
+    margin: 0;
+    padding: 0;
+}
+a {
+    &, &:link, &:visited, &:active {
+        color: @rsRed;
+        text-decoration: none;
+    }
+    &:hover{
+        text-decoration: underline;
+    }
+}
+
+/**********/
+/* Header */
+/**********/
+
+section.header-logout {
+    padding-left: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+img.header-logo {
+    height: 60px;
+}
+
+/**************/
+/* End Header */
+/**************/
+
+/**************/
+/* Navigation */
+/**************/
+
+nav.nagivation {
+    margin: 0 auto;
+    overflow: hidden;
+    height: 25px;
+    margin-bottom: 15px;
+    ul {
+        list-style-type: none;
+        float: left;
+        width: 100%;
+        padding: 0.25em 0;
+        margin: 0;
+        height: 100%;
+        li {
+            display: block;
+            float: left;
+            margin-right: 40px;
+            font-size: 85%;
+            height: 100%;
+            &:hover {
+                background-color: @gray;
+            }
+        }
+    }
+    a {
+        &, &:link, &:active, &:visited {
+            color: @white;
+            font-weight: bold !important;
+            text-decoration: none !important;
+        }
+        &:hover {
+            text-decoration: none !important;
+        }
+    }
+}
+
+#changeCompanyDialog {
+    > .modal-dialog {
+        background-color: @white;
+    }
+}
+
+/******************/
+/* End Navigation */
+/******************/
+
+/*************/
+/* Universal */
+/*************/
+
+span.psuedo-link {
+    cursor: pointer;
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+/*****************/
+/* End Universal */
+/*****************/
+
+/*******/
+/* Box */
+/*******/
+
+
+div.Box {
+    border: 2px solid @gray;
+    border-radius: 4px;
+    padding: 0 !Important;
+    margin-bottom: 15px;
+    > header {
+        background-color: @gray;
+        font-size: 110%;
+        font-weight: bold;
+        text-align: center;
+        padding: 15px;
+        color: @white;
+        a.box-header-link {
+            &, &:active, &:link, &:visited {
+                color: white;
+                text-decoration: none;
+                font-weight: bold;
+                font-size: @header-font-size;
+            }
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+        span.psuedo-link {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: @header-font-size;
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+    > div {
+        padding: 15px;
+        margin-left: 0;
+        margin-right: 0;
+    }
+    > footer {
+        background-color: @gray;
+        font-size: @footer-font-size;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 0;
+        padding: 15px;
+    }
+}

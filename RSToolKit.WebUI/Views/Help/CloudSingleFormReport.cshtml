@@ -1,0 +1,651 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout_Help_Cloud.cshtml";
+}
+@section scripts {
+    <script>
+        $(function () {
+            $("#popover-name").popover({
+                html: true,
+                placement: 'top',
+                trigger: 'focus',
+                title: 'Report Name',
+                content: function () {
+                    return $('#popover-name-content').html();
+                }
+            });
+            $("#popover-fav").popover({
+                html: true,
+                placement: 'top',
+                trigger: 'focus',
+                title: 'Mark as Favorite',
+                content: function () {
+                    return $('#popover-fav-content').html();
+                }
+            });
+            $("#popover-inv").popover({
+                html: true,
+                placement: 'top',
+                trigger: 'focus',
+                title: 'Inventory Report',
+                content: function () {
+                    return $('#popover-inv-content').html();
+                }
+            });
+            $("#popover-view").popover({
+                html: true,
+                placement: 'top',
+                trigger: 'focus',
+                title: 'View Report',
+                content: function () {
+                    return $('#popover-view-content').html();
+                }
+            });
+            $("#popover-fields").popover({
+                html: true,
+                placement: 'top',
+                trigger: 'focus',
+                title: 'Available Fields',
+                content: function () {
+                    return $('#popover-fields-content').html();
+                }
+            });
+            $("#popover-sort").popover({
+                html: true,
+                placement: 'top',
+                trigger: 'focus',
+                title: 'Sort By',
+                content: function () {
+                    return $('#popover-sort-content').html();
+                }
+            });
+            $("#popover-asc").popover({
+                html: true,
+                placement: 'top',
+                trigger: 'focus',
+                title: 'Sort Type',
+                content: function () {
+                    return $('#popover-asc-content').html();
+                }
+            });
+            $("#popover-included").popover({
+                html: true,
+                placement: 'top',
+                trigger: 'focus',
+                title: 'Included',
+                content: function () {
+                    return $('#popover-included-content').html();
+                }
+            });
+            $("#popover-group").popover({
+                html: true,
+                placement: 'top',
+                trigger: 'focus',
+                title: 'Grouping Statements',
+                content: function () {
+                    return $('#popover-group-content').html();
+                }
+            });
+            $("#popover-ungroup").popover({
+                html: true,
+                placement: 'top',
+                trigger: 'focus',
+                title: 'Ungrouping Statements',
+                content: function () {
+                    return $('#popover-ungroup-content').html();
+                }
+            });
+            $("#popover-link").popover({
+                html: true,
+                placement: 'top',
+                trigger: 'focus',
+                title: 'Statement Link',
+                content: function () {
+                    return $('#popover-link-content').html();
+                }
+            });
+            $("#popover-var").popover({
+                html: true,
+                placement: 'top',
+                trigger: 'focus',
+                title: 'Statement Variable',
+                content: function () {
+                    return $('#popover-var-content').html();
+                }
+            });
+            $("#popover-test").popover({
+                html: true,
+                placement: 'top',
+                trigger: 'focus',
+                title: 'Statement Test',
+                content: function () {
+                    return $('#popover-test-content').html();
+                }
+            });
+            $("#popover-value").popover({
+                html: true,
+                placement: 'top',
+                trigger: 'focus',
+                title: 'Statement Test Value',
+                content: function () {
+                    return $('#popover-value-content').html();
+                }
+            });
+            $("#popover-new").popover({
+                html: true,
+                placement: 'top',
+                trigger: 'focus',
+                title: 'New Statement',
+                content: function () {
+                    return $('#popover-new-content').html();
+                }
+            });
+        });
+    </script>
+}
+@section modals
+{
+    <div class="modal fade" id="report-type">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-header">
+                <h3 class="modal-title">Roster vs Inventory Reports</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <p>
+                            <span class="text-bold">Roster Reports</span>
+                            <br />
+                            Roster Reports pull a list of registrants by filter. The information entered by each registrant for the fields you include will be displayed on the form.
+                        </p>
+                        <p>
+                            <span class="text-bold">Inventory Reports</span>
+                            <br />
+                            Inventory Reports provide total quantities for fields that can be counted from the registration list by filter. Only quantities are displayed, not registration entries.
+                        </p>
+                        <p>
+                            <span class="text-bold">Example</span>
+                            <br />
+                            You have a form that has an Activity selection with options Golf and Tour. You have two Audiences - Employee and Customer. You set up your Custom Report to display First Name, Last Name and Activity. You set up your filter to only return records where Audience = Employee.
+                        </p>
+                        <div class="add-padding-vertical">
+                            A Roster Report would return the data as below. Each column has the corresponding information entered by your registrants.
+                            <table class="table table-striped text-small">
+                                <thead>
+                                    <tr>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        <th>Activity</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>John</td>
+                                        <td>Doe</td>
+                                        <td>Golf</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Jane</td>
+                                        <td>Smith</td>
+                                        <td>Tour</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="add-padding-vertical">
+                            An Inventory Report would return the data as below. Totals for  the number of registrants that picked each selection. The tool will prompt you to remove the First Name and Last Name field if you select Inventory Report as text inputs cannot be counted.
+                            <table class="table table-striped text-small">
+                                <thead>
+                                    <tr>
+                                        <th>Golf</th>
+                                        <th>Tour</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>1</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <span class="text-bold">Important Note:</span> The filter "Audience = Employee" applies to both report types. The Roster Report would only display records for those that selected Employee and the Inventory Report would only count records where Audience is Employee.
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div><!-- /.modal-dialog -->
+
+<div class="modal fade" id="standard-fields">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-header">
+            <h3 class="modal-title">Standard Form Fields</h3>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-xs-12">
+                    <p>
+                        <span class="text-bold">Email:</span> The email address for the record.
+                    </p>
+                    <p>
+                        <span class="text-bold">Confirmation:</span> The confirmation number for the record.
+                    </p>
+                    <span class="text-bold">Status:</span> Registration status:
+                        <ul>
+                            <li><span class="text-bold">Incomplete:</span> A registration that has been started but not completed.</li>
+                            <li><span class="text-bold">Submitted:</span> A registration that has been submitted and is still active.</li>
+                            <li><span class="text-bold">Cancelled:</span> A registration that has been submitted and subsequently cancelled by the registrant.</li>
+                            <li><span class="text-bold">Cancelled By Company:</span> A registration that has been submitted and subsequently cancelled by someone within your organization.</li>
+                            <li><span class="text-bold">Cancelled By Administrator:</span> A registration that has been submitted and subsequently cancelled by RegStep personnel.</li>
+                            <li><span class="text-bold">Marked for Deletion:</span> Any registration record that has been deleted.</li>
+                        </ul>
+                    
+                    <p>
+                        <span class="text-bold">Date Registered:</span> The date the registration was started.
+                    </p>
+                    <p>
+                        <span class="text-bold">Type:</span> Live or Test - You should include a filter "Type = Live" for your custom reports so that you do not pull Test Records.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div><!-- /.modal-dialog -->
+}
+
+<div class="add-padding-vertical-5 add-border-bottom">
+    <div class="help-breadcrumb">
+        <a href="~/Help/Cloud">Cloud</a> <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span>
+        <a href="~/Help/CloudFormReports">Registration Report List</a> <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span>
+        <a href="~/Help/CloudFormReport">View Registration Report</a> <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span>
+        <a href="~/Help/CloudSingleFormReports">Custom Report List</a> <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span>
+        Edit Custom Report &mdash; <a href="~/Help/CloudViewSingleFormReport">View Custom Report</a>
+    </div>
+</div>
+
+<div class="add-padding-top help-text">
+    <h2 class="add-padding-bottom-5">
+        Edit Custom Report
+    </h2>
+    <p>
+        This page allows you to create custom <a class="modal-link text-color-2" data-toggle="modal" data-target="#report-type">Roster or Inventory Reports</a>, select the fields that are included in the report, and assign the filters that create the report.
+    </p>
+    <p>
+        In the <b>Admin Info</b> you can assign the report name, toggle Favorite Report on or off, toggle Inventory Report on or off, or click <a class="text-color-2" href="~/Help/CloudViewSingleFormReport">View Report</a> to see the report results.
+    </p>
+    <p>
+        In the <b>Included Fields</b> section you can add fields, select the field to sort by, and select sort order. Included Fields contains all of the fields from your form plus seven <a class="modal-link text-color-2" data-toggle="modal" data-target="#standard-fields">standard fields</a>. You can re-order your selected fields and delete fields from inclusion.
+    </p>
+    <p>
+        Use the filters to set up your report. Learn more about <a class="text-color-2" href="~/Help/Logic" target="_blank">filters and logic statements</a>.
+    </p>
+    <p>
+        Click <span class="glyphicon glyphicon-info-sign text-color-1"></span> below for more details.
+    </p>
+</div>
+
+<div class="add-padding-vertical-2em">
+    <div class="screen-shot">
+        <div class="screen-shot-text screen-shot-header">
+            User Interface
+        </div>
+        <div class="screen-shot-body">
+            <!--UI Markup-->
+            <div class="container-fluid container-content color-white add-padding-vertical">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <!--Page Title-->
+                        <div class="row add-padding-bottom" id="page-title">
+                            <div class="col-sm-6">
+                                <h2 class="text-color-1">
+                                    Golf Participants
+                                </h2>
+                            </div>
+                            <div class="col-sm-6 text-align-right">
+                                <div class="btn-group btn-group-help">
+                                    <button type="button" class="btn btn-default btn-help dropdown-toggle" data-toggle="dropdown">
+                                        Help & Training <span class="caret"></span>
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!--End Page Title-->
+                        <!--Breadcrumb-->
+                        <div id="breadcrumb" class="row add-padding-vertical-5 add-border-vertical border-color-grey-2">
+                            <div class="col-xs-12">
+                                <a>Cloud Dashboard</a> <span class="glyphicon glyphicon-chevron-right"></span>
+                                <a>Registration Reports</a> <span class="glyphicon glyphicon-chevron-right"></span>
+                                <a>Registration Report</a> <span class="glyphicon glyphicon-chevron-right"></span>
+                                <a>Custom Reports</a><span class="glyphicon glyphicon-chevron-right"></span>
+                                Edit: Golf Participants
+                            </div>
+                        </div>
+                        <!--End Breadcrumb-->
+                        <!--Work Area-->
+                        <div class="row add-padding-vertical">
+                            <div class="col-xs-12">
+                                <div class="row">
+                                    <!--Admin-->
+                                    <div class="col-md-4 col-lg-3 add-padding-vertical">
+                                        <div class="row color-grey-2 add-padding-bottom-5">
+                                            <div class="col-xs-12 color-2 text-color-white add-padding-vertical-5">
+                                                Admin Info
+                                            </div>
+                                            <div class="col-xs-12">
+                                                <div class="add-padding-vertical-5">
+                                                    <label class="control-label">Report Name:</label> <a tabindex="0" id="popover-name" tab-index="0" class="help-info help-info-rsred"><span class="glyphicon glyphicon-info-sign"></span></a>
+                                                    <input type="text" class="form-control input-sm" />
+                                                </div>
+                                                <div id="popover-name-content" style="display: none;">
+                                                    Edit the name of the report.
+                                                </div>
+                                                <div class="add-padding-vertical-5">
+                                                    <div class="checkbox">
+                                                        <label><input data-val="true" type="checkbox" /> Favorite Report</label> <a tabindex="0" id="popover-fav" tab-index="0" class="help-info help-info-rsred"><span class="glyphicon glyphicon-info-sign"></span></a>
+                                                    </div>
+                                                </div>
+                                                <div id="popover-fav-content" style="display: none;">
+                                                    Checking this box adds the report to your favorites list on the Cloud Dashboard.
+                                                </div>
+                                                <div class="add-padding-vertical-5">
+                                                    <div class="checkbox">
+                                                        <label><input type="checkbox" /> Inventory Report</label> <a tabindex="0" id="popover-inv" tab-index="0" class="help-info help-info-rsred"><span class="glyphicon glyphicon-info-sign"></span></a>
+                                                    </div>
+                                                </div>
+                                                <div id="popover-inv-content" style="display: none;">
+                                                    Custom reports are roster reports by default. Roster reports display records that match the criteria. Check this box to change to an Inventory Report. Inventory reports display quantities for selections that match the criteria.
+                                                </div>
+                                                <div class="add-padding-vertical-5">
+                                                    <div class="checkbox">
+                                                        <a><span class="glyphicon glyphicon-eye-open"></span> View Report</a> <a tabindex="0" id="popover-view" tab-index="0" class="help-info help-info-rsred"><span class="glyphicon glyphicon-info-sign"></span></a>
+                                                    </div>
+                                                </div>
+                                                <div id="popover-view-content" style="display: none;">
+                                                    <p>
+                                                        Click this link to view the report.
+                                                    </p>
+                                                    <a href="~/Help/CloudViewSingleFormReport">Go to View Report page.</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="add-padding-vertical">
+                                            <button class="btn btn-default">Save</button>
+                                        </div>
+                                    </div>
+                                    <!--Admin-->
+                                    <!--Fields and Filters-->
+                                    <div class="col-md-8 col-lg-9">
+                                        <!--Fields-->
+                                        <div class="add-padding-bottom-5 text-medium text-color-2">
+                                            Included Fields
+                                        </div>
+                                        <div class="row color-grey-2 add-padding-vertical-5">
+                                            <div class="col-sm-4">
+                                                <div class="add-padding-vertical-5">
+                                                    <label class="control-label">Available Fields</label> <a tabindex="0" id="popover-fields" tab-index="0" class="help-info help-info-rsred"><span class="glyphicon glyphicon-info-sign"></span></a>
+                                                    <select class="form-control input-sm">
+                                                        <option>Email</option>
+                                                        <option>Confirmation</option>
+                                                        <option>Status</option>
+                                                        <option>Date Registered</option>
+                                                        <option>Type</option>
+                                                        <option>Audience</option>
+                                                        <option>RSVP</option>
+                                                        <option>Golf</option>
+                                                        <option>Saturday Activity</option>
+                                                        <option>LastName</option>
+                                                        <option>FirstName</option>
+                                                    </select>
+                                                </div>
+                                                <div id="popover-fields-content" style="display: none;">
+                                                    All of the fields that are included in your form are available to add to the report. Select the field you wish to add and click <b>Add Field</b>.
+                                                </div>
+                                                <div class="add-padding-vertical-5">
+                                                    <button type="button" class="btn btn-default">Add Field</button>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="add-padding-vertical-5">
+                                                    <label class="control-label">Sort By</label> <a tabindex="0" id="popover-sort" tab-index="0" class="help-info help-info-rsred"><span class="glyphicon glyphicon-info-sign"></span></a>
+                                                    <select class="form-control input-sm">
+                                                        <option>Confirmation</option>
+                                                        <option>Email</option>
+                                                        <option>Status</option>
+                                                        <option>LastName</option>
+                                                        <option>FirstName</option>
+                                                    </select>
+                                                </div>
+                                                <div id="popover-sort-content" style="display: none;">
+                                                    All of the fields that are currently included in your report available to indicate as the sort field.
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="add-padding-vertical-5">
+                                                    <label class="control-label">Sort Type</label> <a tabindex="0" id="popover-asc" tab-index="0" class="help-info help-info-rsred"><span class="glyphicon glyphicon-info-sign"></span></a>
+                                                    <select class="form-control input-sm">
+                                                        <option>Ascending</option>
+                                                        <option value="false">Descending</option>
+                                                    </select>
+                                                </div>
+                                                <div id="popover-asc-content" style="display: none;">
+                                                    Choose to sort the records by the selected field in ascending or descending order.
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row add-padding-top add-padding-bottom-2em">
+                                            <div class="col-xs-12">
+                                                <div class="col-xs-12 color-2 text-color-white add-padding-vertical-5">
+                                                    Included Fields <a tabindex="0" id="popover-included" tab-index="0" class="help-info help-info-white"><span class="glyphicon glyphicon-info-sign"></span></a>
+                                                </div>
+                                                <div id="popover-included-content" style="display: none;">
+                                                    All of the fields you have added to the report are displayed here. Use the arrows to reorder the fields or delete them from the report.
+                                                </div>
+                                                <div class="row add-padding-vertical">
+                                                    <table>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td class="variable" data-id="confirmation">
+                                                                    <span class="glyphicon glyphicon-move icon-move"></span>
+                                                                    Confirmation
+                                                                </td>
+                                                                <td>
+                                                                    <a><span class="glyphicon glyphicon-trash"></span></a>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="variable" data-id="confirmation">
+                                                                    <span class="glyphicon glyphicon-move icon-move"></span>
+                                                                    Status
+                                                                </td>
+                                                                <td>
+                                                                    <a><span class="glyphicon glyphicon-trash"></span></a>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="variable" data-id="confirmation">
+                                                                    <span class="glyphicon glyphicon-move icon-move"></span>
+                                                                    Email
+                                                                </td>
+                                                                <td>
+                                                                    <a><span class="glyphicon glyphicon-trash"></span></a>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="variable" data-id="confirmation">
+                                                                    <span class="glyphicon glyphicon-move icon-move"></span>
+                                                                    LastName
+                                                                </td>
+                                                                <td>
+                                                                    <a><span class="glyphicon glyphicon-trash"></span></a>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="variable" data-id="confirmation">
+                                                                    <span class="glyphicon glyphicon-move icon-move"></span>
+                                                                    FirstName
+                                                                </td>
+                                                                <td>
+                                                                    <a><span class="glyphicon glyphicon-trash"></span></a>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--End Fields-->
+                                        <!--Filters-->
+                                        <div class="add-padding-bottom-5 text-medium text-color-2">
+                                            Filters
+                                        </div>
+                                        <div class="row color-grey-2 add-padding-vertical-5">
+                                            <div class="col-sm-6">
+                                                <div class="add-padding-vertical-5">
+                                                    <a><span class="glyphicon glyphicon-link"></span> Group Selected</a> <a tabindex="0" id="popover-group" tab-index="0" class="help-info help-info-rsred"><span class="glyphicon glyphicon-info-sign"></span></a>
+                                                </div>
+                                                <div id="popover-group-content" style="display: none;">
+                                                    <p>
+                                                        Use the checkboxes on the left side of each statement below to select the statements you wish to group and then click <b>Group Selected</b>.
+                                                    </p>                                                    
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="add-padding-vertical-5">
+                                                    <a><span class="glyphicon glyphicon-link"></span> Ungroup All</a> <a tabindex="0" id="popover-ungroup" tab-index="0" class="help-info help-info-rsred"><span class="glyphicon glyphicon-info-sign"></span></a>
+                                                </div>
+                                                <div id="popover-ungroup-content" style="display: none;">
+                                                    Click this to ungroup all statements.
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <table class="table table-filter filter-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th></th>
+                                                        <th>
+                                                            Link <a tabindex="0" id="popover-link" tab-index="0" class="help-info help-info-rsred"><span class="glyphicon glyphicon-info-sign"></span></a>
+                                                            <div id="popover-link-content" style="display: none;">
+                                                                <p>
+                                                                    Select the link between statements - None, And, Or. The first link in any group is the group link.
+                                                                </p>                                                                
+                                                            </div>
+                                                        </th>
+                                                        <th>
+                                                            Form Field <a tabindex="0" id="popover-var" tab-index="0" class="help-info help-info-rsred"><span class="glyphicon glyphicon-info-sign"></span></a>
+                                                            <div id="popover-var-content" style="display: none;">
+                                                                Select the field from the form for which the filter applies.
+                                                            </div>
+                                                        </th>
+                                                        <th>
+                                                            Test <a tabindex="0" id="popover-test" tab-index="0" class="help-info help-info-rsred"><span class="glyphicon glyphicon-info-sign"></span></a>
+                                                            <div id="popover-test-content" style="display: none;">
+                                                                <p>
+                                                                    Select the type of test to perform on the data of the selected field.
+                                                                </p>                                                                                                                                
+                                                            </div>
+                                                        </th>
+                                                        <th>
+                                                            Condition <a tabindex="0" id="popover-value" tab-index="0" class="help-info help-info-rsred"><span class="glyphicon glyphicon-info-sign"></span></a>
+                                                            <div id="popover-value-content" style="display: none;">
+                                                                For text fields, you will enter the value for the test condition. For selection fields, you will choose the applicable selection.
+                                                            </div>
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr class="filter" data-index="0">
+                                                        <td>
+                                                            <label><input type="checkbox" class="groupNext" /></label> <a><span class="glyphicon glyphicon-trash"></span></a>
+                                                        </td>
+                                                        <td>
+                                                            <select class="filter-link form-control">
+                                                                <option>None</option>
+                                                                <option>And</option>
+                                                                <option>Or</option>
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <select class="filter-actionon form-control">
+                                                                <option>Email</option>
+                                                                <option>Confirmation</option>
+                                                                <option>Status</option>
+                                                                <option>Date Registered</option>
+                                                                <option>Type</option>
+                                                                <option>Audience</option>
+                                                                <option>RSVP</option>
+                                                                <option>Golf</option>
+                                                                <option>Saturday Activity</option>
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <select class="filter-test form-control">
+                                                                <option value="0" selected=&quot;true&quot;>equals</option>
+                                                                <option value="1">greater than</option>
+                                                                <option value="2">greater than or equal to</option>
+                                                                <option value="3">less than</option>
+                                                                <option value="4">less than or equal to</option>
+                                                                <option value="5">not equal to</option>
+                                                                <option value="6">starts with</option>
+                                                                <option value="7">does not start with</option>
+                                                                <option value="8">ends with</option>
+                                                                <option value="9">does not end with</option>
+                                                                <option value="10">contains</option>
+                                                                <option value="11">does not contain</option>
+                                                                <option value="12">=rgx=</option>
+                                                                <option value="13">!=rgx=</option>
+                                                                <option value="14">in</option>
+                                                                <option value="15">not in</option>
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <input class="filter-value form-control" />
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                                <tfoot>
+                                                    <tr>
+                                                        <td colspan="5">
+                                                            <a><span class="glyphicon glyphicon-small glyphicon-plus"></span> New Statement</a> <a tabindex="0" id="popover-new" tab-index="0" class="help-info help-info-rsred"><span class="glyphicon glyphicon-info-sign"></span></a>
+                                                            <div id="popover-new-content" style="display: none;">
+                                                                Adds a new statment to the filters.
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+                                        <!--End Filters-->
+                                    </div>
+                                    <!--End Fields and Filters-->
+                                </div>
+                            </div>
+                        </div>
+                        <!--End Work Area-->
+                    </div>
+                </div>
+            </div>
+            <!--End UI Markup-->
+        </div>
+        <div class="screen-shot-text screen-shot-footer">
+            Click on <span class="glyphicon glyphicon-info-sign"></span> to read more about each section and function.
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,130 @@
+﻿@model RegistrationHtml
+@{
+    ViewBag.Title = Model.Form.Name;
+    ViewBag.WrapperClass = "form-live";
+    Layout = "~/Views/Shared/_Layout_Registration.cshtml";
+}
+@section pageNumber
+{
+    Promotion Codes
+}
+@section scripts
+{
+    <script src="~/Scripts/Registration/PromotionCodes.js"></script>
+}
+@section shoppingCart
+{
+    @Model.RenderShoppingCart()
+}
+@section header
+{
+    @Model.RenderHeader()
+}
+@section footer
+{
+    @Model.RenderFooter()
+}
+@section customStyles
+{
+    @Model.RenderFormStyle()
+}
+@section errorMessage{
+@{ var errors = Model.Errors.Where(e => e.Id == ""); }
+<div class="form-error-warning" @Html.Raw(errors.Count() > 0 ? "" : " style=\"display: none;\"")>
+    @if (errors.Count() > 0)
+    {
+        foreach (var error in errors)
+        {
+            @:<span class="glyphicon glyphicon-warning-sign"></span> @error.Message
+            }
+    }
+    else
+    {
+        @:<span class="glyphicon glyphicon-warning-sign"></span> There are problems with your selections. Please see notes below to correct your registration before moving forward.
+        }
+</div>
+}
+@Html.Hidden("FormKey", Model.Form.UId)
+@Html.Hidden("RegistrantKey", Model.Registrant.UId)
+
+<div class="row form-panel">
+    <div class="col-xs-12">
+        <div class="row">
+            <div class="col-xs-12 form-component">
+                <h2>
+                    Promotion Codes
+                </h2>
+
+                <p>
+                    If you have received any promotion codes, you may enter them here. Please enter one code at a time, and click update after each one.
+                </p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 form-component">
+                <label>Code: </label>
+                <input class="form-control input-sm form-text-input type=" text" name="Code" id="code" />
+            </div>
+        </div>
+
+        <div class="row form-btn-panel">
+            <div class="col-sm-4 col-md-3 col-lg-2 form-btn">
+                <a class="btn-rs btn-navigation pseudo-link" id="codeEnter">Update</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row form-panel">
+    <div class="col-xs-12">
+        <div class="row">
+            <div class="col-xs-12 form-component">
+                <h2>
+                    Accepted Promotion Codes
+                </h2>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <td>Code</td>
+                            <td>Description</td>
+                            <td class="fill"></td>
+                        </tr>
+                    </thead>
+                    <tbody id="codes">
+                        @foreach (var pc in Model.Registrant.PromotionalCodes)
+                        {
+                            <tr>
+                                <td>@pc.Code.Code</td>
+                                <td>@pc.Code.Description</td>
+                                <td class="fill"></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row form-btn-panel">
+    <div class="col-xs-12">
+        <div class="row">
+            @{ var skipPayment = Model.Registrant.Data.Where(d => d.Component.Variable != null && d.Component.Variable.Value == "__SkipPayment" && d.Value == "true").Count() == 1; }
+            @if (!skipPayment && (Model.Form.BillingOption == RSToolKit.Domain.Entities.BillingOptions.CC || Model.Form.BillingOption == RSToolKit.Domain.Entities.BillingOptions.CCandBM))
+            {
+                <div class="col-sm-6 col-md-4 col-lg-3 form-btn">
+                    @Html.ActionLink("Continue", "ShoppingCart", "Register", new { RegistrantKey = Model.Registrant.UId }, new { @class = "btn-rs btn-navigation" })
+                </div>
+            }
+            else
+            {
+                <div class="col-sm-6 col-md-4 col-lg-3 form-btn">
+                    @Html.ActionLink("Continue", "Confirmation", "Register", new { RegistrantKey = Model.Registrant.UId }, new { @class = "btn-rs btn-navigation" })
+                </div>
+            }
+        </div>
+    </div>
+</div>

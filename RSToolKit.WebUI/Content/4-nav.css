@@ -1,0 +1,156 @@
+﻿/*********************** BASIC ***********************************/
+nav.navbar-utility, nav.navbar-utility .navbar-collapse {
+	border: none;
+	margin: 0;
+	padding: 0;
+	min-height: 0;
+}
+
+/*Brand*/
+nav.navbar-utility a.navbar-brand {
+	display: none;
+}
+
+/*Tier 1*/
+nav.navbar-utility ul {
+	width: 100%;
+}
+
+nav.navbar-utility ul > li {
+}
+
+nav.navbar-utility ul > li.divider {
+	margin: 3px 0;
+}
+
+nav.navbar-utility ul > li > a {
+	width: 100%;
+	padding: 5px 20px;
+	text-align: left;	
+	font-size: 1.1em;
+	color: #DDDDDD;
+	border-top-right-radius: 4px;
+	border-top-left-radius: 4px;
+}
+
+nav.navbar-utility ul > li > a:hover {
+	background: transparent;	
+	color: white;
+}
+
+nav.navbar-utility ul > li.open > a {
+	background: #EEEEEE;
+	color: #3E3E3E;
+}
+
+	nav.navbar-utility ul > li.open > a:focus {
+		background: #EEEEEE;
+		color: #3E3E3E;
+	}
+
+
+/*Tier 2*/
+nav.navbar-utility ul > li > ul {
+	width: 175%;
+	background: #EEEEEE;
+	border: none;
+	box-shadow: 0 6px 12px rgba(0,0,0,.8);
+	border-bottom-right-radius: 4px;
+	border-bottom-left-radius: 4px;	
+}
+
+nav.navbar-utility ul > li > ul > li {
+	width: 100%;
+	padding: 0;
+}
+
+nav.navbar-utility ul > li > ul > li > a {
+	color: #3E3E3E;
+	text-align: left;
+	padding: 10px;
+	border-top-right-radius: 0;
+	border-top-left-radius: 0;
+	font-size: 1em;
+}
+
+nav.navbar-utility ul > li > ul > li > a:hover {
+	background: #3E3E3E;
+}
+
+
+/*--NavBar Mobile Toggle*/
+nav.navbar-utility button.navbar-toggle {
+	border-color: white !important; /*sets color of hamburger button border*/
+}
+
+nav.navbar-utility button.navbar-toggle:hover {
+	background: #7A0202 !important; /*sets color of hamburger button on hover*/
+}
+
+nav.navbar-utility .navbar-toggle .icon-bar {
+	background-color: #FFFFFF !important; /*sets color of hamburger lines*/
+}
+
+
+/*********************** SM ***********************************/
+@media screen and (min-width: 768px) and (max-width: 991px) {
+    nav.navbar-utility ul > li > a, nav.navbar-utility ul > li > ul > li > a {
+	font-size: 12px;
+    }
+}
+/*********************** SM ***********************************/
+
+
+/*********************** XS ***********************************/
+@media screen and (max-width: 767px) {
+
+	nav.navbar-utility, nav.navbar-utility .navbar-collapse {
+		padding-left: 15px;
+		padding-right: 15px;
+	}
+
+	nav.navbar-utility ul > li {
+		width: 100%;
+		border-bottom: 1px solid rgba(255,255,255,.1);
+	}
+
+	nav.navbar-utility ul > li.divider {
+		display: none;
+	}
+
+	nav.navbar-utility ul > li > a {
+		border-radius: 0;
+		font-size: 1.25em;
+		background: #3E3E3E !important;
+		color: white !important;	
+	}
+
+	nav.navbar-utility ul > li > ul {
+		width: 100%;
+		border-radius: 0;
+		box-shadow: none;
+		padding: 0;
+		background: #3e3e3e !important;
+	}
+
+	nav.navbar-utility ul > li > ul > li {
+		width: 95%;
+        margin-left: 5%;
+		background: transparent;
+		border-bottom: 1px solid #ddd;
+	}
+
+	nav.navbar-utility ul > li > ul li:last-child {
+		border-bottom: none !important;
+	}
+
+	nav.navbar-utility ul > li > ul > li > a {
+		background: transparent !important;
+		color: white !important;
+        font-size: 1.25em;
+	}
+
+	nav.navbar-utility ul > li > ul > li > a:hover {
+	}
+
+}

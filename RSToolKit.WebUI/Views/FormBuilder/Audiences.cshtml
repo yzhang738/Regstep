@@ -1,0 +1,72 @@
+﻿@using RSToolKit.Domain.Entities;
+@model Form
+@{
+    Layout = "~/Views/Shared/_Layout_FormBuilder.cshtml";
+    var audiences = Model.Audiences.OrderBy(a => a.Order).ToList();
+}
+@section scripts
+{
+<script src="~/Scripts/jQuery/Plugins/sortable.js"></script>
+<script src="~/Scripts/FormBuilder/Audiences.js"></script>
+<script type="text/javascript">
+    var formId = "@Model.UId";
+</script>
+}
+@section styles
+{
+}
+@section title {
+Edit Registration Types
+}
+@section breadcrumbs {
+@Html.ActionLink("Forms", "Index", "FormBuilder")
+<span class="glyphicon glyphicon-chevron-right glyphicon-small"></span> @Html.ActionLink((Model.Name.Length < 20 ? Model.Name : Model.Name.Substring(0, 20)), "Form", "FormBuilder", new { id = Model.UId }, null)
+<span class="glyphicon glyphicon-chevron-right glyphicon-small"></span> Audiences
+}
+@section modals
+{
+}
+@using (Html.BeginForm("Audiences", "FormBuilder", FormMethod.Post, new { @class = "form", role = "form", data_xhr_method = "put" }))
+{
+@Html.AntiForgeryToken()
+@Html.Hidden("UId", Model.UId)
+
+    <div class="col-xs-12">
+
+        <div class="add-padding-bottom-5 text-medium text-color-2">
+            Registration Types
+        </div>
+
+        <div class="row add-padding-vertical-5 color-grey-2">
+            <!--Add Panel-->
+            <div class="col-xs-12">
+                <span class="modal-link">
+                    <a href="@Url.Action("Audience", "FormBuilder", null, Request.Url.Scheme)" data-xhr-method="post" data-xhr-options='{ "id": "@Model.UId" }'><span class="glyphicon glyphicon-plus"></span> Add Registration Type</a>
+                </span>
+            </div>
+        </div>
+
+        <div class="row">
+            <table id="ItemList" class="table table-striped audience-table">
+                <tbody>
+                @for (var i = 0; i < audiences.Count; i++)
+                {
+                    var audience = audiences[i];
+                    <tr>                      
+                        <td style="cursor: move;">@audience.Name@Html.Hidden("audience[" + i + "].UId", audience.UId, new { @class = "audience-uid" })</td>
+                        <td><a href="@Url.Action("Audience", "FormBuilder", new { id = audience.UId })"><span class="glyphicon glyphicon-edit"></span> Edit</a></td>
+                        <td><a href="@Url.Action("Audience", "FormBuilder", null, Request.Url.Scheme)" data-xhr-method="delete" data-xhr-oncomplete="@Url.Action("Audiences", "FormBuilder", null, Request.Url.Scheme)" data-xhr-options='{ "id": "@audience.UId" }'><span class="glyphicon glyphicon-trash"></span> Delete</a></td>
+                        <td class="Order">@Html.Hidden("audience[" + i + "].Order", (i + 1), new { @class = "audience-order" })</td>
+                        <td class="Fill"></td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <button type="submit" class="btn btn-default">Save Order</button>
+            </div>
+        </div>
+    </div>
+}

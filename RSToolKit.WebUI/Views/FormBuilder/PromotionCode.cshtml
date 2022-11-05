@@ -1,0 +1,74 @@
+﻿@using RSToolKit.Domain.Entities;
+@using RSToolKit.Domain;
+@model PromotionCode
+@{
+    Layout = "~/Views/Shared/_Layout_FormBuilder.cshtml";
+}
+@section scripts
+{
+    <script src="~/Scripts/ckeditor/ckeditor.js"></script>
+    <script type="text/javascript">
+        CKEDITOR.replace('Text');
+        var formId = "@Model.UId";
+        $('#Header')
+    </script>
+}
+@section styles
+{
+}
+@section title {
+    Promotion Code
+}
+@section breadcrumbs {
+    @Html.ActionLink("Forms", "Index", "FormBuilder")
+    <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span> @Html.ActionLink((Model.Form.Name.Length < 20 ? Model.Form.Name : Model.Form.Name.Substring(0, 20)), "Form", "FormBuilder", new { id = Model.Form.UId }, null)
+    <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span> @Html.ActionLink("Promotion Codes", "PromotionCodes", "FormBuilder", new { id = Model.FormKey }, null)
+    <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span> @Model.Code
+}
+@section modals
+{
+}
+@using (Html.BeginForm("PromotionCode", "FormBuilder", FormMethod.Post, new { role = "form", @class = "form-horizontal", data_xhr_method = "put" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.UId)
+    <div class="col-md-6">
+        <div class="add-padding-bottom-5 text-medium text-color-2">
+            Code Settings
+        </div>
+        <div class="add-padding-vertical-5 add-padding-horizontal add-margin-bottom color-grey-2">
+            <div class="add-padding-vertical-5">
+                <label class="control-label">Code:</label>
+                @Html.TextBoxFor(m => m.Code, new { @class = "form-control input-sm" })
+            </div>
+            <div class="add-padding-vertical-5">
+                <label class="control-label">Description:</label>
+                @Html.TextBoxFor(m => m.Description, new { @class = "form-control input-sm" })
+            </div>
+            <div class="add-padding-vertical-5">
+                <label class="control-label">Limit:</label>
+                @Html.TextBoxFor(m => m.Limit, new { @class = "form-control input-sm" })
+            </div>
+            <div class="add-padding-vertical-5">
+                <label class="control-label">Amount:</label>
+                @Html.TextBoxFor(m => m.Amount, new { @class = "form-control input-sm" })
+            </div>
+            <div class="add-padding-vertical-5">
+                <label class="control-label">Action:</label>
+                <select name="Action" class="form-control input-sm">
+                    @foreach (ShoppingCartAction action in Enum.GetValues(typeof(ShoppingCartAction)))
+                    {
+                        <option value="@((int)action)" @(Model.Action == action ? " selected=true" : "")>@action.GetStringValue()</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <!--Save-->
+        <div class="add-padding-vertical">
+            <button type="submit" class="btn btn-default">
+                Save
+            </button>
+        </div>
+        <!--End Save-->
+    </div>
+}

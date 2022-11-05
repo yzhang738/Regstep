@@ -1,0 +1,56 @@
+﻿@using System.Collections;
+@using RSToolKit.Domain.Entities.Reports;
+@using RSToolKit.Domain;
+@model List<GlobalReport>
+@{
+    Layout = "~/Views/Shared/_L_Cloud.cshtml";
+}
+@section scripts
+{
+}
+@section styles
+{
+    <link href="~/Content/Bootstrap/bootstrap-datetimepicker-custom.min.css" rel="stylesheet" />
+}
+@section title
+{
+    Advance Reports
+}
+@section crumbs {
+    @Html.Partial("P_Trail", new TrailModel(ViewBag.Trail))
+}
+@section modals
+{
+}
+<div class="col-xs-12">
+
+    <!--Options-->
+    <div class="add-padding-bottom-5 text-medium text-color-2">
+        Advanced Reports
+    </div>
+    <div class="row add-padding-vertical-5 color-grey-2">
+        <div class="col-xxs-12 col-xs-6 col-md-3">
+            <div class="add-padding-vertical-5">
+                <a href="@Url.Action("New", "GlobalReport", null, Request.Url.Scheme)" data-restful-method="post"><span class="glyphicon glyphicon-plus"></span> New Report</a>
+            </div>
+        </div>
+    </div>
+    <!--End Options-->
+    <!--Data-->
+    <div id="mainHolder" class="row add-padding-vertical-2em">
+        <table class="table table-striped">
+            <tbody>
+                @foreach (var report in Model)
+                {
+                    <tr>
+                        <td>@report.Name</td>
+                        <td><a href="@Url.Action("View", "GlobalReport", new { id = report.Id }, Request.Url.Scheme)"><span class="glyphicon glyphicon-eye-open"></span> View Report</a></td>
+                        <td><a href="@Url.Action("Get", "GlobalReport", new { id = report.Id }, Request.Url.Scheme)"><span class="glyphicon glyphicon-edit"></span> Edit</a></td>
+                        <td><a href="@Url.Action("Delete", "GlobalReport", null, Request.Url.Scheme)" data-restful-method="delete" data-restful-json='{"id":"@report.Id"}' data-restful-confirmmessage='{"message":"Do you realy want to delete?"}'><span class="glyphicon glyphicon-trash"></span> Delete</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <!--End Data-->
+</div>

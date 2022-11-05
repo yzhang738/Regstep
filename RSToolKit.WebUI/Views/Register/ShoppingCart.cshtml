@@ -1,0 +1,106 @@
+﻿@model RegistrationHtml
+@{
+    ViewBag.Title = Model.Form.Name;
+    ViewBag.WrapperClass = "form-live";
+    Layout = "~/Views/Shared/_Layout_Registration.cshtml";
+}
+@section pageNumber
+{
+    Shopping Cart
+}
+@section shoppingCart
+{
+}
+@section header
+{
+    @Model.RenderHeader()
+}
+@section footer
+{
+    @Model.RenderFooter()
+}
+@section customStyles
+{
+    @Model.RenderFormStyle()
+}
+@section errorMessage{
+}
+
+<div class="row form-panel">
+    <div class="col-xs-12">
+        <div class="row">
+            <div class="col-xs-12 form-component">
+                If you have an outstanding balance that needs to be paid, select a payment option below. Otherwise, select "Continue".
+            </div>
+        </div>        
+    </div>
+</div>
+
+<div class="row form-panel">
+    <div class="col-xs-12">
+        <div class="row">
+            <div class="col-xs-12 form-component">
+                <div style="color: black; font-size: 20px; padding-bottom: 10px;">
+                    Shopping Cart
+                </div>
+                @Html.Partial("P_RegistrationInvoice", Model)
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row form-btn-panel">
+    <div class="col-xs-12">
+        <div class="row">
+            @{
+                var billMe = Model.Registrant.Data.Where(d => d.Component.Variable != null && d.Component.Variable.Value == "__BillMe" && d.Value.ToLower() == "true").Count() > 0;
+                var forceBillMe = Model.Registrant.Data.Where(d => d.Component.Variable != null && d.Component.Variable.Value == "__ForceBillMe" && d.Value.ToLower() == "true").Count() > 0;
+                var forceCreditCard = Model.Registrant.Data.Where(d => d.Component.Variable != null && d.Component.Variable.Value == "__ForceCreditCard" && d.Value.ToLower() == "true").Count() > 0;
+                var creditCard = Model.Registrant.Data.Where(d => d.Component.Variable != null && d.Component.Variable.Value == "__CreditCard" && d.Value.ToLower() == "true").Count() > 0;
+            }
+            @if (Model.Registrant.TotalOwed > 0)
+            {
+                if (forceCreditCard)
+                {
+                    <div class="col-sm-6 col-md-4 col-lg-3 form-btn">
+                        @Html.ActionLink("Credit Card", "CreditCard", "Register", new { id = Model.Registrant.UId }, new { @class = "btn-rs btn-navigation" })
+                    </div>
+                }
+                else if (forceBillMe)
+                {
+                    <div class="col-sm-6 col-md-4 col-lg-3 form-btn">
+                        @Html.ActionLink("Bill Me", "BillMe", "Register", new { id = Model.Registrant.UId }, new { @class = "btn-rs btn-navigation" })
+                    </div>
+                }
+                else
+                {
+                    if (Model.Form.BillingOption == RSToolKit.Domain.Entities.BillingOptions.CC || Model.Form.BillingOption == RSToolKit.Domain.Entities.BillingOptions.CCandBM || creditCard)
+                    {
+                        <div class="col-sm-6 col-md-4 col-lg-3 form-btn">
+                            @Html.ActionLink("Credit Card", "CreditCard", "Register", new { id = Model.Registrant.UId }, new { @class = "btn-rs btn-navigation" })
+                        </div>
+                    }
+                    if (Model.Form.BillingOption == RSToolKit.Domain.Entities.BillingOptions.BM || Model.Form.BillingOption == RSToolKit.Domain.Entities.BillingOptions.CCandBM || billMe)
+                    {
+                        <div class="col-sm-6 col-md-4 col-lg-3 form-btn">
+                            @Html.ActionLink("Bill Me", "BillMe", "Register", new { id = Model.Registrant.UId }, new { @class = "btn-rs btn-navigation" })
+                        </div>
+                    }
+                    if (Model.Form.BillingOption == RSToolKit.Domain.Entities.BillingOptions.None && !(creditCard || billMe))
+                    {
+                        <div class="col-sm-6 col-md-4 col-lg-3 form-btn">
+                            @Html.ActionLink("Continue", "Confirmation", "Register", new { RegistrantKey = Model.Registrant.UId }, new { @class = "btn-rs btn-navigation" })
+                        </div>
+                    }
+                }
+            }
+            else
+            {
+                <div class="col-sm-6 col-md-4 col-lg-3 form-btn">
+                    @Html.ActionLink("Continue", "Confirmation", "Register", new { RegistrantKey = Model.Registrant.UId }, new { @class = "btn-rs btn-navigation" })
+                </div>
+            }
+        </div>
+    </div>
+</div>

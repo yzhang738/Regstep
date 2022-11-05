@@ -1,0 +1,89 @@
+﻿.FolderClick:hover > .FolderLabel {
+    background-color: rgba(0, 0, 0, .2);
+}
+.FolderLabel {
+    margin-left: 5px;
+}
+.FolderClick {
+    cursor: pointer;
+}
+.FolderContents {
+    padding-left: 20px;
+}
+.ItemClick {
+    cursor: pointer;
+    color: #7A0202;
+    font-weight: bold;
+}
+.ItemClick:hover {
+    text-decoration: underline;
+}
+
+#loadingMessage {
+    font-size: 12pt;
+    font-style: italic;
+}
+
+.table > thead {
+    font-weight: bold;
+}
+
+.table-responsive {
+    width: 95%;
+    margin: auto;
+    overflow-x: scroll;
+    border: none !Important;
+    margin-bottom: 20px;
+}
+
+table.table-registration-data {
+    margin-top: 15px;
+    margin-bottom: 0px;
+    max-height: 600px;
+    overflow-y: scroll;
+}
+
+    table.table-registration-data > thead {
+        background-color: #3E3E3E;
+        color: #FFFFFF;
+    }
+
+table.table-reports-list {
+    margin-top: 15px;
+    margin-bottom: 0px;
+    max-height: 600px;
+    overflow-y: scroll;
+}
+    table.table-reports-list > thead {
+        background-color: #3E3E3E;
+        color: #FFFFFF;
+    }
+
+table.table-report-headers {
+    min-height: 50px;
+}
+
+.table-responsive-medium {
+    width: auto;
+    max-width: 700px;
+}
+
+.editable {
+    cursor: pointer;
+}
+
+    .editable:hover {
+            background-color: rgba(0,0,0,.3) !Important;
+    }
+
+#pageLeft, #pageRight {
+    color: #0F0F0F;
+    cursor: pointer;
+}
+    #pageLeft:hover, #pageRight:hover {
+        color: #3E3E3E;
+    }
+
+.dataHeader > tr > th {
+    cursor: pointer;
+}

@@ -1,0 +1,33 @@
+﻿@model List<RSToolKit.Domain.Entities.Email.EmailTemplate>
+@{
+    ViewBag.Title = "EmailTemplates";
+    Layout = "~/Views/Shared/_Layout_SystemAdministration.cshtml";
+}
+@foreach (var template in Model)
+{
+    <div>
+        <a href="@Url.Action("EmailTemplate", "SystemAdministration", null, Request.Url.Scheme)" data-xhr-options='{"id":"@template.UId"}' data-xhr-method="delete" data-xhr-oncomplete="refresh">Delete @template.Name</a>
+    </div>
+}
+@using (Html.BeginForm("EmailTemplate", "SystemAdministration", FormMethod.Post, new { @class = "form-horizontal", data_xhr_method = "post", data_xhr_oncomplete = "refresh" }))
+{
+    <div class="form-group">
+        <label class="col-sm-12 col-md-6 col-md-4 control-label">Name</label>
+        <div class="col-sm-12 col-md-6 col-md-8">
+            <input type="text" name="name" placeholder="Template Name" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-12 col-md-6 col-md-4 control-label">Description</label>
+        <div class="col-sm-12 col-md-6 col-md-8">
+            <input type="text" name="description" placeholder="Template Description" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-12 col-md-6 col-md-4 control-label">File</label>
+        <div class="col-sm-12 col-md-6 col-md-8">
+            <input type="file" name="file" />
+        </div>
+    </div>
+    <button type="submit" class="btn btn-default">Upload</button>
+}

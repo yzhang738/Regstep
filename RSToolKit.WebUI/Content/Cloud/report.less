@@ -1,0 +1,40 @@
+﻿td.oldData-copy {
+    & > div {
+        display: none;
+        z-index: 5555;
+        top: 0;
+        right:  0;
+        background-color: #7A0202;
+        border: black;
+        color: white !important;
+        cursor: pointer;
+        font-size: 10pt;
+        position: absolute;
+    }
+    &:hover {
+        & > div {
+            display: block !important;
+        }
+    }
+}
+
+a.copyData-old {
+    color: white !important;
+    &:hover {
+        color: white !important;
+    }
+}
+
+.table-changeset-data {
+    display: inline-block;
+    height: 100%;
+    overflow: auto;
+    th {
+	    padding-right: 50px !important;
+	    white-space: nowrap;
+	    min-width: 150px;
+    }
+    > tbody > tr > td {
+        position: relative;
+    }
+}

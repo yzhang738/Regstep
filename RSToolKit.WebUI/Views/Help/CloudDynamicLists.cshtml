@@ -1,0 +1,40 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout_Help_Cloud.cshtml";
+}
+@section scripts {
+    <script>
+        $(function () {
+            $("#popover-not").popover({
+                html: true,
+                placement: 'top',
+                title: 'Notifications',
+                content: function () {
+                    return $('#popover-not-content').html();
+                }
+            });
+
+        });
+    </script>
+}
+
+<div class="add-padding-vertical-5 add-border-bottom">
+    <div class="help-breadcrumb">
+        <a href="~/Help/Cloud">Cloud</a> <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span> Dynamic Lists
+    </div>
+</div>
+
+<div class="add-padding-top help-text">
+    <h2 class="add-padding-bottom-5">
+        Dynamic Lists
+    </h2>
+    <p>
+        Help for this page coming soon.
+    </p>
+</div>
+
+
+
+
+
+
+

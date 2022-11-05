@@ -1,0 +1,73 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RSToolKit.Domain", "RSToolKit.Domain\RSToolKit.Domain.csproj", "{E0864C3F-A028-4FF9-9C02-81C9E8DA1C71}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RSToolKit.WebUI", "RSToolKit.WebUI\RSToolKit.WebUI.csproj", "{C803FFEB-0846-4112-9065-E5F6AAA4A523}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0BCDCBCB-74E5-45F1-8045-688BDACAC57A}"
+	ProjectSection(SolutionItems) = preProject
+		WebEssentials-Settings.json = WebEssentials-Settings.json
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RSToolKit.UnitTests", "RSToolKit.UnitTests\RSToolKit.UnitTests.csproj", "{C1C77BC0-1CFF-4BBC-A0E1-62E5E84FD39A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E0864C3F-A028-4FF9-9C02-81C9E8DA1C71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0864C3F-A028-4FF9-9C02-81C9E8DA1C71}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0864C3F-A028-4FF9-9C02-81C9E8DA1C71}.Debug|x64.ActiveCfg = Debug|x64
+		{E0864C3F-A028-4FF9-9C02-81C9E8DA1C71}.Debug|x64.Build.0 = Debug|x64
+		{E0864C3F-A028-4FF9-9C02-81C9E8DA1C71}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0864C3F-A028-4FF9-9C02-81C9E8DA1C71}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E0864C3F-A028-4FF9-9C02-81C9E8DA1C71}.Release|x64.ActiveCfg = Release|x64
+		{E0864C3F-A028-4FF9-9C02-81C9E8DA1C71}.Release|x64.Build.0 = Release|x64
+		{E0864C3F-A028-4FF9-9C02-81C9E8DA1C71}.Release|x64.Deploy.0 = Release|x64
+		{C803FFEB-0846-4112-9065-E5F6AAA4A523}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C803FFEB-0846-4112-9065-E5F6AAA4A523}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C803FFEB-0846-4112-9065-E5F6AAA4A523}.Debug|x64.ActiveCfg = Debug|x64
+		{C803FFEB-0846-4112-9065-E5F6AAA4A523}.Debug|x64.Build.0 = Debug|x64
+		{C803FFEB-0846-4112-9065-E5F6AAA4A523}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C803FFEB-0846-4112-9065-E5F6AAA4A523}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C803FFEB-0846-4112-9065-E5F6AAA4A523}.Release|x64.ActiveCfg = Release|x64
+		{C803FFEB-0846-4112-9065-E5F6AAA4A523}.Release|x64.Build.0 = Release|x64
+		{C803FFEB-0846-4112-9065-E5F6AAA4A523}.Release|x64.Deploy.0 = Release|x64
+		{C1C77BC0-1CFF-4BBC-A0E1-62E5E84FD39A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1C77BC0-1CFF-4BBC-A0E1-62E5E84FD39A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1C77BC0-1CFF-4BBC-A0E1-62E5E84FD39A}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C1C77BC0-1CFF-4BBC-A0E1-62E5E84FD39A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1C77BC0-1CFF-4BBC-A0E1-62E5E84FD39A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C1C77BC0-1CFF-4BBC-A0E1-62E5E84FD39A}.Release|x64.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 3
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://team.regstep.com:8080/tfs/regstep%20technologies
+		SccProjectUniqueName0 = RSToolKit.Domain\\RSToolKit.Domain.csproj
+		SccProjectName0 = RSToolKit.Domain
+		SccAuxPath0 = http://team.regstep.com:8080/tfs/regstep%20technologies
+		SccLocalPath0 = RSToolKit.Domain
+		SccProvider0 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccProjectUniqueName1 = RSToolKit.WebUI\\RSToolKit.WebUI.csproj
+		SccProjectName1 = RSToolKit.WebUI
+		SccAuxPath1 = http://team.regstep.com:8080/tfs/regstep%20technologies
+		SccLocalPath1 = RSToolKit.WebUI
+		SccProvider1 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccProjectUniqueName2 = RSToolKit.UnitTests\\RSToolKit.UnitTests.csproj
+		SccProjectName2 = RSToolKit.UnitTests
+		SccAuxPath2 = http://team.regstep.com:8080/tfs/regstep%20technologies
+		SccLocalPath2 = RSToolKit.UnitTests
+		SccProvider2 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+	EndGlobalSection
+EndGlobal

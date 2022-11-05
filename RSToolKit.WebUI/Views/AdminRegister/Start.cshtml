@@ -1,0 +1,85 @@
+﻿@using RSToolKit.WebUI.Models.Views.Register;
+@model StartView
+@{
+    Layout = "~/Views/Shared/_L_AdminRegister.cshtml";
+}
+
+@section pageNumber
+{
+    Start
+}
+@section shoppingCart
+{
+    @Model.ShoppingCart
+}
+@section header
+{
+    @Model.Header
+}
+@section footer
+{
+    @Model.Footer
+}
+@section styles
+{
+    @Model.Styles
+}
+<div style="position: fixed; top: 0; left: 0; width: 100%; background-color: rgba(0, 0, 0, .5); color: #fc3333; font-size: 14pt;" class="text-center">Admin Registration</div>
+<form method="post" id="registerForm" action="~/AdminRegister/Start">
+    @Model.HiddenInputs
+    <div class="form-panel row">
+        <div class="col-xs-12">
+            <div class="row form-panel-row">
+                <div class="col-xs-12 form-component form-free-text">
+                    @Model.Notice
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-panel row">
+        <div class="col-xs-12">
+            <div class="row form-panel-row">
+                <div class="col-sm-6 col-md-4 form-component required-component">
+                    <div class="form-component-error" id="email-error"></div>
+                    <div class="form-component-row">
+                        <label class="control-label"><span class="form-component-label">Email</span></label>
+                    </div>
+                    <input type="text" class="form-control input-sm fomt-text-input" name="Email" data-component-regex="^.+\@@(\[?)[a-zA-Z0-9\-\.]+\.([a-zA-Z]{2,3}|[0-9]{1,3})(\]?)$" data-component-required="true" data-component-error="You must provide a valid email." value="@Model.Email" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row form-btn-panel">
+        <div class="col-xs-12">
+            <div class="row">
+                <div class="col-sm-6 col-md-4 col-lg-3 form-btn">
+                    <a class="btn-rs btn-navigation" href="#" onclick="$('#registerForm').submit()">
+                        Start Registration
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+    <script type="text/javascript">
+        //<![CDATA[
+        function get_form(element) {
+            while (element) {
+                element = element.parentNode
+                if (element.tagName.toLowerCase() == "form") {
+                    //alert( element ) //debug/test
+                    return element
+                }
+            }
+            return 0; //error: no form found in ancestors
+        }
+        //]]>
+    </script>
+    @if (!Model.OpenForm)
+    {
+        <script type="text/javascript">
+            if (!confirm('The form is not open.  It is in the @Model.FormState state. Do you wish to continue anyways?')) {
+                window.close();
+            }
+        </script>
+    }

@@ -1,0 +1,260 @@
+﻿/*************************/
+/* User changable styles */
+/*************************/
+
+.navigation-boot-container {
+    background-color: #7a0202;
+    background-image: linear-gradient(to bottom,#7a0202 0,#4a0202 100%);
+    padding: 0px;
+    margin: 0px;
+    margin-bottom: 10px;
+}
+
+.navigation-boot {
+    background-color: transparent;
+    color: #9e9e9e;
+}
+    .navigation-boot .divider {
+        background-color: #e5e5e5;
+    }
+
+.navigation-boot .navigation-boot-body,
+.navigation-boot .navigation-boot-header,
+.navigation-boot .navigation-boot-brand {
+    height: 50px;
+}
+
+.navigation-boot .navigation-boot-brand {
+    font-size: 13px;
+    line-height: 20px;
+    padding: 15px 15px;
+}
+
+.navigation-boot-toggle {
+    border: 1px solid white;
+    border-radius: 4px;
+}
+    .navigation-boot-toggle:hover {
+        background-color: #3e3e3e;
+    }
+
+    .navigation-boot .navigation-boot-toggle .icon-bar {
+        background-color: white;
+    }
+
+.navigation-boot-dropdown {
+
+}
+
+    .navigation-boot-brand > a,
+    .navigation-boot-brand > a:link,
+    .navigation-boot-brand > a:active,
+    .navigation-boot-brand > a:visited,
+    .navigation-boot-body > ul > li > div > a,
+    .navigation-boot-body > ul > li > div > a:link,
+    .navigation-boot-body > ul > li > div > a:active,
+    .navigation-boot-body > ul > li > div > a:visited {
+        color: #9e9e9e;
+        text-decoration: none;
+    }
+
+    .navigation-boot-brand > a:hover,
+    .navigation-boot-body > ul > li > div > a:hover {
+        color: white;
+        text-decoration: none;
+    }
+
+    .navigation-boot-body > ul > li > div:hover,
+    .navigation-boot-dropdown > div:hover {
+        background-color: transparent;
+        color: white;
+    }
+
+.navigation-boot-dropdownmenu {
+    background-color: #9e9e9e;
+    border: 1px solid grey;
+    color: black;
+    z-index: 1000;
+    min-width: 200px;
+}
+
+    .navigation-boot-dropdownmenu > li {
+    }
+
+    .navigation-boot-dropdownmenu > li > a,
+    .navigation-boot-dropdownmenu > li > a:link,
+    .navigation-boot-dropdownmenu > li > a:visited,
+    .navigation-boot-dropdownmenu > li > a:active {
+        color: #7a0202;
+    }
+
+    .navigation-boot-dropdownmenu > li > a:hover {
+        text-decoration: underline;
+    }
+
+/*************************************************************/
+/* Don't edit below here unless you know what you are doing. */
+/*************************************************************/
+
+/*****************/
+/* Media Queries */
+/*****************/
+
+[data-navigationboot-fixed].affix {
+    top: 0;
+    width: 100%
+}
+
+.navigation-boot-header {
+    display: inline-block;
+    float: left;
+}
+
+.navigation-boot-body {
+    display: table;
+}
+
+.navigation-boot ul {
+    list-style: none;
+    padding-left: 5px;
+    margin-bottom: 0px;
+}
+
+.navigation-boot-brand {
+    display: block;
+    width: auto;
+    vertical-align: middle;
+    float: left;
+}
+
+.navigation-boot .icon-bar {
+    display: block;
+    width: 22px;
+    height: 2px;
+    border-radius: 1px;
+}
+
+.navigation-boot-toggle {
+    position: relative;
+    float: right;
+    margin-right: 15px;
+    padding: 10px 10px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    background-color: transparent;
+    background-image: none;
+}
+    .navigation-boot-toggle:focus {
+        outline: none;
+    }
+
+.navigation-boot .icon-bar+.icon-bar {
+    margin-top: 4px;
+}
+
+.navigation-boot-nav-right {
+    float: right !Important;
+}
+
+.navigation-boot-dropdown {
+    position: relative;
+}
+    .navigation-boot-dropdown > div {
+        cursor: pointer;
+    }
+
+.navigation-boot-dropdownmenu {
+    display: none;
+    padding-left: 10px !Important;
+    padding-right: 10px !Important;
+    position: absolute;
+    white-space: nowrap;
+}
+
+.navigation-boot-dropdownmenu > li:first-child {
+    padding-top: 10px;
+}
+
+.navigation-boot-dropdownmenu > li {
+    margin-bottom: 9px;
+}
+
+.navigation-boot .divider {
+    height: 1px;
+    margin: 9px 0;
+    overflow: hidden;
+    margin-top: 2px;
+    padding: 0px;
+}
+
+@media (min-width: 620px) {
+    .navigation-boot-toggle {
+        display: none;
+    }
+    .navigation-boot-body {
+        height: 50px;
+        font-size: 13px;
+        line-height: 20px;
+        float: left;
+        display: block;
+        visibility: visible;
+    }
+    .navigation-boot-body > ul,
+    .navigation-boot-body > ul > li {
+        height: 50px;
+        display: inline-block;
+        float: left;
+    }
+    .navigation-boot-body > ul > li > div {
+        height: 50px;
+        font-size: 13px;
+        line-height: 20px;
+        padding: 15px 10px;
+        position: relative;
+        display: inline-block;
+    }
+}
+
+@media (max-width: 620px) {
+    [data-navigationboot-fixed].affix {
+        position: static;
+    }
+    .navigation-boot-header {
+        display: block;
+        width: 100%;
+    }
+    .navigation-boot-body {
+        display: none;
+        float: none;
+        width: 100%;
+        margin-top: 50px;
+        height: auto;
+        padding-bottom: 10px;
+        margin-left: 0px;
+        padding-left: 10px;
+    }
+    .navigation-boot-body > ul {
+        height: auto !Important;
+    }
+
+    .navigation-boot-nav-right {
+        float: left !Important;
+    }
+
+    .navigation-boot-body > ul > li > div {
+        height: 25px;
+        font-size: 12px;
+        line-height: 25px;
+    }
+    .navigation-boot-dropdownmenu {
+        width: auto !Important;
+        position: static;
+        margin-left: 0px;
+        padding-left: 15px;
+        padding-bottom: 5px;
+    }
+    .navigation-boot-dropdownmenu > li {
+        display: block;
+        position: relative;
+    }
+}

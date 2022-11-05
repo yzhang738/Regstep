@@ -1,0 +1,19 @@
+﻿@model RSToolKit.WebUI.Models.Views.Unsubscribe.UnsubscribeView
+@{
+    ViewBag.Title = "Index";
+    Layout = null;
+}
+<html>
+<body>
+    <form action="@Url.Action("Unsubscribe", "Unsubscribe", null, Request.Url.Scheme)" method="post">
+        @Html.AntiForgeryToken()
+        <div>Are you sure you want to unsubscribe?</div>
+        @Html.Hidden("id", Model.Id)
+        @Html.Hidden("email", Model.Email)
+        @Html.Hidden("emailsend", Model.EmailSend)
+        <button class="btn btn-warning" type="submit">Unsubscribe</button>
+    </form>
+}
+
+</body>
+</html>

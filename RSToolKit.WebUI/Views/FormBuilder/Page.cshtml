@@ -1,0 +1,272 @@
+﻿@using RSToolKit.Domain.Entities;
+@using RSToolKit.Domain;
+@model RSToolKit.Domain.Entities.Page
+@{
+    Layout = "~/Views/Shared/_Layout_FormBuilder.cshtml";
+    var AudienceList = (List<Audience>)ViewBag.AudienceList;
+}
+@section scripts
+{
+    <script src="~/Scripts/jQuery/Plugins/sortable.js"></script>
+    <script src="~/Scripts/FormBuilder/EditPage.js"></script>
+    <script type="text/javascript">
+        var formId = "@Model.UId";
+        var audienceUIds = @JsonConvert.SerializeObject(Model.Audiences.Select(a => a.UId).ToList());
+    </script>
+}
+@section styles
+{
+}
+@section title {
+    Edit Page
+}
+@section breadcrumbs {
+    @Html.ActionLink("Forms", "Index", "FormBuilder")
+    <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span> @Html.ActionLink((Model.Form.Name.Length < 20 ? Model.Form.Name : Model.Form.Name.Substring(0, 20)), "Form", "FormBuilder", new { id = Model.Form.UId }, null)
+    <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span> @Model.Name
+}
+@section modals
+{
+    <!--Modal for Audiences-->
+<div class="modal fade" id="tagsSelect">
+    <div class="modal-dialog">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 class="modal-title">Registration Type Select</h3>
+        </div>
+
+        <div class="modal-body">
+            <div class="container-fluid">
+                <div class="tag-container tags-notSelected">
+                    <div class="tag-title">
+                        Available Registration Types
+                    </div>
+                    <div class="tags">
+                        @foreach (var audience in Model.Form.Audiences)
+                        {
+                            <label class="control-label tag@(Model.Audiences.Contains(audience) ? " tag-hidden" : " tag-visible")" data-id="@audience.UId"><input type="checkbox" class="tag-input" data-id="@audience.UId" />@audience.Name</label>
+                        }
+                    </div>
+                </div>
+                <div class="tag-commands">
+                    <a href="#" id="addTags"><span class="glyphicon glyphicon-plus"></span> Add</a> <a href="#" id="removeTags"><span class="glyphicon glyphicon-remove"></span> Remove</a>
+                </div>
+                <div class="tag-container tags-selected">
+                    <div class="tag-title">
+                        Selected Registration Types
+                    </div>
+                    <div class="tags">
+                        @foreach (var audience in Model.Form.Audiences)
+                        {
+                            <label class="control-label tag@(Model.Audiences.Contains(audience) ? " tag-visible" : " tag-hidden")" data-id="@audience.UId"><input type="checkbox" class="tag-input" data-id="@audience.UId" />@audience.Name</label>
+                        }
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Set</button>
+        </div>
+    </div>
+</div>
+}
+@using (Html.BeginForm("Page", "FormBuilder", FormMethod.Post, new { @class = "form", role = "form", data_xhr_method = "put" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.UId)
+        <!--Options-->
+    <div class="col-md-4 col-lg-3 add-padding-vertical">
+        <!--Accordion-->
+        <div class="panel-group" id="accordion">
+
+            <!--Options 1-->
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <span class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#options-1">
+                            Admin Info <span class="caret"></span>
+                        </a>
+                    </span>
+                </div>
+                <div id="options-1" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        <div class="add-padding-vertical-5">
+                            <label class="control-label">Page Name:</label>
+                            @Html.TextBoxFor(m => m.Name, new { @class = "form-control input-sm" })
+                        </div>
+                        <div class="add-padding-vertical-5">
+                            <label class="control-label">Page Name:</label>
+                            @Html.TextBoxFor(m => m.Description, new { @class = "form-control input-sm" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--End Options 1-->
+            <!--Options 2-->
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <span class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#options-2">
+                            Include Conditions <span class="caret"></span>
+                        </a>
+                    </span>
+                </div>
+                <div id="options-2" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <div class="add-padding-vertical-5">
+                            <label class="control-label">RSVP:</label>
+                            <select class="form-control input-sm" name="RSVP" id="RSVP">
+                                @foreach (RSVPType rsvpType in Enum.GetValues(typeof(RSVPType)))
+                                {
+                                    <option value="@((int)rsvpType)" @(Model.RSVP == rsvpType ? " selected=\"true\"" : "")>@rsvpType.GetStringValue()</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="add-padding-vertical-5">
+                            <a href="#" data-toggle="modal" data-target="#tagsSelect"><span class="glyphicon glyphicon-edit"></span> Registration Types</a>
+                            @Html.Hidden("audienceUIds", JsonConvert.SerializeObject(Model.Audiences.Select(a => a.UId).ToList()))
+                        </div>
+                        <div class="add-padding-vertical-5">
+                            @if (Model.Logics.Count > 0)
+                            {
+                                <a href="@Url.Action("PageLogics", new { id = Model.UId })"><span class="glyphicon glyphicon-edit"></span> Page Load Logic</a>
+                            }
+                            else
+                            {
+                                <a href="@Url.Action("JLogics", new { id = Model.UId, onLoad = true })"><span class="glyphicon glyphicon-edit"></span> Page Load Logic</a>
+                            }
+                        </div>
+                        <div class="add-padding-vertical-5 checkbox">
+                            <label>
+                                @Html.CheckBoxFor(m => m.AdminOnly) Admin Only
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--End Options 2-->
+            <!--Options 3-->
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <span class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#options-3">
+                            Page Advance Logic <span class="caret"></span>
+                        </a>
+                    </span>
+                </div>
+                <div id="options-3" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <div class="add-padding-vertical-5">
+                            @if (Model.Logics.Count > 0)
+                            {
+                                <a href="@Url.Action("PageLogics", new { id = Model.UId, pageLoad = false })"><span class="glyphicon glyphicon-edit"></span> Page Advance Logic</a>
+                            }
+                            else
+                            {
+                                <a href="@Url.Action("JLogics", new { id = Model.UId, onLoad = false })"><span class="glyphicon glyphicon-edit"></span> Page Advance Logic</a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--End Options 3-->
+            <!--Options 4
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <span class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#options-4">
+                            Form Options <span class="caret"></span>
+                        </a>
+                    </span>
+                </div>
+                <div id="options-4" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <div class="add-padding-vertical-5">
+                            <span class="modal-link">
+                                <a href="@Url.Action("Seatings", "FormBuilder", new { id = Model.Form.UId })"><span class="glyphicon glyphicon-edit"></span> Capacity Limits</a>
+                            </span>
+                        </div>
+                        <div class="add-padding-vertical-5">
+                            <span class="modal-link">
+                                <a href="@Url.Action("Audiences", "FormBuilder", new { id = Model.Form.UId })"><span class="glyphicon glyphicon-edit"></span> Audiences</a>
+                            </span>
+                        </div>
+                        <div class="add-padding-vertical-5">
+                            <span class="modal-link">
+                                <a href="@Url.Action("ContentBlocks", "FormBuilder", new { id = Model.UId })"><span class="glyphicon glyphicon-edit"></span> Content Blocks</a>
+                            </span>
+                        </div>
+                        <div class="add-padding-vertical-5">
+                            <span class="modal-link">
+                                <a href="@Url.Action("ContentLogics", "FormBuilder", new { id = Model.UId })"><span class="glyphicon glyphicon-edit"></span> Content Logic</a>
+                            </span>
+                        </div>
+                        <div class="add-padding-vertical-5">
+                            <span class="modal-link">
+                                <a href="@Url.Action("EditStyles", "FormBuilder", new { id = Model.UId })"><span class="glyphicon glyphicon-edit"></span> Form Style</a>
+                            </span>
+                        </div>
+                        <div class="add-padding-vertical-5">
+                            <span class="modal-link">
+                                <a href="@Url.Action("EditHeader", "FormBuilder", new { id = Model.UId })"><span class="glyphicon glyphicon-edit"></span> Header</a>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            End Options 4-->
+        </div>
+        <!--End Accordion-->
+    </div>
+        <!--End Options-->
+        <!--Functions-->
+    <div class="col-md-8 col-lg-9">
+
+        <!--Panels-->
+        <div class="add-padding-bottom-5 text-medium text-color-2">
+            Page Panels
+        </div>
+
+        <div class="row add-padding-vertical-5 color-grey-2">
+            <!--Add Panel-->
+            <div class="col-xs-12">
+                <span class="modal-link">
+                    <a href="@Url.Action("Panel", "FormBuilder", null, Request.Url.Scheme)" data-xhr-method="post" data-xhr-options='{ "id": "@Model.UId" }'><span class="glyphicon glyphicon-plus"></span> Add Panel</a>
+                </span>
+            </div>
+        </div>
+
+        <!--Panels-->
+        <div class="row">
+            <table class="table panel-table">
+                <tbody class="Sorting">
+                    @for (var i = 0; i < Model.Panels.Count; i++)
+                    {
+                        var panel = Model.Panels[i];
+                        var panelNumber = i + 1;
+                        <tr>
+                            <td><span class="glyphicon glyphicon-move icon-move"></span> <span class="panel-number">Panel: @panelNumber</span><input type="hidden" name="Panel[@i].UId" value="@panel.UId" /><input type="hidden" name="Panel[@i].Order" value="@panel.Order" class="panel-order" /></td>
+                            <td>@(panel.Name.Length < 25 ? panel.Name : panel.Name.Substring(0, 22) + "...")</td>
+                            <td><div class="checkbox">@Html.CheckBox("Panel[" + i + "].Enabled", panel.Enabled) Enabled</div></td>
+                            <td><a href="@Url.Action("Panel", "FormBuilder", new { id = panel.UId })"><span class="glyphicon glyphicon-edit"></span> Edit</a></td>
+                            <td><a href="@Url.Action("Panel", "FormBuilder", null, Request.Url.Scheme)" data-xhr-method="delete" data-xhr-options='{ "id": "@panel.UId" }' data-xhr-oncomplete="refresh"><span class="glyphicon glyphicon-trash"></span> Delete</a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <!--End Panels-->
+        <!--Save-->
+        <div class="add-padding-vertical">
+            <button type="submit" class="btn btn-default">
+                Save
+            </button>
+        </div>
+        <!--End Save-->
+
+    </div>
+        <!--End Functions-->
+}

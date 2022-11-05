@@ -1,0 +1,112 @@
+﻿@using RSToolKit.WebUI.Models.Views.Contact;
+@using RSToolKit.Domain;
+@model ContactUploadListView
+@{
+    Layout = "~/Views/Shared/_L_Cloud.cshtml";
+    var headerIndex = -1;
+}
+@section scripts
+{
+    <script src="~/Scripts/Contact/rectifyUpload.js"></script>
+}
+@section styles
+{
+}
+@section title
+{
+    Contact Upload
+}
+@section crumbs
+{
+}
+@section modals
+{
+}
+<form action="@Url.Action("RectifyUpload", "Contact", null)" method="post" id="rectifyUpload">
+    <input type="hidden" value="@Model.ListInput.Token" name="Token" />
+    <div class="row">
+        <div class="col-xs-12">
+            <input type="hidden" name="Id" value="@ViewBag.FileId" />
+            @if (Model.ContactsInDatabase > 0)
+            {
+            <div class="add-padding-bottom-4em">
+                <div class="add-padding-bottom-5">
+                    <span class="text-medium text-color-2">Duplicate Records Found</span>
+                    <br />
+                    The file contains the following emails that already exist in your Contact List.
+                </div>
+                <div class="row add-padding-vertical-5 color-grey-2">
+                    <div class="col-xs-12">
+                        <div class="checkbox">
+                            <label class="col-sm-12"><input type="checkbox" name="Overwrite" value="true" />Overwrite @Model.ContactsInDatabase existing contacts and add @(Model.ListInput.Contacts.Count - Model.ContactsInDatabase) to the databse.</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        @foreach (var contact in Model.ListInput.Contacts.Where(c => c.ContactKey.HasValue).ToList())
+                            {
+                            <div class="add-border-bottom" style="padding: 5px;">
+                                @contact.Email
+                            </div>
+                            }
+                    </div>
+                </div>
+            </div>
+            }
+            @if (Model.NewHeaders > 0)
+            {
+            <div class="add-padding-bottom-4em">
+                <div class="add-padding-bottom-5">
+                    <span class="text-medium text-color-2">Field Mapping</span>
+                    <br />
+                    The file contains column headers that could not be auto-mapped. Un-mapped columns are annotated in red.
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>File Column Header</th>
+                                    <th>Map To</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var header in Model.ListInput.Headers)
+                                    {
+                                        headerIndex++;
+                                    <tr @(!header.HeaderKey.HasValue ? Html.Raw("class=\"rectify-error\"") : Html.Raw(""))>
+                                        <td><input type="hidden" name="Headers[@headerIndex].HeaderName" value="@header.HeaderName" />@header.HeaderName</td>
+                                        <td>
+                                            <select class="form-control" name="Headers[@headerIndex].HeaderKey">
+                                                @if (header.HeaderKey.HasValue && header.HeaderKey.Value == Guid.Empty)
+                                                    {
+                                                    <option value="@Guid.Empty" selected="selected">Email</option>
+                                                    }
+                                                    else
+                                                    {
+                                                    <option value="">Ignore</option>
+                                                    <option value="@Guid.Empty">Create</option>
+                                                        foreach (var c_header in Model.Headers)
+                                                        {
+                                                    <option value="@c_header.UId" @(header.HeaderKey.HasValue ? (header.HeaderKey.Value == c_header.UId ? "selected=\"true\"" : "") : "")>@c_header.Name @(c_header.SavedListKey.HasValue ? "(" + c_header.SavedList.Name.GetElipse(10) + ")" : "")</option>
+                                                        }
+
+                                                    }
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            }
+            <div>
+                <button type="submit" class="btn btn-default">Rectify Upload</button>
+            </div>
+        </div>
+
+    </div>
+</form>

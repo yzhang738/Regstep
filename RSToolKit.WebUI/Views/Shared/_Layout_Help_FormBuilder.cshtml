@@ -1,0 +1,99 @@
+﻿@{
+    ViewBag.Title = "FormBuilder | RS ToolKit Help Documents";
+    Layout = "~/Views/Shared/_Layout_Help.cshtml";
+}
+@section styles
+{
+    <style>
+        li.help-forms > a {
+            background: white;
+            color: #3e3e3e !important;
+        }
+
+            li.help-forms > a:hover {
+                background: white !important;
+                color: #3e3e3e !important;
+            }
+
+        table.diagram > tbody > tr:last-child {
+            border-bottom: none;
+        }
+
+        table.diagram td.diagram-notes {
+            width: 50%;
+            font-size: 12px;
+            vertical-align: middle;
+            border: none;
+        }
+
+        table.diagram td.diagram-form {
+            width: 50%;
+            vertical-align: middle;
+            border-left: 1px solid #3e3e3e;
+            border-right: 1px solid #3e3e3e;
+            border-bottom: none;
+            border-top: none;
+        }
+
+        table.diagram td.diagram-form-half {
+            width: 50%;
+            vertical-align: middle;
+            padding: 5px;
+        }
+
+        table.diagram td.diagram-form-content {
+            padding-bottom: 25px;
+        }
+
+        table.diagram label.control-label {
+            font-size: 12px;
+        }
+
+        table.diagram td.diagram-header {
+            background: #7a0202;
+            color: white;
+            font-size: 20px;
+            padding: 25px 15px;
+            text-align: center;
+            border-top: 1px solid #3e3e3e;
+        }
+
+        table.diagram td.diagram-info {
+            background: #3e3e3e;
+            color: white;
+            font-size: 12px;
+            padding: 5px 5px;
+        }
+
+        table.diagram td.diagram-content {
+            padding: 15px 5px;
+        }
+
+        table.diagram td.diagram-footer {
+            background: #7a0202;
+            color: white;
+            font-size: 12px;
+            padding: 5px 15px;
+            text-align: center;
+            border-bottom: 1px solid #3e3e3e;
+        }
+    </style>
+}
+@section scripts
+{
+    @RenderSection("scripts", required: false)
+}
+@section modals
+{
+    @RenderSection("modals", required: false)
+}
+
+<div class="col-xs-12 add-padding-bottom-5 add-border-bottom text-color-1">
+    <h2>
+        RS FormBuilder
+    </h2>
+</div>
+<div class="col-xs-12">
+    @RenderBody()
+</div>
+

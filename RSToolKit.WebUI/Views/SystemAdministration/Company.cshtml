@@ -1,0 +1,63 @@
+﻿@model Company
+@{
+    Layout = "~/Views/Shared/_Layout_SystemAdministration.cshtml";
+    var roles = (List<AppRole>)ViewBag.Roles;
+}
+@section title {
+    Companies
+}
+@section breadcrumbs {
+    Home <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span>
+    Companies
+}
+@section scripts {
+    <script type="text/javascript">
+        var roles = @Html.Raw(JsonConvert.SerializeObject(Model.AvailableRoles.Select(r => new { Name = r.Role.Name, Amount = r.TotalAvailable, Key = r.RoleKey })));
+    </script>
+    <script src="~/Scripts/SystemAdministration/EditCompany.js"></script>
+}
+<div class="color-grey-2 add-padding-vertical-10 col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 col-sm-12 col-sm-offset-0">
+    <div class="row">
+        <div class="col-lg-3 col-md-6 col-lg-12">
+            <a href="#" data-toggle="modal" data-target="#availableRoles"><span class="glyphicon glyphicon-tower"></span> Company Roles</a>
+        </div>
+    </div>
+</div>
+@section modals {
+    @using (Html.BeginForm("CompanyRole", "SystemAdministration", FormMethod.Post, new { @class = "form form-horizontal", role = "form", data_xhr_method = "put", data_xhr_oncomplete = "inherit" }))
+    {
+        @Html.Hidden("id", Model.UId.ToString())
+        <div class="modal fade" id="availableRoles">
+            <div class="modal-dialog">
+                <div class="modal-header">
+                    <h3 class="modal-title">Company Roles</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <label class="control-label col-xs-4">Role:</label>
+                        <div class="col-xs-8">
+                            <select class="form-control" name="roleKey" id="roleKey">
+                                <option>- - -</option>
+                                @foreach (var role in roles)
+                                {
+                                    <option value="@role.Id">@role.Name</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row add-padding-top">
+                        <label class="control-label col-xs-4">Available Assignments:</label>
+                        <div class="col-xs-8">
+                            <input type="text" name="amount" id="amount" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-default">Set</button>
+                </div>
+
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+    }
+}

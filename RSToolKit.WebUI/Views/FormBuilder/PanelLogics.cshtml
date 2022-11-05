@@ -1,0 +1,66 @@
+﻿@using RSToolKit.Domain.Entities;
+@model RSToolKit.Domain.Entities.Panel
+@{
+    Layout = "~/Views/Shared/_Layout_FormBuilder.cshtml";
+}
+@section scripts
+{
+<script src="~/Scripts/jQuery/Plugins/sortable.js"></script>
+    <script type="text/javascript">
+        var formId = "@Model.UId";
+    </script>
+}
+@section styles
+{
+}
+@section title {
+    Panel Logic
+}
+@section breadcrumbs {
+    @Html.ActionLink("Forms", "Index", "FormBuilder")
+    <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span> @Html.ActionLink((Model.Page.Form.Name.Length < 20 ? Model.Page.Form.Name : Model.Page.Form.Name.Substring(0, 20)), "Form", "FormBuilder", new { id = Model.Page.FormKey }, null)
+    <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span> @Html.ActionLink((Model.Page.Name.Length < 20 ? Model.Page.Name : Model.Page.Name.Substring(0, 20)), "Page", "FormBuilder", new { id = Model.Page.UId }, null)
+    <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span> @Html.ActionLink((Model.Name.Length < 20 ? Model.Name : Model.Name.Substring(0, 20)), "Panel", "FormBuilder", new { id = Model.UId }, null)
+    <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span> Logic
+}
+@section modals
+{
+}
+@Html.AntiForgeryToken()
+
+    <!--List-->
+    <div class="col-xs-12">
+        <div class="add-padding-bottom-5 text-medium text-color-2">
+            Logic
+        </div>
+
+        <div class="row add-padding-vertical-5 color-grey-2">
+            <div class="col-xs-12">
+                <a href="@Url.Action("Logic", "FormBuilder", null, Request.Url.Scheme)" data-xhr-method="post" data-xhr-options='{ "id": "@Model.UId" }'><span class="glyphicon glyphicon-plus"></span> New Logic</a>
+            </div>
+        </div>
+
+        <div class="row">
+            <table class="table table-formbuilder">
+                @foreach (var cl in Model.Logics)
+                {
+                    <tr>
+                        <td>
+                            @cl.Name
+                        </td>
+                        <td>
+                            <span class="modal-link">
+                                <a href="@Url.Action("Logic", "FormBuilder", new { id = cl.UId })"><span class="glyphicon glyphicon-edit"></span> Edit</a>
+                            </span>
+                        </td>
+                        <td>
+                            <a href="@Url.Action("Logic", "FormBuilder", null, Request.Url.Scheme)" data-xhr-method="delete" data-xhr-options='{ "id": "@cl.UId" }' data-xhr-oncomplete="refresh"><span class="glyphicon glyphicon-trash"></span> Delete</a>
+                        </td>
+                    </tr>
+
+                }
+            </table>
+
+        </div>
+    </div>
+

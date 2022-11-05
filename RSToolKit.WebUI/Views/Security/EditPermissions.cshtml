@@ -1,0 +1,104 @@
+﻿@using Microsoft.AspNet.Identity;
+@model PermissionsModel
+@{
+    ViewBag.Title = "EditPermissions";
+    Layout = "~/Views/Shared/_Layout_Security.cshtml";
+    var permissionIndex = -1;
+    var company = (Company)ViewBag.CompanyObj;
+}
+@section scripts
+{
+    <script type="text/javascript">
+        var nodeKey = '@Model.UId';
+        var groups = @Html.Raw(JsonConvert.SerializeObject(company.CustomGroups));
+        var company = { key: '@company.UId', name: '@company.Name' };
+        var currentSet = @Html.Raw(JsonConvert.SerializeObject(Model.Permissions));
+        var permissionSetUrl = '@Url.Action("PermissionSet", "Security", null, Request.Url.Scheme)';
+    </script>
+    <script src="~/Scripts/SystemAdministration/EditPermissions.js"></script>
+}
+@section styles
+{
+
+}
+@section title
+{
+    @Model.Name
+}
+@section breadcrumbs
+{
+    <a href="@Model.Location">@Model.Name</a> <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span>
+    Permissions
+}
+
+<div class="color-grey-2 add-padding-top-10">
+    <div class="col-sm-8">
+        Permissions
+    </div>
+    <div class="col-sm-4">
+        <a href="#" id="showGroup">Add Group</a>
+    </div>
+</div>
+<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 col-sm-12">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th></th>
+                <th colspan="3">Permissions</th>
+                <th></th>
+            </tr>
+            <tr>
+                <th>Target</th>
+                <th class="access"><span class="access-method">Read</span></th>
+                <th class="access"><span class="access-method">Write</span></th>
+                <th class="access"><span class="access-method">Execute</span></th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="permissions">
+            @foreach (var permission in Model.Permissions)
+            {
+                permissionIndex++;
+                <tr id="tr_@permission.Owner" data-owner="@permission.Owner">
+                    <td>
+                        @Html.Hidden("Permissions[" + permissionIndex + "].Target", permission.Target)
+                        @Html.Hidden("Permissions[" + permissionIndex + "].Owner", permission.Owner)
+                        @permission.OwnerName
+                    </td>
+                    <td>@Html.CheckBox("Permissions[" + permissionIndex + "].Read", permission.Read, new { @class = "read-access access-checkbox" })</td>
+                    <td>@Html.CheckBox("Permissions[" + permissionIndex + "].Write", permission.Write, new { @class = "write-access access-checkbox" })</td>
+                    <td>@Html.CheckBox("Permissions[" + permissionIndex + "].Execute", permission.Execute, new { @class = "execute-access access-checkbox" })</td>
+                    <td><span class="glyphicon glyphicon-trash access-delete cursor-pointer"></span></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+@section modals
+{
+    <div class="modal fade" id="addGroup" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3>Add Group</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label class="control-label">Select role to add</label>
+                        <select id="customGroup" class="form-control input-sm">
+                            <option value="@company.UId" id="@company.UId">@company.Name [company]</option>
+                            @foreach (var group in company.CustomGroups)
+                            {
+                                <option value="@group.UId" id="@group.UId">@group.Name</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#addRole">Cancel</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="setGroup">Add</button>
+            </div>
+        </div>
+    </div>
+}

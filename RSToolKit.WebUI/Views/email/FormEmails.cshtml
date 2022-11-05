@@ -1,0 +1,104 @@
+﻿@using RSToolKit.Domain.Entities.Email;
+@using RSToolKit.Domain.Entities;
+@using RSToolKit.Domain;
+@using System.Linq;
+@model FormEmailsModel
+@{
+    Layout = "~/Views/Shared/_Layout_Email.cshtml";
+    var Repository = (FormsRepository)ViewBag.Repository;
+}
+@section styles
+{
+}
+@section scripts
+{
+    <script src="~/Scripts/Email/newEmail.js"></script>
+    <script type="text/javascript">
+        var ehid = '@Model.Form.UId';
+    </script>
+}
+@section title
+{
+    Form Emails
+}
+@section modals
+{
+<div class="modal fade" id="newEmailModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h3 class="modal-title">New Email</h3>
+            </div>
+            <div class="modal-body">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-md-2 col-sm-4 control-label">Email Template</label>
+                        <div class="col-md-10 col-sm-8">
+                            <select class="form-control" id="emailTemplate">
+                                <option>Blank (write source html)</option>
+                                @{ Repository.DiscardSecurity(); }
+                                @foreach (var template in Repository.Search<EmailTemplate>(e => 1 == 1))
+                                {
+                                    <option value="@template.UId">@template.Name.GetElipse(30)</option>
+                                }
+                                @{ Repository.EnableSecurity(); }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Discard Changes</button>
+                <button type="button" class="btn btn-default" id="createEmail">Create Email</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+}
+@Html.AntiForgeryToken()
+<!--List Options-->
+<div class="row">
+    <div class="col-xs-12">
+        <div class="row add-padding-vertical-5 color-grey-2">
+            <div class="col-xs-12 col-sm-12 col-lg-12">
+                <div class="add-padding-vertical-5">
+                    <a href="#" data-toggle="modal" data-target="#newEmailModal"><span class="glyphicon glyphicon-plus-sign"></span> New Email</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--List Options-->
+<!--Display-->
+<div class="row add-padding-vertical-2em">
+    <div id="mainHolder" class="col-xs-12 text-small">
+        <h3>Emails</h3>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Type</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var email in Model.Form.AllEmails)
+                {
+                    <tr>
+                        <td>@email.Name <span style="font-size: 80%; color: red;">(@(email is RSEmail ? "RS" : "Html"))</span></td>
+                        <td>@email.Description.GetElipse(20)</td>
+                        <td>@email.EmailType.GetStringValue()</td>
+                        <td>
+                            <a href="@Url.Action("Email", "Email", null, Request.Url.Scheme)" data-xhr-method="delete" data-xhr-options='{"id":"@email.UId"}'><span class="glyphicon glyphicon-trash"></span></a>
+                            <a href="@Url.Action("Email", "Email", new { id = email.UId })"><span class="glyphicon glyphicon-edit"></span></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+    </div>
+</div>
+<!--End Display-->

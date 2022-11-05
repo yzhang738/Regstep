@@ -1,0 +1,6 @@
+﻿@media print {
+  :not(.print) {
+    display: none;
+  }
+}
+/*# sourceMappingURL=TransactionPrint.css.map */

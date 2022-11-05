@@ -1,0 +1,483 @@
+/*****************************BoothMap***************************************/
+/*Embedding CSS here, floorplan CSS at pages/floorplan/floorplan.css*/
+iframe.iframe-floorplan {
+	height: 450px;
+	border-radius: 4px;
+}
+
+	@media screen and (min-width: 992px) and (max-width: 1199px) {
+		iframe.iframe-floorplan {
+			height: 390px;
+		}
+	}
+
+	@media screen and (min-width: 480px) and (max-width: 991px) {
+		iframe.iframe-floorplan {
+			height: 320px;
+		}
+	}
+
+	@media screen and (max-width: 479px) {
+		iframe.iframe-floorplan {
+			height: 215px;
+		}
+	}
+/*****************************BoothMap***************************************/
+
+.modal-body {max-height: 400px; overflow-y: scroll;}
+
+
+/*****************************Countdown***************************************/
+
+/* jQuery Countdown styles 2.0.0. */
+#defaultCountdown { 
+}
+
+.is-countdown {
+	border: none;
+	text-align: center;
+	width: 100%;
+}
+
+.countdown-rtl {
+	direction: rtl;
+}
+
+.countdown-holding span {
+	color: #ffffff;
+}
+
+.countdown-row {
+}
+
+.countdown-section {
+	float: left;
+	border-radius: 4px;
+	padding: 5px;
+	background-color: #094A72;
+	border: 1px solid white;
+	/*box-shadow: 2px 2px 2px #222222;
+	background: url(http://www.registrationassistant.com/0-demo-temp/images/common/timer-bg.jpg) no-repeat center; 
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;*/
+}
+
+.countdown-amount {
+	display: block;
+}
+
+.countdown-period {
+    display: block;
+    font-size: 60%;;
+}
+
+.countdown-descr {
+	display: block;
+	width: 100%;
+}
+
+/*Width of countdown-section depending on number of periods shown*/
+.countdown-show1 .countdown-section {
+	width: 98%;
+}
+.countdown-show2 .countdown-section {
+	width: 46%;
+	margin-left: 1%;
+	margin-right: 1%;
+}
+.countdown-show3 .countdown-section {
+	width: 30.5%;
+	margin-left: 1%;
+	margin-right: 1%;
+}
+.countdown-show4 .countdown-section {
+	width: 22.5%;
+	margin-left: 1%;
+	margin-right: 1%;
+}
+.countdown-show5 .countdown-section {
+	width: 17.5%;
+	margin-left: 1%;
+	margin-right: 1%;
+}
+.countdown-show6 .countdown-section {
+	width: 14.25%;
+	margin-left: 1%;
+	margin-right: 1%;
+}
+.countdown-show7 .countdown-section {
+	width: 12%;
+	margin-left: 1%;
+	margin-right: 1%;
+}
+
+/*****************************End Countdown***************************************/
+
+
+
+
+/*****************************News Ticker***************************************/
+
+.tickercontainer { 
+	width: 100%;
+	overflow: hidden;
+}
+
+.tickercontainer .mask {
+	position: relative; /*REQUIRED FOR NO ADDITIONAL SPACE*/
+}
+
+.tickeroverlay-left {
+	display: none; /*REQUIRED FOR NO ADDITIONAL SPACE*/
+}
+
+.tickeroverlay-right {
+	display: none; /*REQUIRED FOR NO ADDITIONAL SPACE*/
+}
+
+ul.newsticker { 
+	-webkit-transition: all 0s linear;
+	-moz-transition: all 0s linear;
+	-o-transition: all 0s linear;
+	transition: all 0s linear;
+	position: relative; /*REQUIRED FOR TRANSITION*/
+	list-style-type: none;
+	margin: 0;/*REQUIRED FOR NO ADDITIONAL SPACE*/
+
+}
+
+ul.newsticker li {
+	float: left;
+	padding: 0 200px;
+}
+
+ul.newsticker > li.ticker-spacer {
+	width: 0; /*SET SPACE BETWEEN LAST AND FIRST ELEMENT*/
+}
+
+/*****************************News Ticker***************************************/
+
+
+
+
+/*****************************Responsive Table***************************************/
+/*Responsive Table
+ONLY ADJUST INDICTATED ITEMS*/
+
+table.res-table { 
+	width: 100%; 
+	min-width: 100%;
+	border-collapse: collapse; 
+	margin: 0 auto 0 auto;
+	padding: 0;
+}
+
+table.res-table thead {
+}
+
+table.res-table th {
+	/*adjust as necessary*/
+	width: 25%;
+	padding: .25em 1% .25em 1%;
+	background: #094A72;
+	color: #ffffff;	
+	text-align: left;
+}
+
+/*create th.res-tableLong and give larger width if one column needs to be longer for content*/
+
+table.res-table tbody {
+}
+
+table.res-table tr {
+	/*adjust as necessary*/
+	/*assign primary color here as "nth-of-type" not supported in older IE*/
+	background-color: #FFFFFF;
+	color: #000000;
+}
+
+	table.res-table tr:nth-of-type(even) { 
+		/*adjust as necessary*/
+		background: #EDEDED; 
+	}
+
+table.res-table td {
+	/*adjust as necessary*/
+	padding: .25em 1% .25em 1%;
+	text-align: left;	
+}
+
+
+/*Mobile Table - Adust width based on amount of content*/
+@media screen and (max-width: 767px) {
+	table.res-table, table.res-table thead, table.res-table tbody, table.res-table th, table.res-table td, table.res-table tr { 
+		display: block; 
+	}
+			
+	table.res-table > thead > tr { 
+		display: none;
+	}
+			
+	table.res-table tr { 
+		border: none; 
+		padding-bottom: .5em; /*adjust if nessary; keeps last item and first item from running togehter*/
+	}
+			
+	table.res-table td { 
+		border: none; 
+		position: relative;
+		padding: .5em 1% .5em 40%; /*Adjust padding-left only for different content sizes*/
+	}
+			
+	table.res-table td:before { 
+		position: absolute;
+		top: .5em; /*MUST equal td.res-table padding-top*/
+		left: 1%; /*MUST equal td.res-table padding-left*/
+		width: 38%; /*This PLUS padding-right MUST be less than td.res-table padding-left to prevent text overlap*/
+		padding-right: 2%; 
+		white-space: nowrap;
+		font-weight: bold;
+	}
+			
+	/*One for each table header; adjust content: to math table headers*/
+	table.res-table td:nth-of-type(1):before { content: "Time"; }
+	table.res-table td:nth-of-type(2):before { content: "Event"; }
+	table.res-table td:nth-of-type(3):before { content: "Location"; }
+}
+/*End Mobile Table*/
+
+/*****************************End Responsive Table***************************************/
+
+
+
+/******************************Slick Slider***********************************************/
+/* Slider */
+.slick-slider { 
+	position: relative; 
+	display: block; 
+	box-sizing: border-box; 
+	-moz-box-sizing: border-box; 
+	-webkit-touch-callout: none; 
+	-webkit-user-select: none; 
+	-khtml-user-select: none; 
+	-moz-user-select: none; 
+	-ms-user-select: none; 
+	user-select: none; 
+	-ms-touch-action: none; 
+	touch-action: none; 
+	-webkit-tap-highlight-color: transparent;
+}
+
+.slick-list { 
+	position: relative; 
+	overflow: hidden; 
+	display: block; 
+	margin: 0; 
+	padding: 0;
+}
+
+.slick-list:focus { 
+	outline: none;
+}
+
+.slick-loading .slick-list { 
+	background: white url(../images/widgets/ajax-loader.gif) center center no-repeat;
+}
+
+.slick-list.dragging { 
+	cursor: pointer; 
+	cursor: hand;
+}
+
+.slick-slider .slick-list, .slick-track, .slick-slide, .slick-slide img { 
+	-webkit-transform: translate3d(0, 0, 0); 
+	-moz-transform: translate3d(0, 0, 0); 
+	-ms-transform: translate3d(0, 0, 0); 
+	-o-transform: translate3d(0, 0, 0); 
+	transform: translate3d(0, 0, 0);
+}
+
+.slick-track { 
+	position: relative; 
+	left: 0; 
+	top: 0; 
+	display: block; 
+	zoom: 1; 
+}
+
+.slick-track:before, .slick-track:after { 
+	content: ""; 
+	display: table; 
+}
+
+.slick-track:after { 
+	clear: both; 
+}
+
+.slick-loading .slick-track { 
+	visibility: hidden; 
+}
+
+.slick-slide { 
+	float: left; 
+	height: 100%; 
+	min-height: 1px; 
+	display: none;
+}
+
+.slick-slide img { 
+	display: block;
+}
+
+.slick-slide.slick-loading img { 
+	display: none; 
+}
+
+.slick-slide.dragging img { 
+	pointer-events: none; 
+}
+
+.slick-initialized .slick-slide { 
+	display: block; 
+}
+
+.slick-loading .slick-slide { 
+	visibility: hidden; 
+}
+
+.slick-vertical .slick-slide { 
+	display: block; 
+	height: auto; 
+	border: 1px solid transparent; 
+}
+
+/* Icons */
+@font-face { 
+	font-family: "slick"; 
+	src: url("../fonts/slick.eot"); 
+	src: url("../fonts/slick.eot?#iefix") format("embedded-opentype"), 
+		url("../fonts/slick.woff") format("woff"), 
+		url("../fonts/slick.ttf") format("truetype"), 
+		url("../fonts/slick.svg#slick") format("svg"); 
+	font-weight: normal; 
+	font-style: normal; 
+}
+
+/* Arrows */
+.slick-prev, .slick-next { 
+	position: absolute; 
+	display: block; 
+	height: 40px; 
+	width: 40px; 
+	line-height: 0; 
+	font-size: 0; 
+	cursor: pointer; 
+	background: transparent; 
+	color: transparent; 
+	top: 50%; 
+	margin-top: -10px; 
+	padding: 0;
+	border: none; 
+	outline: none; 
+}
+
+.slick-prev:focus, .slick-next:focus { 
+	outline: none; 
+}
+
+.slick-prev.slick-disabled:before, .slick-next.slick-disabled:before { 
+	opacity: 0.25; 
+}
+
+.slick-prev:before, .slick-next:before { 
+	font-family: "slick"; 
+	font-size: 40px;
+	line-height: 1; 
+	color: white; 
+	opacity: 0.7; 
+	-webkit-font-smoothing: antialiased; 
+	-moz-osx-font-smoothing: grayscale; 
+}
+
+.slick-prev { 
+	left: -25px; 
+}
+
+.slick-prev:before { 
+	content: "\2190"; 
+}
+
+.slick-next { 
+	right: -25px; 
+}
+
+.slick-next:before { 
+	content: "\2192"; 
+}
+
+/* Dots */
+.slick-slider { 
+ 
+}
+
+.slick-dots { 
+	position: absolute; 
+	bottom: -45px; 
+	list-style: none; 
+	display: block; 
+	text-align: center; 
+	padding: 0px; 
+	width: 100%; 
+}
+
+.slick-dots li { 
+	position: relative; 
+	display: inline-block; 
+	height: 20px; width: 
+	20px; 
+	margin: 0px 5px; 
+	padding: 0px; 
+	cursor: pointer; 
+}
+
+.slick-dots li button { 
+	border: 0; 
+	background: transparent; 
+	display: block; 
+	height: 20px; 
+	width: 20px; 
+	outline: none; 
+	line-height: 0; 
+	font-size: 0; 
+	color: transparent; 
+	padding: 5px; 
+	cursor: pointer; 
+	outline: none; 
+}
+
+.slick-dots li button:focus { 
+	outline: none; 
+}
+
+.slick-dots li button:before { 
+	position: absolute; 
+	top: 0; left: 0; 
+	content: "\2022";
+	width: 20px; 
+	height: 20px; 
+	font-family: "slick"; 
+	font-size: 6px; 
+	line-height: 20px;
+	text-align: center; 
+	color: black; 
+	opacity: 0.25; 
+	-webkit-font-smoothing: antialiased; 
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.slick-dots li.slick-active button:before { 
+	opacity: 0.75; 
+}
+/******************************End Slick Slider***********************************************/

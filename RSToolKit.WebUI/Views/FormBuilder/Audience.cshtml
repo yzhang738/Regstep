@@ -1,0 +1,60 @@
+﻿@using RSToolKit.Domain.Entities;
+@model Audience
+@{
+    Layout = "~/Views/Shared/_Layout_FormBuilder.cshtml";
+}
+@section scripts
+{
+    <script type="text/javascript">
+        var formId = "@Model.Form.UId";
+        var audienceId = "@Model.UId";
+    </script>
+}
+@section styles
+{
+}
+@section title {
+    Edit Registration Type
+}
+@section breadcrumbs {
+    @Html.ActionLink("Forms", "Index", "FormBuilder")
+    <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span> @Html.ActionLink((Model.Form.Name.Length < 20 ? Model.Form.Name : Model.Form.Name.Substring(0, 20)), "Form", "FormBuilder", new { id = Model.Form.UId }, null)
+    <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span> @Html.ActionLink("Audiences", "Audiences", "FormBuilder", new { id = Model.Form.UId }, null)
+    <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span> @Model.Name
+}
+@section modals
+{
+}
+@using (Html.BeginForm("Audience", "FormBuilder", FormMethod.Post, new { @class = "form", role = "form", data_xhr_method = "put" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.UId)
+
+        <!--Options-->
+        <div class="col-md-6">
+            <div class="add-padding-bottom-5 text-medium text-color-2">
+                Registration Type Settings
+            </div>
+
+            <!--Options 1-->
+            <div class="add-padding-vertical-5 add-padding-horizontal add-margin-bottom color-grey-2">
+                <div class="add-padding-vertical-5">
+                    <label class="control-label">Name:</label>
+                    <input class="form-control input-sm" type="text" id="Description" name="Name" value="@Model.Name" />
+                </div>
+                <div class="add-padding-vertical-5">
+                    <label class="control-label">Display Label:</label>
+                    <input class="form-control input-sm" type="text" id="Label" name="Label" value="@Model.Label" />
+                </div>   
+            </div>
+            <!--End Options 1-->
+            <!--Save-->
+            <div class="add-padding-vertical">
+                <button type="submit" class="btn btn-default">
+                    Save
+                </button>
+            </div>
+            <!--End Save-->
+
+        </div>
+}

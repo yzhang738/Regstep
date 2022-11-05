@@ -1,0 +1,295 @@
+﻿@model CreditCardModel
+@{
+    var RegHtml = (RegistrationHtml)ViewBag.RegHtml;
+    ViewBag.WrapperClass = "form-live";
+    Layout = "~/Views/Shared/_Layout_Registration.cshtml";
+}
+@section pageNumber
+{
+    Checkout - Credit Card
+}
+@section shoppingCart
+{
+}
+@section header
+{
+    @RegHtml.RenderHeader()
+}
+@section footer
+{
+    @RegHtml.RenderFooter()
+}
+@section customStyles
+{
+    @RegHtml.RenderFormStyle()
+}
+@section errorMessage{
+    @if (Model.Errors.Count > 0)
+    {
+        if (Model.Errors.Keys.Contains(""))
+        {
+            @Html.Partial("P_ErrorMessage", new FormRegError() { hide = false, message = Model.Errors[""] })
+        }
+        else
+        {
+            @Html.Partial("P_ErrorMessage", new FormRegError() { hide = false, message = "There are problems with your selections. Please see notes below to correct your registration before moving forward." })
+        }
+    }
+}
+<form action="~/Register/CreditCard" method="post" role="form">
+    @Html.AntiForgeryToken()
+    @Html.Hidden("FormKey", Model.FormKey)
+    @Html.Hidden("RegistrantKey", Model.RegistrantKey)
+
+    <div class="row form-panel">
+        <div class="col-xs-12">
+            <div class="row">
+                <div class="col-xs-12 form-component">
+                    <h2 style="padding-bottom: 5px;">
+                        Pay by Credit Card
+                        <script type="text/javascript" src="https://sealserver.trustwave.com/seal.js?style=invert&size=65x36&code=18c9fdb17a7f4b248d1ca768e0fe93d6"></script>
+                    </h2>
+                    <p>
+                        Please complete the information below and click Process Payment. Do not click back in your browser or navigate away from this page while payment is processing.
+                    </p>
+                    <p>
+                        All fields are required.
+                    </p>
+
+                    <div class="row form-panel-row">
+                        <div class=" col-md-4 col-lg-3 form-component">
+                            @if (Model.Errors.Keys.Contains("NameOnCard"))
+                            {
+                                <div class="form-component-error"><span class="glyphicon glyphicon-warning-sign"></span>@Model.Errors["NameOnCard"]</div>
+                            }
+                            <div class="form-component-row">
+                                <label class="control-label"><span class="form-component-label">Name on Card<span class="text-rsred">*</span></span></label>
+                            </div>
+                            <input type="text" data-form-required="true" class="form-control input-sm form-text-input" name="NameOnCard" value="@Model.NameOnCard" />
+                        </div>
+
+                        <div class=" col-md-4 col-lg-3 form-component">
+                            @if (Model.Errors.Keys.Contains("CardNumber"))
+                            {
+                                <div class="form-component-error"><span class="glyphicon glyphicon-warning-sign"></span>@Model.Errors["CardNumber"]</div>
+                            }
+                            <div class="form-component-row">
+                                <label class="control-label"><span class="form-component-label">Credit Card Number<span class="text-rsred">*</span></span></label>
+                            </div>
+                            <input type="text" name="CardNumber" data-form-required="true" class="form-control input-sm form-text-input" value="@Model.CardNumber" />
+                        </div>
+
+                        @if (Model.Desc == "paypal")
+                        {
+                            <div class=" col-md-4 col-lg-3 form-component">
+                                @if (Model.Errors.Keys.Contains("CardType"))
+                                {
+                                    <div class="form-component-error"><span class="glyphicon glyphicon-warning-sign"></span>@Model.Errors["CardType"]</div>
+                                }
+                                <div class="form-component-row">
+                                    <label class="control-label"><span class="form-component-label">Credit Card Type<span class="text-rsred">*</span></span></label>
+                                </div>
+                                <select class="form-control input-sm" data-form-required="true" name="CardType">
+                                    <option value="visa" @(Model.CardType == "visa" ? " selected='selected'" : "")>Visa</option>
+                                    <option value="mastercard" @(Model.CardType == "mastercard" ? " selected='selected'" : "")>Master Card</option>
+                                    <option value="discover" @(Model.CardType == "discover" ? " selected='selected'" : "")>Discover</option>
+                                    <option value="amex" @(Model.CardType == "amex" ? " selected='selected'" : "")>American Express</option>
+                                </select>
+                            </div>
+                        }
+                    </div>
+
+                    <div class="row form-panel-row">
+                        <div class=" col-md-4 col-lg-3 form-component">
+                            @if (Model.Errors.Keys.Contains("ExpDate"))
+                            {
+                                <div class="form-component-error"><span class="glyphicon glyphicon-warning-sign"></span>@Model.Errors["ExpDate"]</div>
+                            }
+                            <div class="form-component-row">
+                                <label class="control-label"><span class="form-component-label">Expiration Date<span class="text-rsred">*</span></span></label>
+                            </div>
+                            <select class="form-control input-sm form-select" name="ExpMonth">
+                                <option value="01" @(Model.ExpMonth == "01" ? " selected=true" : "")>1 (January)</option>
+                                <option value="02" @(Model.ExpMonth == "02" ? " selected=true" : "")>2 (February)</option>
+                                <option value="03" @(Model.ExpMonth == "03" ? " selected=true" : "")>3 (March)</option>
+                                <option value="04" @(Model.ExpMonth == "04" ? " selected=true" : "")>4 (April)</option>
+                                <option value="05" @(Model.ExpMonth == "05" ? " selected=true" : "")>5 (May)</option>
+                                <option value="06" @(Model.ExpMonth == "06" ? " selected=true" : "")>6 (June)</option>
+                                <option value="07" @(Model.ExpMonth == "07" ? " selected=true" : "")>7 (July)</option>
+                                <option value="08" @(Model.ExpMonth == "08" ? " selected=true" : "")>8 (August)</option>
+                                <option value="09" @(Model.ExpMonth == "09" ? " selected=true" : "")>9 (September)</option>
+                                <option value="10" @(Model.ExpMonth == "10" ? " selected=true" : "")>10 (October)</option>
+                                <option value="11" @(Model.ExpMonth == "11" ? " selected=true" : "")>11 (November)</option>
+                                <option value="12" @(Model.ExpMonth == "12" ? " selected=true" : "")>12 (December)</option>
+                            </select>
+                            <select class="form-control input-sm form-select" name="ExpYear">
+                                @for (var i = DateTime.Now.Year; i < DateTime.Now.Year + 15; i++)
+                                {
+                                    var twoDigit = i % 100;
+                                    <option value="@twoDigit" @(Model.ExpYear == twoDigit.ToString() ? " selected=true" : "")>@twoDigit</option>
+                                }
+                            </select>
+                        </div><div class=" col-md-4 col-lg-3 form-component">
+                            @if (Model.Errors.Keys.Contains("CardCode"))
+                            {
+                                <div class="form-component-error"><span class="glyphicon glyphicon-warning-sign"></span>@Model.Errors["CardCode"]</div>
+                            }
+                            <div class="form-component-row">
+                                <label class="control-label"><span class="form-component-label">CVV Code<span class="text-rsred">*</span></span> <span style="font-size: 12px"><a class="modal-link" data-toggle="modal" data-target="#cvv">(What's this?)</a></span></label>
+                            </div>
+                            <input type="text" name="CardCode" data-form-required="true" class="form-control input-sm form-text-input" value="@Model.CardCode" />
+                        </div>
+
+
+
+                    </div>
+                    @if (Model.Desc == "paypal")
+                    {
+                        // This is for paypal only.
+                        <div class="row form-panel-row">
+                            <div class="col-sm-12 col-md-8 col-lg-6 form-component">
+                                @if (Model.Errors.Keys.Contains("Line1"))
+                                {
+                                    <div class="form-component-error"><span class="glyphicon glyphicon-warning-sign"></span>@Model.Errors["Line1"]</div>
+                                }
+                                <div class="form-component-row">
+                                    <label class="control-label"><span class="form-component-label">Address Line 1<span class="text-rsred">*</span></span></label>
+                                </div>
+                                <input type="text" name="Line1" data-form-required="true" class="form-control input-sm form-text-input" value="@Model.Line1" />
+                            </div>
+                        </div>
+                        <div class="row form-panel-row">
+                            <div class="col-sm-12 col-md-8 col-lg-6 form-component">
+                                @if (Model.Errors.Keys.Contains("Line2"))
+                                {
+                                    <div class="form-component-error"><span class="glyphicon glyphicon-warning-sign"></span>@Model.Errors["Line2"]</div>
+                                }
+                                <div class="form-component-row">
+                                    <label class="control-label"><span class="form-component-label">Address Line 2</span></label>
+                                </div>
+                                <input type="text" name="Line2" data-form-required="true" class="form-control input-sm form-text-input" value="@Model.Line2" />
+                            </div>
+                        </div>
+                        <div class="row form-panel-row">
+                            <div class=" col-md-4 col-lg-3 form-component">
+                                @if (Model.Errors.Keys.Contains("City"))
+                                {
+                                    <div class="form-component-error"><span class="glyphicon glyphicon-warning-sign"></span>@Model.Errors["City"]</div>
+                                }
+                                <div class="form-component-row">
+                                    <label class="control-label"><span class="form-component-label">City<span class="text-rsred">*</span></span></label>
+                                </div>
+                                <input type="text" name="City" data-form-required="true" class="form-control input-sm form-text-input" value="@Model.City" />
+                            </div>
+                            <div class=" col-md-4 col-lg-3 form-component">
+                                @if (Model.Errors.Keys.Contains("State"))
+                                {
+                                    <div class="form-component-error"><span class="glyphicon glyphicon-warning-sign"></span>@Model.Errors["State"]</div>
+                                }
+                                <div class="form-component-row">
+                                    <label class="control-label"><span class="form-component-label">State/Province<span class="text-rsred">*</span></span></label>
+                                </div>
+                                <input type="text" name="State" data-form-required="true" class="form-control input-sm form-text-input" value="@Model.State" />
+                            </div>
+
+                        </div>
+                        <div class="row form-panel-row">
+                            <div class=" col-md-4 col-lg-3 form-component">
+                                @if (Model.Errors.Keys.Contains("ZipCode"))
+                                {
+                                    <div class="form-component-error"><span class="glyphicon glyphicon-warning-sign"></span>@Model.Errors["ZipCode"]</div>
+                                }
+                                <div class="form-component-row">
+                                    <label class="control-label"><span class="form-component-label">Billing Zip / Postal Code<span class="text-rsred">*</span></span></label>
+                                </div>
+                                <input type="text" name="ZipCode" data-form-required="true" class="form-control input-sm form-text-input" value="@Model.ZipCode" />
+                            </div>
+                            <div class=" col-md-4 col-lg-3 form-component">
+                                @if (Model.Errors.Keys.Contains("Country"))
+                                {
+                                    <div class="form-component-error"><span class="glyphicon glyphicon-warning-sign"></span>@Model.Errors["Country"]</div>
+                                }
+                                <div class="form-component-row">
+                                    <label class="control-label"><span class="form-component-label">Country<span class="text-rsred">*</span></span></label>
+                                </div>
+                                <select name="Country" class="form-control input-sm form-select">
+                                    <optgroup label="Common">
+                                        <option value="US" @(Model.Country == "US" ? "selected=true" : "")>USA</option>
+                                    </optgroup>
+                                    <optgroup label="All">
+                                        @for (var ci = 0; ci < Countries.Names.Length; ci++)
+                                        {
+                                            <option value="@Countries.Abbreviations[ci]" @(Model.Country == Countries.Abbreviations[ci] ? "selected=\"true\"" : "")>@Countries.Names[ci]</option>;
+                                        }
+                                    </optgroup>
+                                </select>
+
+                            </div>
+
+                        </div>
+                        <div class="row form-panel-row">
+                            <div class=" col-md-4 col-lg-3 form-component">
+                                @if (Model.Errors.Keys.Contains("Phone"))
+                                {
+                                    <div class="form-component-error"><span class="glyphicon glyphicon-warning-sign"></span>@Model.Errors["Phone"]</div>
+                                }
+                                <div class="form-component-row">
+                                    <label class="control-label"><span class="form-component-label">Phone<span class="text-rsred">*</span></span></label>
+                                </div>
+                                <input type="text" name="Phone" data-form-required="true" class="form-control input-sm form-text-input" value="@Model.Phone" />
+                            </div>
+
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="row form-panel-row">
+                            <div class=" col-md-4 col-lg-3 form-component">
+                                @if (Model.Errors.Keys.Contains("ZipCode"))
+                                {
+                                    <div class="form-component-error"><span class="glyphicon glyphicon-warning-sign"></span>@Model.Errors["ZipCode"]</div>
+                                }
+                                <div class="form-component-row">
+                                    <label class="control-label"><span class="form-component-label">Billing Zip / Postal Code<span class="text-rsred">*</span></span></label>
+                                </div>
+                                <input type="text" name="ZipCode" data-form-required="true" class="form-control input-sm form-text-input" value="@Model.ZipCode" />
+                            </div>
+                        </div>
+
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row form-btn-panel">
+        <div class="col-xs-12">
+            <div class="row">
+                <div class=" col-md-4 col-lg-3 form-btn">
+                    <a href="javascript:{}" onclick="$('form').submit();" class="btn-rs btn-navigation">Process Payment</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>
+
+<!--cvv-->
+<div class="modal fade" id="cvv" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <img style="display: block; width: 100%; max-width: 400px;" src="https://toolkit.regstep.com/images/form/cvv.jpg" alt="CVV directions" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--End CVV-->

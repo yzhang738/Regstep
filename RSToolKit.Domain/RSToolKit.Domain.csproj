@@ -1,0 +1,1503 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E0864C3F-A028-4FF9-9C02-81C9E8DA1C71}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>RSToolKit.Domain</RootNamespace>
+    <AssemblyName>RSToolKit.Domain</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>
+    </DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>
+    </DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>none</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AuthorizeNet">
+      <HintPath>..\packages\AuthorizeNet.1.8.4\lib\AuthorizeNet.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFrameworkExtension">
+      <HintPath>..\packages\EntityFrameworkExtension.2.0.1\lib\EntityFrameworkExtension.dll</HintPath>
+    </Reference>
+    <Reference Include="EPPlus">
+      <HintPath>..\packages\EPPlus.4.0.4\lib\net20\EPPlus.dll</HintPath>
+    </Reference>
+    <Reference Include="HtmlAgilityPack">
+      <HintPath>..\packages\HtmlAgilityPack.1.4.9\lib\Net45\HtmlAgilityPack.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Owin">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.2.1\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.Owin.3.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.Owin.Security.3.0.1\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Cookies, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.Owin.Security.Cookies.3.0.1\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.OAuth, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.Owin.Security.OAuth.3.0.1\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Owin">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="PayPal">
+      <HintPath>..\packages\PayPal.1.5.0\lib\net45\PayPal.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SendGrid.SmtpApi">
+      <HintPath>..\packages\SendGrid.SmtpApi.1.3.1\lib\net40\SendGrid.SmtpApi.dll</HintPath>
+    </Reference>
+    <Reference Include="SendGridMail">
+      <HintPath>..\packages\Sendgrid.6.1.0\lib\SendGridMail.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Data.Entity.Design" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="USAePayAPI, Version=1.8.4300.25533, Culture=neutral, PublicKeyToken=1c8f050b4efa23f8, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\USAePay\USAePayAPI.dll</HintPath>
+    </Reference>
+    <Reference Include="XTransProcessor">
+      <HintPath>..\XTrans\XTransProcessor.dll</HintPath>
+    </Reference>
+    <Reference Include="Z.ExtensionMethods.EntityFramework">
+      <HintPath>..\packages\Z.ExtensionMethods.EntityFramework.1.1.4.2\lib\Z.ExtensionMethods.EntityFramework.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Collections\ITokenDictionary.cs" />
+    <Compile Include="Data\Info\Progress.cs" />
+    <Compile Include="Data\Info\ProgressStatus.cs" />
+    <Compile Include="Data\Info\TableData.cs" />
+    <Compile Include="Data\Interfaces\Database\IDBItem.cs" />
+    <Compile Include="Data\Interfaces\IDataItem.cs" />
+    <Compile Include="Data\Interfaces\IFormComponent.cs" />
+    <Compile Include="Data\Interfaces\ITableToken.cs" />
+    <Compile Include="Collections\KeepAliveDictionary.cs" />
+    <Compile Include="Collections\ComplexDictionary.cs" />
+    <Compile Include="Collections\JsonTableToken.cs" />
+    <Compile Include="Collections\TokenDictionary.cs" />
+    <Compile Include="Collections\UpdatableKeepAliveDictionary.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="Data\EFAttributes.cs" />
+    <Compile Include="Data\Countries.cs" />
+    <Compile Include="Data\CustomAttributes.cs" />
+    <Compile Include="Data\Info\ProgressInfo.cs" />
+    <Compile Include="Data\Interfaces\IComplexDictionary.cs" />
+    <Compile Include="Data\Interfaces\IJsonTable.cs" />
+    <Compile Include="Data\Interfaces\IJsonTableInformation.cs" />
+    <Compile Include="Data\Interfaces\IKeepAlive.cs" />
+    <Compile Include="Data\Interfaces\IKeepAliveCollection.cs" />
+    <Compile Include="Data\Interfaces\INamedNode.cs" />
+    <Compile Include="Data\Interfaces\IPermissionHolder.cs" />
+    <Compile Include="Data\Interfaces\IProgressInfo.cs" />
+    <Compile Include="Data\Interfaces\IRequirePermissions.cs" />
+    <Compile Include="Data\Interfaces\ITableInformation.cs" />
+    <Compile Include="Data\Interfaces\IToken.cs" />
+    <Compile Include="Data\Interfaces\IUpdatable.cs" />
+    <Compile Include="Data\Interfaces\IUpdatableCollection.cs" />
+    <Compile Include="Data\IProgressData.cs" />
+    <Compile Include="Data\JsonTableInformation.cs" />
+    <Compile Include="Data\PagedReportData.cs" />
+    <Compile Include="Data\RegStepContext.cs" />
+    <Compile Include="Data\EmailData.cs" />
+    <Compile Include="Data\Interfaces\IApiLogin.cs" />
+    <Compile Include="Data\Interfaces\IBaseItem.cs" />
+    <Compile Include="Data\Interfaces\ICompanyHolder.cs" />
+    <Compile Include="Data\Interfaces\IComponentItemParent.cs" />
+    <Compile Include="Data\Interfaces\IComponentMultipleSelection.cs" />
+    <Compile Include="Data\Interfaces\ICopyable.cs" />
+    <Compile Include="Data\Interfaces\IDataContext.cs" />
+    <Compile Include="Data\Interfaces\IComponentCss.cs" />
+    <Compile Include="Data\Interfaces\ICssHolder.cs" />
+    <Compile Include="Data\Interfaces\ICustomTextHolder.cs" />
+    <Compile Include="Data\Interfaces\IEmail.cs" />
+    <Compile Include="Data\Interfaces\IEmailArea.cs" />
+    <Compile Include="Data\Interfaces\IEmailList.cs" />
+    <Compile Include="Data\Interfaces\IEmailRecipient.cs" />
+    <Compile Include="Data\Interfaces\IFilter.cs" />
+    <Compile Include="Data\Interfaces\IFilterable.cs" />
+    <Compile Include="Data\Interfaces\IFinanceAmmount.cs" />
+    <Compile Include="Data\Interfaces\IForm.cs" />
+    <Compile Include="Data\Interfaces\IContentItem.cs" />
+    <Compile Include="Data\Interfaces\IjTableProcessor.cs" />
+    <Compile Include="Data\Interfaces\ILogger.cs" />
+    <Compile Include="Data\Interfaces\ILogicHolder.cs" />
+    <Compile Include="Data\Interfaces\IMerchantAccount.cs" />
+    <Compile Include="Data\Interfaces\IMerchantAccountProccessInfo.cs" />
+    <Compile Include="Data\Interfaces\INodeItem.cs" />
+    <Compile Include="Data\Interfaces\IPerson.cs" />
+    <Compile Include="Data\Interfaces\IPointerTarget.cs" />
+    <Compile Include="Data\Interfaces\IRegistrantItem.cs" />
+    <Compile Include="Data\Interfaces\IReport.cs" />
+    <Compile Include="Data\Interfaces\IPriceGroupHolder.cs" />
+    <None Include="Data\Repositories\CreditCardRepository.cs.old" />
+    <Compile Include="Data\Repositories\ChargeRepository.cs" />
+    <Compile Include="Data\Repositories\ItemLocation.cs" />
+    <Compile Include="Data\Repositories\RecordNotFoundException.cs" />
+    <Compile Include="Data\Repositories\InventoryReportRepository.cs" />
+    <Compile Include="Data\Repositories\CapacityRepository.cs" />
+    <Compile Include="Data\Repositories\IRepository.cs" />
+    <Compile Include="Data\Interfaces\ISeatingHolder.cs" />
+    <Compile Include="Data\Interfaces\ISecure.cs" />
+    <Compile Include="Data\Json-Table.cs" />
+    <Compile Include="Data\Repositories\FormRepository.cs" />
+    <Compile Include="Data\Repositories\CompanyRepository.cs" />
+    <Compile Include="Data\Repositories\MerchantAccountRepository.cs" />
+    <Compile Include="Data\Repositories\NoDBInitialization.cs" />
+    <Compile Include="Data\Repositories\ReportDataRepository.cs" />
+    <Compile Include="Data\Repositories\RSRepository.cs" />
+    <Compile Include="Data\Repositories\TransactionRepository.cs" />
+    <Compile Include="Data\Repositories\RegistrantRepository.cs" />
+    <Compile Include="Data\TokenData.cs" />
+    <Compile Include="Engines\FilterEngine.cs" />
+    <Compile Include="Engines\LogicEngine.cs" />
+    <Compile Include="Engines\RegParser.cs" />
+    <Compile Include="Engines\RegScriptTableEngine.cs" />
+    <Compile Include="Entities\Clients\CompanyLogo.cs" />
+    <Compile Include="Entities\Finances\Charge.cs" />
+    <Compile Include="Entities\Finances\ChargeType.cs" />
+    <Compile Include="Entities\Finances\FinanceType.cs" />
+    <Compile Include="Entities\Finances\ICharge.cs" />
+    <Compile Include="Entities\Finances\IFinanceAction.cs" />
+    <Compile Include="Entities\Finances\SettlementType.cs" />
+    <Compile Include="Entities\Manipulations\ItemAccess.cs" />
+    <Compile Include="Entities\MerchantAccount\PayeezyWrapper.cs" />
+    <Compile Include="Entities\Reports\GlobalReport.cs" />
+    <Compile Include="Entities\Reports\IRegScript.cs" />
+    <Compile Include="Entities\Reports\ReportData.cs" />
+    <Compile Include="Entities\Contact\SavedEmailTable.cs" />
+    <Compile Include="Entities\Email\ClickEvent.cs" />
+    <Compile Include="Entities\MerchantAccount\FirstDataAPI.cs" />
+    <Compile Include="Entities\MerchantAccount\iPayWrapper.cs" />
+    <Compile Include="Data\Interfaces\ITrail.cs" />
+    <Compile Include="Entities\Navigation\Pheromone.cs" />
+    <Compile Include="Entities\Navigation\Trail.cs" />
+    <Compile Include="Data\Interfaces\ITrailItem.cs" />
+    <Compile Include="Entities\Navigation\UserTrail.cs" />
+    <Compile Include="Entities\Registrations\Components\NumberSelector.cs" />
+    <Compile Include="Entities\Registrations\TinyUrl.cs" />
+    <Compile Include="Exceptions\CompanyNotFoundException.cs" />
+    <Compile Include="Exceptions\InvalidPermissionException.cs" />
+    <Compile Include="Exceptions\MerchantNotFoundException.cs" />
+    <Compile Include="Exceptions\RefundAmountExceededException.cs" />
+    <Compile Include="Exceptions\FormNotFoundException.cs" />
+    <Compile Include="Exceptions\AdjustmentNotFoundException.cs" />
+    <Compile Include="Exceptions\ReportDataNotAttachedException.cs" />
+    <Compile Include="Exceptions\ReportNotFoundException.cs" />
+    <Compile Include="Exceptions\TransactionNotFoundException.cs" />
+    <Compile Include="Exceptions\ReportDataNotFoundException.cs" />
+    <Compile Include="Exceptions\RegistrantNotFoundException.cs" />
+    <Compile Include="Exceptions\RegStepException.cs" />
+    <Compile Include="Expressions\ExpressionHelper.cs" />
+    <Compile Include="Extensions\DateTimeOffsetExtensions.cs" />
+    <Compile Include="Identity\RegStepExtensions.cs" />
+    <Compile Include="JItems\ContactTableInformation.cs" />
+    <Compile Include="JItems\IJsonFilterHeader.cs" />
+    <Compile Include="JItems\IJsonTableField.cs" />
+    <Compile Include="JItems\JLogic.cs" />
+    <Compile Include="Extensions\ISecureAttribute.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="JItems\JsonFilter.cs" />
+    <Compile Include="JItems\JsonTable.cs" />
+    <Compile Include="JItems\JsonSorting.cs" />
+    <Compile Include="JItems\TableInformation.cs" />
+    <Compile Include="Logging\Counter.cs" />
+    <Compile Include="Logging\Counting.cs" />
+    <Compile Include="Logging\DataLogger.cs" />
+    <Compile Include="Logging\Log.cs" />
+    <Compile Include="Data\Paging.cs" />
+    <Compile Include="Data\PredicateBuilder.cs" />
+    <Compile Include="Data\Result.cs" />
+    <Compile Include="Data\RSParser.cs" />
+    <Compile Include="Data\States.cs" />
+    <Compile Include="JItems\TableData.cs" />
+    <Compile Include="Entities\Clients\AvailableRoles.cs" />
+    <Compile Include="Entities\Clients\CustomGroup.cs" />
+    <Compile Include="Entities\Reports\AdvancedInventoryReport.cs" />
+    <Compile Include="Entities\Contact\ContactHeader.cs" />
+    <Compile Include="Entities\Contact\ContactReport.cs" />
+    <Compile Include="Entities\Contact\SavedTable.cs" />
+    <Compile Include="Entities\Cloud\SingleFormReport.cs" />
+    <Compile Include="Entities\Registrations\Components\RatingSelect.cs" />
+    <Compile Include="Entities\Email\EmailSend.cs" />
+    <Compile Include="Entities\Email\RSHtmlEmail.cs" />
+    <Compile Include="Entities\Email\Unsubscribe.cs" />
+    <Compile Include="Entities\File.cs" />
+    <Compile Include="Entities\Registrations\Components\DefaultComponentOrder.cs" />
+    <Compile Include="Entities\Registrations\DefaultFormStyle.cs" />
+    <Compile Include="Entities\Email\EmailVariable.cs" />
+    <Compile Include="Entities\Registrations\FormTemplate.cs" />
+    <Compile Include="Entities\MerchantAccount\Adjustment.cs" />
+    <Compile Include="Entities\MerchantAccount\AuthorizeDotNet.cs" />
+    <Compile Include="Entities\MerchantAccount\AuthorizeDotNetProccessInfo.cs" />
+    <Compile Include="Entities\MerchantAccount\AuthorizeDotNetSilentPost.cs" />
+    <Compile Include="Entities\MerchantAccount\CreditCard.cs" />
+    <Compile Include="Entities\MerchantAccount\MerchantAccountInfo.cs" />
+    <Compile Include="Entities\MerchantAccount\PayPalWrapper.cs" />
+    <Compile Include="Entities\MerchantAccount\TransactionRequest.cs" />
+    <Compile Include="Entities\MerchantAccount\USAePay.cs" />
+    <Compile Include="Entities\Registrations\OldRegistrant.cs" />
+    <Compile Include="Entities\Registrations\Audience.cs" />
+    <Compile Include="Entities\Clients\AppRole.cs" />
+    <Compile Include="Entities\Clients\AppRoleManager.cs" />
+    <Compile Include="Entities\Registrations\Components\AudienceSelect.cs" />
+    <Compile Include="Entities\Registrations\Components\AudienceStyle.cs" />
+    <Compile Include="Entities\Registrations\Components\CheckboxGroup.cs" />
+    <Compile Include="Entities\Registrations\Components\CheckboxItem.cs" />
+    <Compile Include="Entities\Registrations\Components\Component.cs" />
+    <Compile Include="Entities\Registrations\Components\DropdownGroup.cs" />
+    <Compile Include="Entities\Registrations\Components\DropdownItem.cs" />
+    <Compile Include="Data\Interfaces\IComponent.cs" />
+    <Compile Include="Entities\Registrations\Components\FreeText.cs" />
+    <Compile Include="Entities\Registrations\Components\Input.cs" />
+    <Compile Include="Entities\Registrations\Components\RadioGroup.cs" />
+    <Compile Include="Entities\Registrations\Components\RadioItem.cs" />
+    <Compile Include="Entities\Contact\Contact.cs" />
+    <Compile Include="Entities\Contact\ContactData.cs" />
+    <Compile Include="Entities\CSS.cs" />
+    <Compile Include="Entities\Currency.cs" />
+    <Compile Include="Entities\Registrations\CustomText.cs" />
+    <Compile Include="Entities\Email\EmailCampaign.cs" />
+    <Compile Include="Entities\Email\EmailArea.cs" />
+    <Compile Include="Entities\Email\EmailTemplate.cs" />
+    <Compile Include="Entities\Email\EmailTemplateArea.cs" />
+    <Compile Include="Entities\Email\RSEmail.cs" />
+    <Compile Include="Entities\Email\EmailEvent.cs" />
+    <Compile Include="Data\Interfaces\IEmailHolder.cs" />
+    <Compile Include="Entities\Email\SmtpServer.cs" />
+    <Compile Include="Entities\Clients\BreadCrumbs.cs" />
+    <Compile Include="Entities\Clients\IdentityConfig.cs" />
+    <Compile Include="Entities\Clients\AppUserManager.cs" />
+    <Compile Include="Entities\Clients\Company.cs" />
+    <Compile Include="Data\EFDbContext.cs" />
+    <Compile Include="Data\Interfaces\IRSData.cs" />
+    <Compile Include="Data\QueryInformation.cs" />
+    <Compile Include="Data\SqlHelper.cs" />
+    <Compile Include="Entities\Clients\User.cs" />
+    <Compile Include="Entities\Folder.cs" />
+    <Compile Include="Entities\Registrations\Form.cs" />
+    <Compile Include="Entities\Registrations\FormStatus.cs" />
+    <Compile Include="Data\Interfaces\IComponentItem.cs" />
+    <Compile Include="Data\Interfaces\INode.cs" />
+    <Compile Include="Entities\Logic.cs" />
+    <Compile Include="Entities\Registrations\LogicBlock.cs" />
+    <Compile Include="Entities\Registrations\Page.cs" />
+    <Compile Include="Entities\Registrations\Panel.cs" />
+    <Compile Include="Entities\Pointer.cs" />
+    <Compile Include="Entities\Registrations\Price.cs" />
+    <Compile Include="Entities\Registrations\PriceGroup.cs" />
+    <Compile Include="Entities\Registrations\Prices.cs" />
+    <Compile Include="Entities\Registrations\PromotionCode.cs" />
+    <Compile Include="Entities\Registrations\PromotionCodeEntries.cs" />
+    <Compile Include="Entities\Registrations\Registrant.cs" />
+    <Compile Include="Entities\Registrations\OldRegistrantData.cs" />
+    <Compile Include="Entities\Registrations\RegistrantData.cs" />
+    <Compile Include="Entities\Registrations\RegistrantNote.cs" />
+    <Compile Include="Entities\Registrations\RSVPType.cs" />
+    <Compile Include="Entities\Contact\SavedList.cs" />
+    <Compile Include="Entities\Registrations\Seating.cs" />
+    <Compile Include="Entities\Registrations\ShoppingCart.cs" />
+    <Compile Include="Entities\Registrations\ShoppingCartItem.cs" />
+    <Compile Include="Entities\Registrations\Stylesheet.cs" />
+    <Compile Include="Entities\Tag.cs" />
+    <Compile Include="Entities\MerchantAccount\TransactionDetail.cs" />
+    <Compile Include="Entities\NodeType.cs" />
+    <Compile Include="Entities\Variable.cs" />
+    <Compile Include="Errors\CreditCardException.cs" />
+    <Compile Include="Errors\EmailException.cs" />
+    <Compile Include="Errors\UserException.cs" />
+    <Compile Include="Extensions\CryptoInt.cs" />
+    <Compile Include="Extensions\Extensions.cs" />
+    <Compile Include="Extensions\CurrencySymbolValueAttribute.cs" />
+    <Compile Include="Extensions\RgxAttributes.cs" />
+    <Compile Include="Extensions\StringValueAttribute.cs" />
+    <Compile Include="Data\FormsRepository.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Logging\Logger.cs" />
+    <Compile Include="Migrations\201407301456553_initial-formbuilder.cs" />
+    <Compile Include="Migrations\201407301456553_initial-formbuilder.Designer.cs">
+      <DependentUpon>201407301456553_initial-formbuilder.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201407301835160_initial-formbuilder_Form--FormCloseMessage.cs" />
+    <Compile Include="Migrations\201407301835160_initial-formbuilder_Form--FormCloseMessage.Designer.cs">
+      <DependentUpon>201407301835160_initial-formbuilder_Form--FormCloseMessage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201407301938492_initial-formbuilder_Form--RSVPAccept_RSVPDecline.cs" />
+    <Compile Include="Migrations\201407301938492_initial-formbuilder_Form--RSVPAccept_RSVPDecline.Designer.cs">
+      <DependentUpon>201407301938492_initial-formbuilder_Form--RSVPAccept_RSVPDecline.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201407311741084_final-registration.cs" />
+    <Compile Include="Migrations\201407311741084_final-registration.Designer.cs">
+      <DependentUpon>201407311741084_final-registration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201407311747239_registrant-removerequired.cs" />
+    <Compile Include="Migrations\201407311747239_registrant-removerequired.Designer.cs">
+      <DependentUpon>201407311747239_registrant-removerequired.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201407311936398_remove-required-rdatavalue.cs" />
+    <Compile Include="Migrations\201407311936398_remove-required-rdatavalue.Designer.cs">
+      <DependentUpon>201407311936398_remove-required-rdatavalue.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201408011656290_def_from_styles.cs" />
+    <Compile Include="Migrations\201408011656290_def_from_styles.Designer.cs">
+      <DependentUpon>201408011656290_def_from_styles.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201408030148493_promotioncode-tax.cs" />
+    <Compile Include="Migrations\201408030148493_promotioncode-tax.Designer.cs">
+      <DependentUpon>201408030148493_promotioncode-tax.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201408030200507_cascadeon.cs" />
+    <Compile Include="Migrations\201408030200507_cascadeon.Designer.cs">
+      <DependentUpon>201408030200507_cascadeon.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201408041435397_file.cs" />
+    <Compile Include="Migrations\201408041435397_file.Designer.cs">
+      <DependentUpon>201408041435397_file.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201408041854204_messages.cs" />
+    <Compile Include="Migrations\201408041854204_messages.Designer.cs">
+      <DependentUpon>201408041854204_messages.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201408042116197_email.cs" />
+    <Compile Include="Migrations\201408042116197_email.Designer.cs">
+      <DependentUpon>201408042116197_email.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201408052042554_merchant-account.cs" />
+    <Compile Include="Migrations\201408052042554_merchant-account.Designer.cs">
+      <DependentUpon>201408052042554_merchant-account.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201408052044134_merchant-account-2.cs" />
+    <Compile Include="Migrations\201408052044134_merchant-account-2.Designer.cs">
+      <DependentUpon>201408052044134_merchant-account-2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201408071512280_transaction_request.cs" />
+    <Compile Include="Migrations\201408071512280_transaction_request.Designer.cs">
+      <DependentUpon>201408071512280_transaction_request.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201408071514256_coordinator.cs" />
+    <Compile Include="Migrations\201408071514256_coordinator.Designer.cs">
+      <DependentUpon>201408071514256_coordinator.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201408071953095_last-four.cs" />
+    <Compile Include="Migrations\201408071953095_last-four.Designer.cs">
+      <DependentUpon>201408071953095_last-four.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201408121333479_cloud.cs" />
+    <Compile Include="Migrations\201408121333479_cloud.Designer.cs">
+      <DependentUpon>201408121333479_cloud.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201408141539592_reports.cs" />
+    <Compile Include="Migrations\201408141539592_reports.Designer.cs">
+      <DependentUpon>201408141539592_reports.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201408141657203_remove_CCNumber_transactionDetails.cs" />
+    <Compile Include="Migrations\201408141657203_remove_CCNumber_transactionDetails.Designer.cs">
+      <DependentUpon>201408141657203_remove_CCNumber_transactionDetails.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201408181113534_SFR.cs" />
+    <Compile Include="Migrations\201408181113534_SFR.Designer.cs">
+      <DependentUpon>201408181113534_SFR.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201408181738553_merchant-adjustment.cs" />
+    <Compile Include="Migrations\201408181738553_merchant-adjustment.Designer.cs">
+      <DependentUpon>201408181738553_merchant-adjustment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201408181833321_transaction_request-date_removed.cs" />
+    <Compile Include="Migrations\201408181833321_transaction_request-date_removed.Designer.cs">
+      <DependentUpon>201408181833321_transaction_request-date_removed.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201408182018149_registration-Email-View.cs" />
+    <Compile Include="Migrations\201408182018149_registration-Email-View.Designer.cs">
+      <DependentUpon>201408182018149_registration-Email-View.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201408182022212_emailsend-FK.cs" />
+    <Compile Include="Migrations\201408182022212_emailsend-FK.Designer.cs">
+      <DependentUpon>201408182022212_emailsend-FK.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201408271952539_transactions.cs" />
+    <Compile Include="Migrations\201408271952539_transactions.Designer.cs">
+      <DependentUpon>201408271952539_transactions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201408280027080_transactions_name_exp.cs" />
+    <Compile Include="Migrations\201408280027080_transactions_name_exp.Designer.cs">
+      <DependentUpon>201408280027080_transactions_name_exp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201408280048000_transactions_captureKey.cs" />
+    <Compile Include="Migrations\201408280048000_transactions_captureKey.Designer.cs">
+      <DependentUpon>201408280048000_transactions_captureKey.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201408280144576_transactions_conversionRate.cs" />
+    <Compile Include="Migrations\201408280144576_transactions_conversionRate.Designer.cs">
+      <DependentUpon>201408280144576_transactions_conversionRate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201408281220270_files.cs" />
+    <Compile Include="Migrations\201408281220270_files.Designer.cs">
+      <DependentUpon>201408281220270_files.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201408281513121_data-component_link.cs" />
+    <Compile Include="Migrations\201408281513121_data-component_link.Designer.cs">
+      <DependentUpon>201408281513121_data-component_link.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201408290153147_Unsubscribe.cs" />
+    <Compile Include="Migrations\201408290153147_Unsubscribe.Designer.cs">
+      <DependentUpon>201408290153147_Unsubscribe.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201408291631219_paying-agent.cs" />
+    <Compile Include="Migrations\201408291631219_paying-agent.Designer.cs">
+      <DependentUpon>201408291631219_paying-agent.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201408291818249_payment_record.cs" />
+    <Compile Include="Migrations\201408291818249_payment_record.Designer.cs">
+      <DependentUpon>201408291818249_payment_record.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201408291819237_removeType.cs" />
+    <Compile Include="Migrations\201408291819237_removeType.Designer.cs">
+      <DependentUpon>201408291819237_removeType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201408291846317_addType.cs" />
+    <Compile Include="Migrations\201408291846317_addType.Designer.cs">
+      <DependentUpon>201408291846317_addType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201408292007105_addTransactionDate.cs" />
+    <Compile Include="Migrations\201408292007105_addTransactionDate.Designer.cs">
+      <DependentUpon>201408292007105_addTransactionDate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201409021905571_SingleFormReport-1.cs" />
+    <Compile Include="Migrations\201409021905571_SingleFormReport-1.Designer.cs">
+      <DependentUpon>201409021905571_SingleFormReport-1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201409021907453_report-2.cs" />
+    <Compile Include="Migrations\201409021907453_report-2.Designer.cs">
+      <DependentUpon>201409021907453_report-2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201409031737554_singleformreport_favorite.cs" />
+    <Compile Include="Migrations\201409031737554_singleformreport_favorite.Designer.cs">
+      <DependentUpon>201409031737554_singleformreport_favorite.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201409032121567_iventory-report.cs" />
+    <Compile Include="Migrations\201409032121567_iventory-report.Designer.cs">
+      <DependentUpon>201409032121567_iventory-report.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201409042004010_CustomGroup_addCompany.cs" />
+    <Compile Include="Migrations\201409042004010_CustomGroup_addCompany.Designer.cs">
+      <DependentUpon>201409042004010_CustomGroup_addCompany.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201409042024175_company_CustomGroups.cs" />
+    <Compile Include="Migrations\201409042024175_company_CustomGroups.Designer.cs">
+      <DependentUpon>201409042024175_company_CustomGroups.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201409042134505_availableRoles.cs" />
+    <Compile Include="Migrations\201409042134505_availableRoles.Designer.cs">
+      <DependentUpon>201409042134505_availableRoles.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201409122312163_Contact.cs" />
+    <Compile Include="Migrations\201409122312163_Contact.Designer.cs">
+      <DependentUpon>201409122312163_Contact.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201409161649068_ContactList.cs" />
+    <Compile Include="Migrations\201409161649068_ContactList.Designer.cs">
+      <DependentUpon>201409161649068_ContactList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201409171343294_Email_ContactReportKey.cs" />
+    <Compile Include="Migrations\201409171343294_Email_ContactReportKey.Designer.cs">
+      <DependentUpon>201409171343294_Email_ContactReportKey.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201409182207241_EmailBuilder.cs" />
+    <Compile Include="Migrations\201409182207241_EmailBuilder.Designer.cs">
+      <DependentUpon>201409182207241_EmailBuilder.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201409191720149_Registrant_prop-StatusDate.cs" />
+    <Compile Include="Migrations\201409191720149_Registrant_prop-StatusDate.Designer.cs">
+      <DependentUpon>201409191720149_Registrant_prop-StatusDate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201409201009124_Cloud-finishes-1.cs" />
+    <Compile Include="Migrations\201409201009124_Cloud-finishes-1.Designer.cs">
+      <DependentUpon>201409201009124_Cloud-finishes-1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201409222200049_permissionset.cs" />
+    <Compile Include="Migrations\201409222200049_permissionset.Designer.cs">
+      <DependentUpon>201409222200049_permissionset.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201409222215400_permissionset-key_change.cs" />
+    <Compile Include="Migrations\201409222215400_permissionset-key_change.Designer.cs">
+      <DependentUpon>201409222215400_permissionset-key_change.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201409232154161_adjustment.cs" />
+    <Compile Include="Migrations\201409232154161_adjustment.Designer.cs">
+      <DependentUpon>201409232154161_adjustment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201409242019086_RSEmail_Company.cs" />
+    <Compile Include="Migrations\201409242019086_RSEmail_Company.Designer.cs">
+      <DependentUpon>201409242019086_RSEmail_Company.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201409242024499_Component_Company.cs" />
+    <Compile Include="Migrations\201409242024499_Component_Company.Designer.cs">
+      <DependentUpon>201409242024499_Component_Company.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201409242031312_Add_ICompany.cs" />
+    <Compile Include="Migrations\201409242031312_Add_ICompany.Designer.cs">
+      <DependentUpon>201409242031312_Add_ICompany.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201409252025091_Form_contactreport.cs" />
+    <Compile Include="Migrations\201409252025091_Form_contactreport.Designer.cs">
+      <DependentUpon>201409252025091_Form_contactreport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201409252106161_component_mapped.cs" />
+    <Compile Include="Migrations\201409252106161_component_mapped.Designer.cs">
+      <DependentUpon>201409252106161_component_mapped.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201409302030105_email_updates-1.cs" />
+    <Compile Include="Migrations\201409302030105_email_updates-1.Designer.cs">
+      <DependentUpon>201409302030105_email_updates-1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201410011417022_email_removeTemplateVariables.cs" />
+    <Compile Include="Migrations\201410011417022_email_removeTemplateVariables.Designer.cs">
+      <DependentUpon>201410011417022_email_removeTemplateVariables.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201410062114469_Company_TokenAndKey_MinusParentCompany-bool_AddParentCompany-Company.cs" />
+    <Compile Include="Migrations\201410062114469_Company_TokenAndKey_MinusParentCompany-bool_AddParentCompany-Company.Designer.cs">
+      <DependentUpon>201410062114469_Company_TokenAndKey_MinusParentCompany-bool_AddParentCompany-Company.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201410141404254_seating-registrant.cs" />
+    <Compile Include="Migrations\201410141404254_seating-registrant.Designer.cs">
+      <DependentUpon>201410141404254_seating-registrant.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201410171617390_LogicOnEmail.cs" />
+    <Compile Include="Migrations\201410171617390_LogicOnEmail.Designer.cs">
+      <DependentUpon>201410171617390_LogicOnEmail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201410242059512_ifinance.cs" />
+    <Compile Include="Migrations\201410242059512_ifinance.Designer.cs">
+      <DependentUpon>201410242059512_ifinance.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201410281900424_form-hideshoppingcart.cs" />
+    <Compile Include="Migrations\201410281900424_form-hideshoppingcart.Designer.cs">
+      <DependentUpon>201410281900424_form-hideshoppingcart.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201411031620174_plainText-Email.cs" />
+    <Compile Include="Migrations\201411031620174_plainText-Email.Designer.cs">
+      <DependentUpon>201411031620174_plainText-Email.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201411040141552_HtmlEmail.cs" />
+    <Compile Include="Migrations\201411040141552_HtmlEmail.Designer.cs">
+      <DependentUpon>201411040141552_HtmlEmail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201411122202488_Email-Key.cs" />
+    <Compile Include="Migrations\201411122202488_Email-Key.Designer.cs">
+      <DependentUpon>201411122202488_Email-Key.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201411122248371_Formatting.cs" />
+    <Compile Include="Migrations\201411122248371_Formatting.Designer.cs">
+      <DependentUpon>201411122248371_Formatting.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201411190227124_seating-holdinterval.cs" />
+    <Compile Include="Migrations\201411190227124_seating-holdinterval.Designer.cs">
+      <DependentUpon>201411190227124_seating-holdinterval.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201411192045096_removeCompany-Audience_DefaultComponentOrder.cs" />
+    <Compile Include="Migrations\201411192045096_removeCompany-Audience_DefaultComponentOrder.Designer.cs">
+      <DependentUpon>201411192045096_removeCompany-Audience_DefaultComponentOrder.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201411192159169_SecureAccess.cs" />
+    <Compile Include="Migrations\201411192159169_SecureAccess.Designer.cs">
+      <DependentUpon>201411192159169_SecureAccess.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201411201633267_companyKey_AccessLog.cs" />
+    <Compile Include="Migrations\201411201633267_companyKey_AccessLog.Designer.cs">
+      <DependentUpon>201411201633267_companyKey_AccessLog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201411202358528_workingcompany.cs" />
+    <Compile Include="Migrations\201411202358528_workingcompany.Designer.cs">
+      <DependentUpon>201411202358528_workingcompany.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201411211703454_AccessLog_Type.cs" />
+    <Compile Include="Migrations\201411211703454_AccessLog_Type.Designer.cs">
+      <DependentUpon>201411211703454_AccessLog_Type.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201411211743169_maxLength-Data-Value.cs" />
+    <Compile Include="Migrations\201411211743169_maxLength-Data-Value.Designer.cs">
+      <DependentUpon>201411211743169_maxLength-Data-Value.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201412041740257_Registrant-quickprice.cs" />
+    <Compile Include="Migrations\201412041740257_Registrant-quickprice.Designer.cs">
+      <DependentUpon>201412041740257_Registrant-quickprice.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201412041853153_registrant-quickfees-update2.cs" />
+    <Compile Include="Migrations\201412041853153_registrant-quickfees-update2.Designer.cs">
+      <DependentUpon>201412041853153_registrant-quickfees-update2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201412192348523_RemoveRequiredComponent-RegistrationData.cs" />
+    <Compile Include="Migrations\201412192348523_RemoveRequiredComponent-RegistrationData.Designer.cs">
+      <DependentUpon>201412192348523_RemoveRequiredComponent-RegistrationData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201412212032580_ratingSelect.cs" />
+    <Compile Include="Migrations\201412212032580_ratingSelect.Designer.cs">
+      <DependentUpon>201412212032580_ratingSelect.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201412291643098_data-removeVariable.cs" />
+    <Compile Include="Migrations\201412291643098_data-removeVariable.Designer.cs">
+      <DependentUpon>201412291643098_data-removeVariable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201501130344473_savedtable.cs" />
+    <Compile Include="Migrations\201501130344473_savedtable.Designer.cs">
+      <DependentUpon>201501130344473_savedtable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201501130542493_savedtable-favorite.cs" />
+    <Compile Include="Migrations\201501130542493_savedtable-favorite.Designer.cs">
+      <DependentUpon>201501130542493_savedtable-favorite.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201501160239286_Logs.cs" />
+    <Compile Include="Migrations\201501160239286_Logs.Designer.cs">
+      <DependentUpon>201501160239286_Logs.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201501160315103_log_user.cs" />
+    <Compile Include="Migrations\201501160315103_log_user.Designer.cs">
+      <DependentUpon>201501160315103_log_user.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201501160330249_log_uid.cs" />
+    <Compile Include="Migrations\201501160330249_log_uid.Designer.cs">
+      <DependentUpon>201501160330249_log_uid.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201501160355424_log_removeuid.cs" />
+    <Compile Include="Migrations\201501160355424_log_removeuid.Designer.cs">
+      <DependentUpon>201501160355424_log_removeuid.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201501170408512_logNotes.cs" />
+    <Compile Include="Migrations\201501170408512_logNotes.Designer.cs">
+      <DependentUpon>201501170408512_logNotes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201501221541205_sendgridBool.cs" />
+    <Compile Include="Migrations\201501221541205_sendgridBool.Designer.cs">
+      <DependentUpon>201501221541205_sendgridBool.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201501271849086_contacts-regadd_enumData.cs" />
+    <Compile Include="Migrations\201501271849086_contacts-regadd_enumData.Designer.cs">
+      <DependentUpon>201501271849086_contacts-regadd_enumData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201501272045522_savedEmailTable.cs" />
+    <Compile Include="Migrations\201501272045522_savedEmailTable.Designer.cs">
+      <DependentUpon>201501272045522_savedEmailTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201501272158358_headerValues.cs" />
+    <Compile Include="Migrations\201501272158358_headerValues.Designer.cs">
+      <DependentUpon>201501272158358_headerValues.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201501301711140_Log-company.cs" />
+    <Compile Include="Migrations\201501301711140_Log-company.Designer.cs">
+      <DependentUpon>201501301711140_Log-company.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201502022135123_oldRegistration-DataUpdate.cs" />
+    <Compile Include="Migrations\201502022135123_oldRegistration-DataUpdate.Designer.cs">
+      <DependentUpon>201502022135123_oldRegistration-DataUpdate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201502032155202_JLogic.cs" />
+    <Compile Include="Migrations\201502032155202_JLogic.Designer.cs">
+      <DependentUpon>201502032155202_JLogic.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201502092240226_tinyurl.cs" />
+    <Compile Include="Migrations\201502092240226_tinyurl.Designer.cs">
+      <DependentUpon>201502092240226_tinyurl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201502131900106_api-login.cs" />
+    <Compile Include="Migrations\201502131900106_api-login.Designer.cs">
+      <DependentUpon>201502131900106_api-login.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201502140100262_eventstart.cs" />
+    <Compile Include="Migrations\201502140100262_eventstart.Designer.cs">
+      <DependentUpon>201502140100262_eventstart.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201502140104309_registrant-attended.cs" />
+    <Compile Include="Migrations\201502140104309_registrant-attended.Designer.cs">
+      <DependentUpon>201502140104309_registrant-attended.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201502222234012_Component-AgendaItem.cs" />
+    <Compile Include="Migrations\201502222234012_Component-AgendaItem.Designer.cs">
+      <DependentUpon>201502222234012_Component-AgendaItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201503110215430_security-update.cs" />
+    <Compile Include="Migrations\201503110215430_security-update.Designer.cs">
+      <DependentUpon>201503110215430_security-update.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201503111642584_promotionCode-limit.cs" />
+    <Compile Include="Migrations\201503111642584_promotionCode-limit.Designer.cs">
+      <DependentUpon>201503111642584_promotionCode-limit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201503121713036_Logging.cs" />
+    <Compile Include="Migrations\201503121713036_Logging.Designer.cs">
+      <DependentUpon>201503121713036_Logging.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201503121805415_company-information-address.cs" />
+    <Compile Include="Migrations\201503121805415_company-information-address.Designer.cs">
+      <DependentUpon>201503121805415_company-information-address.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201503301352511_numberselector.cs" />
+    <Compile Include="Migrations\201503301352511_numberselector.Designer.cs">
+      <DependentUpon>201503301352511_numberselector.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201503301424372_hideReview.cs" />
+    <Compile Include="Migrations\201503301424372_hideReview.Designer.cs">
+      <DependentUpon>201503301424372_hideReview.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201503312053521_form-location.cs" />
+    <Compile Include="Migrations\201503312053521_form-location.Designer.cs">
+      <DependentUpon>201503312053521_form-location.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201504031648039_form-eventinfo.cs" />
+    <Compile Include="Migrations\201504031648039_form-eventinfo.Designer.cs">
+      <DependentUpon>201504031648039_form-eventinfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201504210407074_IX-FormKey-with-Email-with-Type-OnRegistrant.cs" />
+    <Compile Include="Migrations\201504210407074_IX-FormKey-with-Email-with-Type-OnRegistrant.Designer.cs">
+      <DependentUpon>201504210407074_IX-FormKey-with-Email-with-Type-OnRegistrant.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201504282059545_Invoice-Number.cs" />
+    <Compile Include="Migrations\201504282059545_Invoice-Number.Designer.cs">
+      <DependentUpon>201504282059545_Invoice-Number.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201505041730367_emailEvents-AddBccList.cs" />
+    <Compile Include="Migrations\201505041730367_emailEvents-AddBccList.Designer.cs">
+      <DependentUpon>201505041730367_emailEvents-AddBccList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201505051902297_adjustment-voidable.cs" />
+    <Compile Include="Migrations\201505051902297_adjustment-voidable.Designer.cs">
+      <DependentUpon>201505051902297_adjustment-voidable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201505052037522_VoidedBy.cs" />
+    <Compile Include="Migrations\201505052037522_VoidedBy.Designer.cs">
+      <DependentUpon>201505052037522_VoidedBy.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201505061410091_login-headers.cs" />
+    <Compile Include="Migrations\201505061410091_login-headers.Designer.cs">
+      <DependentUpon>201505061410091_login-headers.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201505081344495_TaxColumn.cs" />
+    <Compile Include="Migrations\201505081344495_TaxColumn.Designer.cs">
+      <DependentUpon>201505081344495_TaxColumn.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201505081834334_MerchantAccountInfo-Parameters.cs" />
+    <Compile Include="Migrations\201505081834334_MerchantAccountInfo-Parameters.Designer.cs">
+      <DependentUpon>201505081834334_MerchantAccountInfo-Parameters.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201505111406581_oldRegData-MaxLength.cs" />
+    <Compile Include="Migrations\201505111406581_oldRegData-MaxLength.Designer.cs">
+      <DependentUpon>201505111406581_oldRegData-MaxLength.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201505121445568_emailEvents-Details_Response.cs" />
+    <Compile Include="Migrations\201505121445568_emailEvents-Details_Response.Designer.cs">
+      <DependentUpon>201505121445568_emailEvents-Details_Response.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201505131711386_transactionDetail-Response.cs" />
+    <Compile Include="Migrations\201505131711386_transactionDetail-Response.Designer.cs">
+      <DependentUpon>201505131711386_transactionDetail-Response.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201506031346290_reportdata.cs" />
+    <Compile Include="Migrations\201506031346290_reportdata.Designer.cs">
+      <DependentUpon>201506031346290_reportdata.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201506101749099_reportDat_favorite.cs" />
+    <Compile Include="Migrations\201506101749099_reportDat_favorite.Designer.cs">
+      <DependentUpon>201506101749099_reportDat_favorite.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201506101914303_reportData_companyKey.cs" />
+    <Compile Include="Migrations\201506101914303_reportData_companyKey.Designer.cs">
+      <DependentUpon>201506101914303_reportData_companyKey.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201506261323311_counter.cs" />
+    <Compile Include="Migrations\201506261323311_counter.Designer.cs">
+      <DependentUpon>201506261323311_counter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201506270055135_reportdata-type.cs" />
+    <Compile Include="Migrations\201506270055135_reportdata-type.Designer.cs">
+      <DependentUpon>201506270055135_reportdata-type.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201506291700365_navigation.cs" />
+    <Compile Include="Migrations\201506291700365_navigation.Designer.cs">
+      <DependentUpon>201506291700365_navigation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201506291718217_navigation2.cs" />
+    <Compile Include="Migrations\201506291718217_navigation2.Designer.cs">
+      <DependentUpon>201506291718217_navigation2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201507070017509_form-start.cs" />
+    <Compile Include="Migrations\201507070017509_form-start.Designer.cs">
+      <DependentUpon>201507070017509_form-start.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201507210305263_rename.cs" />
+    <Compile Include="Migrations\201507210305263_rename.Designer.cs">
+      <DependentUpon>201507210305263_rename.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201507241435170_companylogo.cs" />
+    <Compile Include="Migrations\201507241435170_companylogo.Designer.cs">
+      <DependentUpon>201507241435170_companylogo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201507292047437_update-logo.cs" />
+    <Compile Include="Migrations\201507292047437_update-logo.Designer.cs">
+      <DependentUpon>201507292047437_update-logo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201509021234289_TokenData.cs" />
+    <Compile Include="Migrations\201509021234289_TokenData.Designer.cs">
+      <DependentUpon>201509021234289_TokenData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201509021303157_fix-tokens.cs" />
+    <Compile Include="Migrations\201509021303157_fix-tokens.Designer.cs">
+      <DependentUpon>201509021303157_fix-tokens.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201509021714269_tokens-fix-2.cs" />
+    <Compile Include="Migrations\201509021714269_tokens-fix-2.Designer.cs">
+      <DependentUpon>201509021714269_tokens-fix-2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201509280254217_globalReports.cs" />
+    <Compile Include="Migrations\201509280254217_globalReports.Designer.cs">
+      <DependentUpon>201509280254217_globalReports.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201509281732463_globalreports-favorite.cs" />
+    <Compile Include="Migrations\201509281732463_globalreports-favorite.Designer.cs">
+      <DependentUpon>201509281732463_globalreports-favorite.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201509281956240_globalreports-forms.cs" />
+    <Compile Include="Migrations\201509281956240_globalreports-forms.Designer.cs">
+      <DependentUpon>201509281956240_globalreports-forms.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201509300220549_addProtectedName.cs" />
+    <Compile Include="Migrations\201509300220549_addProtectedName.Designer.cs">
+      <DependentUpon>201509300220549_addProtectedName.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Notification\Notification.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Engines\RegScriptEngine.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Reflection\ReflectionExtensions.cs" />
+    <Compile Include="Result.cs" />
+    <Compile Include="Security\AccessLog.cs" />
+    <Compile Include="Security\IProtected.cs" />
+    <Compile Include="Security\SecurityLog.cs" />
+    <Compile Include="Security\SecurityLogEntry.cs" />
+    <Compile Include="Security\PerissionSets.cs" />
+    <Compile Include="Security\SecureUser.cs" />
+    <Compile Include="Security\Security.cs" />
+    <Compile Include="Security\SecurityAccessType.cs" />
+    <Compile Include="Security\SecuritySettings.cs" />
+    <Compile Include="ToolHelper.cs" />
+    <Compile Include="Web References\FirstData\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <None Include="packages.config" />
+    <None Include="PowerShellScripts\postScript.ps1" />
+    <None Include="PowerShellScripts\preScript.ps1" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Scripts\jquery-2.1.3.min.js.map">
+      <DependentUpon>jquery-2.1.3.min.js</DependentUpon>
+    </None>
+    <None Include="Scripts\jquery.signalR-2.2.0.min.js.map">
+      <DependentUpon>jquery.signalR-2.2.0.min.js</DependentUpon>
+    </None>
+    <None Include="Web References\FirstData\a1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\FirstData\fdggwsapi.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\FirstData\FDGGWSApiActionResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\FirstData\FDGGWSApiOrderResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\FirstData\order.wsdl" />
+    <None Include="Web References\FirstData\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\FirstData\v1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Entities\Registrations\Styles.cs" />
+    <Content Include="lib\USAePayAPI.dll" />
+    <Content Include="Scripts\jquery-2.1.3.intellisense.js" />
+    <Content Include="Scripts\jquery-2.1.3.min.js" />
+    <Content Include="Scripts\jquery.signalR-2.2.0.min.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201407301456553_initial-formbuilder.resx">
+      <DependentUpon>201407301456553_initial-formbuilder.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407301835160_initial-formbuilder_Form--FormCloseMessage.resx">
+      <DependentUpon>201407301835160_initial-formbuilder_Form--FormCloseMessage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407301938492_initial-formbuilder_Form--RSVPAccept_RSVPDecline.resx">
+      <DependentUpon>201407301938492_initial-formbuilder_Form--RSVPAccept_RSVPDecline.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407311741084_final-registration.resx">
+      <DependentUpon>201407311741084_final-registration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407311747239_registrant-removerequired.resx">
+      <DependentUpon>201407311747239_registrant-removerequired.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407311936398_remove-required-rdatavalue.resx">
+      <DependentUpon>201407311936398_remove-required-rdatavalue.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201408011656290_def_from_styles.resx">
+      <DependentUpon>201408011656290_def_from_styles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201408030148493_promotioncode-tax.resx">
+      <DependentUpon>201408030148493_promotioncode-tax.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201408030200507_cascadeon.resx">
+      <DependentUpon>201408030200507_cascadeon.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201408041435397_file.resx">
+      <DependentUpon>201408041435397_file.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201408041854204_messages.resx">
+      <DependentUpon>201408041854204_messages.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201408042116197_email.resx">
+      <DependentUpon>201408042116197_email.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201408052042554_merchant-account.resx">
+      <DependentUpon>201408052042554_merchant-account.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201408052044134_merchant-account-2.resx">
+      <DependentUpon>201408052044134_merchant-account-2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201408071512280_transaction_request.resx">
+      <DependentUpon>201408071512280_transaction_request.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201408071514256_coordinator.resx">
+      <DependentUpon>201408071514256_coordinator.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201408071953095_last-four.resx">
+      <DependentUpon>201408071953095_last-four.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201408121333479_cloud.resx">
+      <DependentUpon>201408121333479_cloud.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201408141539592_reports.resx">
+      <DependentUpon>201408141539592_reports.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201408141657203_remove_CCNumber_transactionDetails.resx">
+      <DependentUpon>201408141657203_remove_CCNumber_transactionDetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201408181113534_SFR.resx">
+      <DependentUpon>201408181113534_SFR.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201408181738553_merchant-adjustment.resx">
+      <DependentUpon>201408181738553_merchant-adjustment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201408181833321_transaction_request-date_removed.resx">
+      <DependentUpon>201408181833321_transaction_request-date_removed.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201408182018149_registration-Email-View.resx">
+      <DependentUpon>201408182018149_registration-Email-View.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201408182022212_emailsend-FK.resx">
+      <DependentUpon>201408182022212_emailsend-FK.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201408271952539_transactions.resx">
+      <DependentUpon>201408271952539_transactions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201408280027080_transactions_name_exp.resx">
+      <DependentUpon>201408280027080_transactions_name_exp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201408280048000_transactions_captureKey.resx">
+      <DependentUpon>201408280048000_transactions_captureKey.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201408280144576_transactions_conversionRate.resx">
+      <DependentUpon>201408280144576_transactions_conversionRate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201408281220270_files.resx">
+      <DependentUpon>201408281220270_files.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201408281513121_data-component_link.resx">
+      <DependentUpon>201408281513121_data-component_link.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201408290153147_Unsubscribe.resx">
+      <DependentUpon>201408290153147_Unsubscribe.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201408291631219_paying-agent.resx">
+      <DependentUpon>201408291631219_paying-agent.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201408291818249_payment_record.resx">
+      <DependentUpon>201408291818249_payment_record.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201408291819237_removeType.resx">
+      <DependentUpon>201408291819237_removeType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201408291846317_addType.resx">
+      <DependentUpon>201408291846317_addType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201408292007105_addTransactionDate.resx">
+      <DependentUpon>201408292007105_addTransactionDate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201409021905571_SingleFormReport-1.resx">
+      <DependentUpon>201409021905571_SingleFormReport-1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201409021907453_report-2.resx">
+      <DependentUpon>201409021907453_report-2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201409031737554_singleformreport_favorite.resx">
+      <DependentUpon>201409031737554_singleformreport_favorite.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201409032121567_iventory-report.resx">
+      <DependentUpon>201409032121567_iventory-report.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201409042004010_CustomGroup_addCompany.resx">
+      <DependentUpon>201409042004010_CustomGroup_addCompany.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201409042024175_company_CustomGroups.resx">
+      <DependentUpon>201409042024175_company_CustomGroups.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201409042134505_availableRoles.resx">
+      <DependentUpon>201409042134505_availableRoles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201409122312163_Contact.resx">
+      <DependentUpon>201409122312163_Contact.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201409161649068_ContactList.resx">
+      <DependentUpon>201409161649068_ContactList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201409171343294_Email_ContactReportKey.resx">
+      <DependentUpon>201409171343294_Email_ContactReportKey.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201409182207241_EmailBuilder.resx">
+      <DependentUpon>201409182207241_EmailBuilder.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201409191720149_Registrant_prop-StatusDate.resx">
+      <DependentUpon>201409191720149_Registrant_prop-StatusDate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201409201009124_Cloud-finishes-1.resx">
+      <DependentUpon>201409201009124_Cloud-finishes-1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201409222200049_permissionset.resx">
+      <DependentUpon>201409222200049_permissionset.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201409222215400_permissionset-key_change.resx">
+      <DependentUpon>201409222215400_permissionset-key_change.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201409232154161_adjustment.resx">
+      <DependentUpon>201409232154161_adjustment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201409242019086_RSEmail_Company.resx">
+      <DependentUpon>201409242019086_RSEmail_Company.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201409242024499_Component_Company.resx">
+      <DependentUpon>201409242024499_Component_Company.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201409242031312_Add_ICompany.resx">
+      <DependentUpon>201409242031312_Add_ICompany.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201409252025091_Form_contactreport.resx">
+      <DependentUpon>201409252025091_Form_contactreport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201409252106161_component_mapped.resx">
+      <DependentUpon>201409252106161_component_mapped.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201409302030105_email_updates-1.resx">
+      <DependentUpon>201409302030105_email_updates-1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201410011417022_email_removeTemplateVariables.resx">
+      <DependentUpon>201410011417022_email_removeTemplateVariables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201410062114469_Company_TokenAndKey_MinusParentCompany-bool_AddParentCompany-Company.resx">
+      <DependentUpon>201410062114469_Company_TokenAndKey_MinusParentCompany-bool_AddParentCompany-Company.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201410141404254_seating-registrant.resx">
+      <DependentUpon>201410141404254_seating-registrant.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201410171617390_LogicOnEmail.resx">
+      <DependentUpon>201410171617390_LogicOnEmail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201410242059512_ifinance.resx">
+      <DependentUpon>201410242059512_ifinance.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201410281900424_form-hideshoppingcart.resx">
+      <DependentUpon>201410281900424_form-hideshoppingcart.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201411031620174_plainText-Email.resx">
+      <DependentUpon>201411031620174_plainText-Email.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201411040141552_HtmlEmail.resx">
+      <DependentUpon>201411040141552_HtmlEmail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201411122202488_Email-Key.resx">
+      <DependentUpon>201411122202488_Email-Key.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201411122248371_Formatting.resx">
+      <DependentUpon>201411122248371_Formatting.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201411190227124_seating-holdinterval.resx">
+      <DependentUpon>201411190227124_seating-holdinterval.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201411192045096_removeCompany-Audience_DefaultComponentOrder.resx">
+      <DependentUpon>201411192045096_removeCompany-Audience_DefaultComponentOrder.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201411192159169_SecureAccess.resx">
+      <DependentUpon>201411192159169_SecureAccess.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201411201633267_companyKey_AccessLog.resx">
+      <DependentUpon>201411201633267_companyKey_AccessLog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201411202358528_workingcompany.resx">
+      <DependentUpon>201411202358528_workingcompany.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201411211703454_AccessLog_Type.resx">
+      <DependentUpon>201411211703454_AccessLog_Type.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201411211743169_maxLength-Data-Value.resx">
+      <DependentUpon>201411211743169_maxLength-Data-Value.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201412041740257_Registrant-quickprice.resx">
+      <DependentUpon>201412041740257_Registrant-quickprice.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201412041853153_registrant-quickfees-update2.resx">
+      <DependentUpon>201412041853153_registrant-quickfees-update2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201412192348523_RemoveRequiredComponent-RegistrationData.resx">
+      <DependentUpon>201412192348523_RemoveRequiredComponent-RegistrationData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201412212032580_ratingSelect.resx">
+      <DependentUpon>201412212032580_ratingSelect.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201412291643098_data-removeVariable.resx">
+      <DependentUpon>201412291643098_data-removeVariable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201501130344473_savedtable.resx">
+      <DependentUpon>201501130344473_savedtable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201501130542493_savedtable-favorite.resx">
+      <DependentUpon>201501130542493_savedtable-favorite.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201501160239286_Logs.resx">
+      <DependentUpon>201501160239286_Logs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201501160315103_log_user.resx">
+      <DependentUpon>201501160315103_log_user.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201501160330249_log_uid.resx">
+      <DependentUpon>201501160330249_log_uid.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201501160355424_log_removeuid.resx">
+      <DependentUpon>201501160355424_log_removeuid.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201501170408512_logNotes.resx">
+      <DependentUpon>201501170408512_logNotes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201501221541205_sendgridBool.resx">
+      <DependentUpon>201501221541205_sendgridBool.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201501271849086_contacts-regadd_enumData.resx">
+      <DependentUpon>201501271849086_contacts-regadd_enumData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201501272045522_savedEmailTable.resx">
+      <DependentUpon>201501272045522_savedEmailTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201501272158358_headerValues.resx">
+      <DependentUpon>201501272158358_headerValues.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201501301711140_Log-company.resx">
+      <DependentUpon>201501301711140_Log-company.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201502022135123_oldRegistration-DataUpdate.resx">
+      <DependentUpon>201502022135123_oldRegistration-DataUpdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201502032155202_JLogic.resx">
+      <DependentUpon>201502032155202_JLogic.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201502092240226_tinyurl.resx">
+      <DependentUpon>201502092240226_tinyurl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201502131900106_api-login.resx">
+      <DependentUpon>201502131900106_api-login.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201502140100262_eventstart.resx">
+      <DependentUpon>201502140100262_eventstart.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201502140104309_registrant-attended.resx">
+      <DependentUpon>201502140104309_registrant-attended.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201502222234012_Component-AgendaItem.resx">
+      <DependentUpon>201502222234012_Component-AgendaItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201503110215430_security-update.resx">
+      <DependentUpon>201503110215430_security-update.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201503111642584_promotionCode-limit.resx">
+      <DependentUpon>201503111642584_promotionCode-limit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201503121713036_Logging.resx">
+      <DependentUpon>201503121713036_Logging.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201503121805415_company-information-address.resx">
+      <DependentUpon>201503121805415_company-information-address.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201503301352511_numberselector.resx">
+      <DependentUpon>201503301352511_numberselector.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201503301424372_hideReview.resx">
+      <DependentUpon>201503301424372_hideReview.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201503312053521_form-location.resx">
+      <DependentUpon>201503312053521_form-location.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201504031648039_form-eventinfo.resx">
+      <DependentUpon>201504031648039_form-eventinfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201504210407074_IX-FormKey-with-Email-with-Type-OnRegistrant.resx">
+      <DependentUpon>201504210407074_IX-FormKey-with-Email-with-Type-OnRegistrant.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201504282059545_Invoice-Number.resx">
+      <DependentUpon>201504282059545_Invoice-Number.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505041730367_emailEvents-AddBccList.resx">
+      <DependentUpon>201505041730367_emailEvents-AddBccList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505051902297_adjustment-voidable.resx">
+      <DependentUpon>201505051902297_adjustment-voidable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505052037522_VoidedBy.resx">
+      <DependentUpon>201505052037522_VoidedBy.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505061410091_login-headers.resx">
+      <DependentUpon>201505061410091_login-headers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505081344495_TaxColumn.resx">
+      <DependentUpon>201505081344495_TaxColumn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505081834334_MerchantAccountInfo-Parameters.resx">
+      <DependentUpon>201505081834334_MerchantAccountInfo-Parameters.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505111406581_oldRegData-MaxLength.resx">
+      <DependentUpon>201505111406581_oldRegData-MaxLength.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505121445568_emailEvents-Details_Response.resx">
+      <DependentUpon>201505121445568_emailEvents-Details_Response.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505131711386_transactionDetail-Response.resx">
+      <DependentUpon>201505131711386_transactionDetail-Response.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201506031346290_reportdata.resx">
+      <DependentUpon>201506031346290_reportdata.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201506101749099_reportDat_favorite.resx">
+      <DependentUpon>201506101749099_reportDat_favorite.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201506101914303_reportData_companyKey.resx">
+      <DependentUpon>201506101914303_reportData_companyKey.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201506261323311_counter.resx">
+      <DependentUpon>201506261323311_counter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201506270055135_reportdata-type.resx">
+      <DependentUpon>201506270055135_reportdata-type.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201506291700365_navigation.resx">
+      <DependentUpon>201506291700365_navigation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201506291718217_navigation2.resx">
+      <DependentUpon>201506291718217_navigation2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201507070017509_form-start.resx">
+      <DependentUpon>201507070017509_form-start.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201507210305263_rename.resx">
+      <DependentUpon>201507210305263_rename.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201507241435170_companylogo.resx">
+      <DependentUpon>201507241435170_companylogo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201507292047437_update-logo.resx">
+      <DependentUpon>201507292047437_update-logo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509021234289_TokenData.resx">
+      <DependentUpon>201509021234289_TokenData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509021303157_fix-tokens.resx">
+      <DependentUpon>201509021303157_fix-tokens.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509021714269_tokens-fix-2.resx">
+      <DependentUpon>201509021714269_tokens-fix-2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509280254217_globalReports.resx">
+      <DependentUpon>201509280254217_globalReports.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509281732463_globalreports-favorite.resx">
+      <DependentUpon>201509281732463_globalreports-favorite.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509281956240_globalreports-forms.resx">
+      <DependentUpon>201509281956240_globalreports-forms.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509300220549_addProtectedName.resx">
+      <DependentUpon>201509300220549_addProtectedName.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Browsers\" />
+    <Folder Include="App_Data\" />
+    <Folder Include="Content\" />
+    <Folder Include="Data\Extensions\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferences Include="Web References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferenceUrl Include="D:\fd\order.wsdl">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\FirstData\</RelPath>
+      <UpdateFromURL>D:\fd\order.wsdl</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>RSToolKit_Domain_FirstData_FDGGWSApiOrderService</CachedSettingsPropName>
+    </WebReferenceUrl>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\AutoMapper.3.3.1\tools\AutoMapper.targets" Condition="Exists('..\packages\AutoMapper.3.3.1\tools\AutoMapper.targets')" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

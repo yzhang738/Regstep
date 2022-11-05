@@ -1,0 +1,34 @@
+﻿@using RSToolKit.WebUI.Infrastructure;
+@model Company
+@{
+    Layout = "~/Views/Shared/_Layout_CompanyAdmin.cshtml";
+}
+@section scripts
+{
+<script src="~/Scripts/CompanyAdmin/Index.js"></script>
+}
+@section styles
+{
+}
+@section title {
+    @Model.Name
+}
+@section breadcrumbs {
+    @Model.Name
+}
+@Html.AntiForgeryToken()
+<div class="col-xs-12">
+    <div class="add-padding-bottom-5 text-medium text-color-2">
+        Options
+    </div>
+
+    <div class="row add-padding-vertical-5 color-grey-2">
+        <div class="col-sm-12 col-md-6 col-lg-3"><a href="@Url.Action("Company", "CompanyAdmin", null, Request.Url.Scheme)"><span class="glyphicon glyphicon-edit"></span> Company Information</a></div>
+        <div class="col-sm-12 col-md-6 col-lg-3"><a href="@Url.Action("Users", "CompanyAdmin", null, Request.Url.Scheme)"><span class="glyphicon glyphicon-user"></span> Company Users</a></div>
+        <div class="col-sm-12 col-md-6 col-lg-3"><a href="@Url.Action("CompanyGroups", "CompanyAdmin", null, Request.Url.Scheme)"><span class="glyphicon glyphicon-list"></span> Company Groups</a></div>
+        <div class="col-sm-12 col-md-6 col-lg-3"><a href="@Url.Action("CompanyToken", "CompanyAdmin", null, Request.Url.Scheme)" data-xhr-method="post" data-xhr-confirm="Are you sure? The old token and key will no longer be valid."><span class="glyphicon glyphicon-certificate"></span> New Token</a></div>
+    </div>        
+</div>
+@section modals {
+
+}

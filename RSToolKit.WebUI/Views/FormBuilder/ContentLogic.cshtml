@@ -1,0 +1,84 @@
+﻿@using RSToolKit.Domain.Entities;
+@model RSToolKit.Domain.Entities.LogicBlock
+@{
+    Layout = "~/Views/Shared/_Layout_FormBuilder.cshtml";
+}
+@section scripts
+{
+    @Scripts.Render("~/toolkit/scripts/sort")
+    <script type="text/javascript">
+        var formId = "@Model.UId";
+    </script>
+}
+@section styles
+{
+}
+@section title {
+    Edit Content Logic
+}
+@section breadcrumbs {
+@Html.ActionLink("Forms", "Index", "FormBuilder")
+<span class="glyphicon glyphicon-chevron-right glyphicon-small"></span> @Html.ActionLink((Model.Form.Name.Length < 20 ? Model.Form.Name : Model.Form.Name.Substring(0, 20)), "Form", "FormBuilder", new { id = Model.Form.UId }, null)
+<span class="glyphicon glyphicon-chevron-right glyphicon-small"></span> @Html.ActionLink("Content Logics", "ContentLogics", new { id = Model.FormKey })
+<span class="glyphicon glyphicon-chevron-right glyphicon-small"></span> @Model.Name
+}
+@section modals
+{
+}
+@using (Html.BeginForm("ContentLogic", "FormBuilder", FormMethod.Post, new { @class = "form-horizontal", data_xhr_method = "put" }))
+{
+    @Html.HiddenFor(m => m.UId)
+    @Html.AntiForgeryToken()
+    <div class="row">
+        <div class="col-xs-10">
+            <div class="add-padding-bottom-5 text-medium text-color-2">
+                Information
+            </div>
+            <div class="form-group add-padding-vertical-5 color-grey-2">
+                <label class="col-xxs-12 col-sm-2 col-md-2 col-lg-2 control-label">Name:</label>
+                <div class="col-xxs-12 col-sm-6 col-md-4 col-lg-4">
+                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-10">
+            <div class="add-margin-top-10 add-padding-vertical-5 text-medium text-color-2">
+                Logic Sets
+            </div>
+            <div class="form-group add-padding-vertical-5 color-grey-2 text-small" style="padding-left: 10px;">
+                @if (Model.Logics.Count > 0)
+                {
+                    <a href="@Url.Action("Logic", "FormBuilder", null, Request.Url.Scheme)" data-xhr-method="post" data-xhr-options='{ "id": "@Model.UId" }'><span class="glyphicon glyphicon-plus"></span> New Logic</a>
+                }
+                else
+                {
+                    <a href="@Url.Action("JLogic", "FormBuilder", null, Request.Url.Scheme)" data-xhr-method="post" data-xhr-options='{ "id": "@Model.UId","onLoad":"true"}'><span class="glyphicon glyphicon-plus"></span> New Logic</a>
+                }
+            </div>
+            <ol class="logic-list">
+                @if (Model.Logics.Count > 0)
+                {
+                    for (var i = 0; i < Model.Logics.Count; i++)
+                    {
+                        <li data-id="@Model.Logics[i].UId.ToString()">@Html.Hidden("Logics[" + i + "].Order", Model.Logics[i].Order)@Html.Hidden("Logics[" + i + "].UId", Model.Logics[i].UId.ToString())@Model.Logics[i].Name <a href="@Url.Action("Logic", "FormBuilder", new { id = Model.Logics[i].UId })"><span class="glyphicon glyphicon-edit"></span> Edit</a> <a href="@Url.Action("Logic", "FormBuilder", null, Request.Url.Scheme)" data-xhr-method="delete" data-xhr-options='{"id":"@Model.Logics[i].UId"}' data-xhr-oncomplete="refresh"><span class="glyphicon glyphicon-trash"></span> Delete</a></li>
+                    }
+                }
+                else
+                {
+                    for (var i = 0; i < Model.JLogics.Count; i++)
+                    {
+                        <li data-id="@Model.JLogics[i].Id.ToString()">@Html.Hidden("Logics[" + i + "].Order", Model.JLogics[i].Order)@Html.Hidden("Logics[" + i + "].UId", Model.JLogics[i].Id)@Model.JLogics[i].Name <a href="@Url.Action("JLogic", "FormBuilder", new { id = Model.UId, lid = Model.JLogics[i].Id })"><span class="glyphicon glyphicon-edit"></span> Edit</a> <a href="@Url.Action("JLogic", "FormBuilder", null, Request.Url.Scheme)" data-xhr-method="delete" data-xhr-options='{"id":"@Model.UId.ToString()","lid":"@Model.JLogics[i].Id"}' data-xhr-oncomplete="refresh"><span class="glyphicon glyphicon-trash"></span> Delete</a></li>
+                    }
+                }
+            </ol>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xxs-2 col-sm-offset-1">
+            <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+    </div>
+}

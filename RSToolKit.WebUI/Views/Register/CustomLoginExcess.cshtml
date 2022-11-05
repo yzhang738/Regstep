@@ -1,0 +1,49 @@
+﻿@model RegistrationHtml
+@{
+    ViewBag.Title = Model.Form.Name;
+    ViewBag.WrapperClass = "form-live";
+    Layout = "~/Views/Shared/_Layout_Registration.cshtml";
+}
+
+@section pageNumber
+{
+    Registration Edits Closed
+}
+@section shoppingCart
+{
+}
+@section header
+{
+    @Model.RenderHeader()
+}
+@section footer
+{
+    @Model.RenderFooter()
+}
+@section customStyles
+{
+    @Model.RenderFormStyle()
+}
+@section scripts
+{
+    <script src="~/Scripts/Bootstrap/Plugins/processing.js"></script>
+    <script src="~/Scripts/Tool/restful.js"></script>
+}
+@Html.AntiForgeryToken()
+<div class="row form-panel">
+    <div class="col-xs-12">
+        <div class="row">
+            <div class="col-xs-12">
+                <h2>
+                    There where too many matches in the contact list.
+                </h2>
+                <p>
+                    You could not be validated because you matched multiple people in the companies contact list. Please contact the coordinator.
+                </p>
+                @Model.Form.CoordinatorName
+                <br />@Model.Form.CoordinatorPhone
+                <br /><a href="mailto:@Model.Form.CoordinatorEmail" target="_blank">@Model.Form.CoordinatorEmail</a> 
+            </div>
+        </div>
+    </div>
+</div>

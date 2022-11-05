@@ -1,0 +1,273 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout_Help_Cloud.cshtml";
+}
+@section scripts {
+    <script>
+        $(function () {
+            $("#popover-refund-balance").popover({
+                html: true,
+                placement: 'top',
+                trigger: 'focus',
+                title: 'Refund Balance',
+                content: function () {
+                    return $('#popover-refund-balance-content').html();
+                }
+            });
+            $("#popover-refund-partial").popover({
+                html: true,
+                placement: 'top',
+                trigger: 'focus',
+                title: 'Partial Refund',
+                content: function () {
+                    return $('#popover-refund-partial-content').html();
+                }
+            });
+            $("#popover-original").popover({
+                html: true,
+                placement: 'top',
+                trigger: 'focus',
+                title: 'Original Transaction',
+                content: function () {
+                    return $('#popover-original-content').html();
+                }
+            });
+            $("#popover-balance").popover({
+                html: true,
+                placement: 'top',
+                trigger: 'focus',
+                title: 'Transaction Balance',
+                content: function () {
+                    return $('#popover-balance-content').html();
+                }
+            });
+        });
+    </script>
+}
+@section modals
+{
+    <div class="modal fade" id="partialRefund" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3 class="modal-title">Partial Refund</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <span id="ammountToRefundError"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="control-label col-sm-3">Amount</label>
+                    <div class="col-sm-9">
+                        <input class="form-control input-sm" type="text" id="ammountToRefund" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#partialRefund">Cancel</button>
+                <button type="button" class="btn btn-default" id="refund">Refund</button>
+            </div>
+        </div>
+    </div>  
+}
+
+<div class="add-padding-vertical-5 add-border-bottom">
+    <div class="help-breadcrumb">
+        <a href="~/Help/Cloud">Cloud</a> <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span>
+        <a href="~/Help/CloudFormReports">Registration Report List</a> <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span>
+        <a href="~/Help/CloudFormReport">View Registration Report</a> <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span>
+        <a href="~/Help/CloudRegistrant">Manage Registration</a> <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span>
+        Manage Transaction
+    </div>
+</div>
+
+<div class="add-padding-top help-text">
+    <h2 class="add-padding-bottom-5">
+        Manage Transaction
+    </h2>
+    <p>
+        When a registrant pays via their credit card, that creates a credit card request. For each request, you can process multiple refunds up to the amount of the original refund. You cannot process and additional payment on this request. You have to start a new request from the <b>Manage Registration</b> view.
+    </p>
+    <p>
+        For more information on billing and transaction management, <a class="text-color-2" href="~/Help/Billing" target="_blank">click here</a>.
+    </p>
+    <p>
+        Click <span class="glyphicon glyphicon-info-sign text-color-1"></span> below for more details.
+    </p>
+</div>
+
+<div class="add-padding-vertical-2em">
+    <div class="screen-shot">
+        <div class="screen-shot-text screen-shot-header">
+            User Interface
+        </div>
+        <div class="screen-shot-body">
+            <!--UI Markup-->
+            <div class="container-fluid color-white add-padding-vertical">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <!--Page Title-->
+                        <div class="row add-padding-bottom" id="page-title">
+                            <div class="col-sm-6">
+                                <h2 class="text-color-1">
+                                    Doe, John - Transaction Balance: $45.00
+                                </h2>
+                            </div>
+                            <div class="col-sm-6 text-align-right">
+                                <div class="btn-group btn-group-help">
+                                    <button type="button" class="btn btn-default btn-help dropdown-toggle" data-toggle="dropdown">
+                                        Help & Training <span class="caret"></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!--End Page Title-->
+                        <!--Breadcrumb-->
+                        <div id="breadcrumb" class="row add-padding-vertical-5 add-border-vertical border-color-grey-2">
+                            <div class="col-xs-12">
+                                <a>Cloud Dashboard</a> <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span>
+                                <a>Registration Reports</a> <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span>
+                                <a>Annual Conference</a> <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span>
+                                <a>Doe, John</a> <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span>
+                                Manage Transaction
+                            </div>
+                        </div>
+                        <!--End Breadcrumb-->
+                        <!--Work Area-->
+                        <div class="row add-padding-vertical">                            
+                            <div class="col-xs-12">
+                                <div class="add-padding-bottom-5 text-medium text-color-2">
+                                    Options
+                                </div>
+                                <div class="row add-padding-vertical-5 color-grey-2">
+                                    <div class="col-sm-6 col-md-4 col-lg-3">
+                                        <div class="add-padding-vertical-5">
+                                            <a>
+                                                <span class="glyphicon glyphicon-usd"></span> Refund Balance <a tabindex="0" id="popover-refund-balance" class="help-info help-info-rsred"><span class="glyphicon glyphicon-info-sign"></span></a>
+                                            </a>
+                                        </div>
+                                        <div id="popover-refund-balance-content" style="display: none;">
+                                            Click this link to refund the full remaining balance on the transaction.
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-4 col-lg-3">
+                                        <div class="add-padding-vertical-5">
+                                            <a>
+                                                <span class="glyphicon glyphicon-usd"></span> Partial Refund <a tabindex="0" id="popover-refund-partial" class="help-info help-info-rsred"><span class="glyphicon glyphicon-info-sign"></span></a>
+                                            </a>
+                                        </div>
+                                        <div id="popover-refund-partial-content" style="display: none;">
+                                            Click this link to enter an amount to refund up to the remaining balance.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-5 col-lg-4 add-padding-bottom text-small">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th class="registrant-header" colspan="2">
+                                                        Original Transaction <a tabindex="0" id="popover-original" class="help-info help-info-rsred"><span class="glyphicon glyphicon-info-sign"></span></a>
+                                                        <div id="popover-original-content" style="display: none;">
+                                                            This section shows the original transaction details.
+                                                        </div>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Date:</td>
+                                                    <td>8/31/2014 8:36:15 PM -05:00</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Amount:</td>
+                                                    <td>$100</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Transaction Type:</td>
+                                                    <td>Authorize and Capture</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Transaction Id:</td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Last Four:</td>
+                                                    <td>0489</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div class="col-md-7 col-lg-8 text-small">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th class="registrant-header" colspan="4">
+                                                        Transaction Balance <a tabindex="0" id="popover-balance" class="help-info help-info-rsred"><span class="glyphicon glyphicon-info-sign"></span></a>
+                                                        <div id="popover-balance-content" style="display: none;">
+                                                            This section shows transaction history - original charge and credits (refunds). 
+                                                        </div>
+                                                    </th>
+                                                </tr>
+                                                <tr>
+                                                    <th>Date</th>
+                                                    <th>Type</th>
+                                                    <th>Status</th>
+                                                    <th style="text-align: right;">Amount</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>8/31/2014 8:36:15 PM -05:00</td>
+                                                    <td>Authorize and Capture</td>
+                                                    <td>Completed</td>
+                                                    <td style="text-align: right;">
+                                                        $100
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>9/2/2014 12:19:14 AM -05:00</td>
+                                                    <td>Credit</td>
+                                                    <td>Completed</td>
+                                                    <td style="text-align: right;">
+                                                        <span>-</span>
+                                                        $55
+                                                    </td>
+                                                </tr>                                                
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <td colspan="3"><span class="text-bold">Balance:</span></td>
+                                                    <td style="text-align: right;"><span class="text-bold">$45</span></td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--End Work Area-->
+                    </div>
+                </div>
+            </div>
+            <!--End UI Markup-->
+        </div>
+        <div class="screen-shot-text screen-shot-footer">
+            Click on <span class="glyphicon glyphicon-info-sign"></span> to read more about each section and function.
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+

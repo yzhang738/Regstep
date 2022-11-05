@@ -1,0 +1,104 @@
+﻿@using RSToolKit.WebUI.Infrastructure;
+@using RSToolKit.Domain;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout_FormBuilder.cshtml";
+}
+@section scripts
+{
+    <script src="~/Scripts/Bootstrap/Plugins/Tree/Tree.js"></script>
+    <script type="text/javascript">
+        $('#tree').tree();
+        $('#b_create_newSurvey').on('click', function (e) {
+            $(this).closest('.modal').modal('hide');
+            processing.showPleaseWait();
+            var xhr = new XMLHttpRequest();
+            xhr.open("post", "FormBuilder/Survey", true);
+            xhr.onerror = RESTFUL.xhrError;
+            xhr.onload = function (response) {
+                var c_xhr = event.currentTarget;
+                // Check if the request was successful.
+                if (event.currentTarget.status == 200) {
+                    // Request successful.
+                    // Parse the response as a json.
+                    var result = JSON.parse(c_xhr.responseText);
+                    if (result.Success) {
+                        window.location.href = result.Location;
+                    } else {
+                        RESTFUL.showError(result.Message, "Error");
+                    }
+                }
+            }
+            var data = {};
+            data.formKey = $('#surveyAttachTo').val();
+            RESTFUL.jsonHeader(xhr);
+            AddJsonAntiForgeryToken(data);
+            xhr.send(JSON.stringify(data));
+        });
+    </script>
+}
+@section styles
+{
+}
+@section title {
+    RS Form Builder
+}
+@section breadcrumbs {
+    Forms
+}
+@Html.AntiForgeryToken()
+<div class="col-xs-12">
+    <div class="add-padding-bottom-5 text-medium text-color-2">
+        Forms
+    </div>        
+    <div class="row add-padding-vertical-5 color-grey-2">
+        <div class="col-xxs-12 col-xs-12">
+            <div class="add-padding-vertical-5 col-sm-6">
+                <a href="@Url.Action("Form", "FormBuilder")" data-xhr-method="post">
+                    <span class="glyphicon glyphicon-plus"></span>
+                    New Form
+                </a>
+            </div>
+            <div class="add-padding-vertical-5 col-sm-6">
+                <a href="#" data-toggle="modal" data-target="#m_newSurvey">
+                    <span class="glyphicon glyphicon-plus"></span>
+                    New Survey
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="form-list">
+        @Html.FolderSelect(types: new string[] { "Form" }, id: "tree")
+    </div>
+</div>
+@section modals {
+<div class="modal fade" id="m_newSurvey">
+    <div class="modal-dialog">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 class="modal-title">New Survey</h3>
+        </div>
+        <div class="modal-body">
+            <div class="container-fluid">
+                <div class="row">
+                    <label class="control-label col-sm-6">Attached to Form:</label>
+                </div>
+                <div class="col-sm-6">
+                    <select id="surveyAttachTo">
+                        <option value="">None</option>
+                        @foreach (var form in ViewBag.Forms as IEnumerable<Form>)
+                        {
+                            <option value="@form.UId">@form.Name.GetElipse(25)</option>
+                        }
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            <button type="button" id="b_create_newSurvey" class="btn btn-default" data-dismiss="modal">Create</button>
+        </div>
+    </div>
+</div>
+}

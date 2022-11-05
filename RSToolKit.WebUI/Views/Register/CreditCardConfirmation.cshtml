@@ -1,0 +1,69 @@
+﻿@model ChargeConfirmationModel
+@{
+    var RegHtml = (RegistrationHtml)ViewBag.RegHtml;
+    ViewBag.WrapperClass = "form-live";
+    Layout = "~/Views/Shared/_Layout_Registration.cshtml";
+}
+@section pageNumber
+{
+    Credit Card Confirmation
+}
+@section shoppingCart
+{
+}
+@section header
+{
+    @RegHtml.RenderHeader()
+}
+@section footer
+{
+    @RegHtml.RenderFooter()
+}
+@section customStyles
+{
+    @RegHtml.RenderFormStyle()
+}
+@section errorMessage{
+}
+<link href="~/Content/Registration/TransactionPrint.min.css" rel="stylesheet" />
+
+<form action="~/Register/ChargeConfirmation" method="post">
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.Id)
+    @Html.HiddenFor(m => m.TrId)
+    
+
+    <div class="row form-panel">
+        <div class="col-xs-12">
+            <div class="row">
+                <div class="col-xs-12 form-component">
+                    <p>
+                        Your transaction completed successfully.
+                    </p>
+                    <p>
+                        If you are not the cardholder or if you need to send a copy of your receipt to your accounting department, please enter the email of the person to copy below.
+                    </p>
+                    <p>
+                        You  must click "Complete Registration" below to complete your record.
+                    </p>
+                </div> 
+                <div class="col-sm-6 col-md-4 col-lg-3 form-component print print-panel">
+                    <div class="form-component-row">
+                        <label class="control-label"><span class="form-component-label">Copy email to:</span></label>
+                    </div>
+                    <input name="Email" type="text" class="input-sm form-control form-component-input"/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row form-btn-panel">
+        <div class="col-xs-12">
+            <div class="row">
+                <div class="col-sm-6 col-md-4 col-lg-3 form-btn">
+                    <a href="javascript:{}" class="btn-rs btn-navigation" onclick="$('form').submit();">Complete Registration</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

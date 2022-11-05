@@ -1,0 +1,236 @@
+﻿@using RSToolKit.WebUI.Models.Views.Register;
+@model ChargeView
+@{
+    Layout = "~/Views/Shared/_L_AdminRegister.cshtml";
+}
+@section pageNumber
+{
+    Checkout - Credit Card
+}
+@section shoppingCart
+{
+}
+@section header
+{
+    @Model.Header
+}
+@section footer
+{
+    @Model.Footer
+}
+@section styles
+{
+    @Model.Styles
+}
+<div style="position: fixed; top: 0; left: 0; width: 100%; background-color: rgba(0, 0, 0, .5); color: #fc3333; font-size: 14pt;" class="text-center">Admin Registration</div>
+<form action="~/AdminRegister/Charge" id="registerForm" method="post" role="form">
+    @Model.HiddenInputs
+    <div class="row form-panel">
+        <div class="col-xs-12 form-component">
+            <h2 style="padding-bottom: 5px;">
+                Pay by Credit Card
+                <script type="text/javascript" src="https://sealserver.trustwave.com/seal.js?style=invert&size=65x36&code=18c9fdb17a7f4b248d1ca768e0fe93d6"></script>
+            </h2>
+            <p>
+                Please complete the information below and click Process Payment.
+            </p>
+            <p>
+                All fields are required.
+            </p>
+            <div class="form-component-error" style="display:none;" id="Error"><span class="glyphicon glyphicon-warning-sign"></span><span class="error"></span></div>
+            <div class="row form-panel-row">
+                <div class="col-sm-6 col-md-4 col-lg-3 form-component">
+                    <div class="form-component-error" style="display:none;" id="NameOnCardError"><span class="glyphicon glyphicon-warning-sign"></span><span class="error"></span></div>
+                    <div class="form-component-row">
+                        <label class="control-label"><span class="form-component-label">Name on Card</span></label>
+                    </div>
+                    <input type="text" data-form-required="true" class="form-control input-sm form-text-input" name="NameOnCard" value="@Model.NameOnCard" />
+                </div>
+
+                <div class="col-sm-6 col-md-4 col-lg-3 form-component">
+                    <div class="form-component-error" style="display:none;" id="CardNumberError"><span class="glyphicon glyphicon-warning-sign"></span><span class="error"></span></div>
+                    <div class="form-component-row">
+                        <label class="control-label"><span class="form-component-label">Credit Card Number</span></label>
+                    </div>
+                    <input type="text" name="CardNumber" data-form-required="true" class="form-control input-sm form-text-input" value="@Model.CardNumber" />
+                </div>
+
+                @if (Model.FullInputs)
+                {
+                    <div class="col-sm-6 col-md-4 col-lg-3 form-component">
+                        <div class="form-component-error" style="display:none;" id="CardTypeError"><span class="glyphicon glyphicon-warning-sign"></span><span class="error"></span></div>
+                        <div class="form-component-row">
+                            <label class="control-label"><span class="form-component-label">Credit Card Type</span></label>
+                        </div>
+                        <select class="form-control input-sm" data-form-required="true" name="CardType">
+                            <option value="visa" @(Model.CardType == "visa" ? " selected='selected'" : "")>Visa</option>
+                            <option value="mastercard" @(Model.CardType == "mastercard" ? " selected='selected'" : "")>Master Card</option>
+                            <option value="discover" @(Model.CardType == "discover" ? " selected='selected'" : "")>Discover</option>
+                            <option value="amex" @(Model.CardType == "amex" ? " selected='selected'" : "")>American Express</option>
+                        </select>
+                    </div>
+                }
+            </div>
+
+            <div class="row form-panel-row">
+                <div class="col-sm-6 col-md-4 col-lg-3 form-component">
+                    <div class="form-component-error" style="display:none;" id="ExpError"><span class="glyphicon glyphicon-warning-sign"></span><span class="error"></span></div>
+                    <div class="form-component-row">
+                        <label class="control-label"><span class="form-component-label">Expiration Date</span></label>
+                    </div>
+                    <select class="form-control input-sm form-select" name="ExpMonth">
+                        <option value="01" @(Model.ExpMonth == "01" ? " selected=true" : "")>1 (January)</option>
+                        <option value="02" @(Model.ExpMonth == "02" ? " selected=true" : "")>2 (February)</option>
+                        <option value="03" @(Model.ExpMonth == "03" ? " selected=true" : "")>3 (March)</option>
+                        <option value="04" @(Model.ExpMonth == "04" ? " selected=true" : "")>4 (April)</option>
+                        <option value="05" @(Model.ExpMonth == "05" ? " selected=true" : "")>5 (May)</option>
+                        <option value="06" @(Model.ExpMonth == "06" ? " selected=true" : "")>6 (June)</option>
+                        <option value="07" @(Model.ExpMonth == "07" ? " selected=true" : "")>7 (July)</option>
+                        <option value="08" @(Model.ExpMonth == "08" ? " selected=true" : "")>8 (August)</option>
+                        <option value="09" @(Model.ExpMonth == "09" ? " selected=true" : "")>9 (September)</option>
+                        <option value="10" @(Model.ExpMonth == "10" ? " selected=true" : "")>10 (October)</option>
+                        <option value="11" @(Model.ExpMonth == "11" ? " selected=true" : "")>11 (November)</option>
+                        <option value="12" @(Model.ExpMonth == "12" ? " selected=true" : "")>12 (December)</option>
+                    </select>
+                    <select class="form-control input-sm form-select" name="ExpYear">
+                        @for (var i = DateTime.Now.Year; i < DateTime.Now.Year + 15; i++)
+                        {
+                            var twoDigit = i % 100;
+                            <option value="@twoDigit" @(Model.ExpYear == twoDigit.ToString() ? " selected=true" : "")>@twoDigit</option>
+                        }
+                    </select>
+                </div><div class="col-sm-6 col-md-4 col-lg-3 form-component">
+                    <div class="form-component-error" style="display:none;" id="CardCodeError"><span class="glyphicon glyphicon-warning-sign"></span><span class="error"></span></div>
+                    <div class="form-component-row">
+                        <label class="control-label"><span class="form-component-label">CVV Code</span> <span style="font-size: 12px"><a class="modal-link" data-toggle="modal" data-target="#cvv">(What's this?)</a></span></label>
+                    </div>
+                    <input type="text" name="CardCode" data-form-required="true" class="form-control input-sm form-text-input" value="@Model.CardCode" />
+                </div>
+
+
+
+            </div>
+            @if (Model.FullInputs)
+            {
+                // This is for paypal only.
+                <div class="row form-panel-row">
+                    <div class="col-sm-12 col-md-8 col-lg-6 form-component">
+                        <div class="form-component-error" style="display:none;" id="Line1Error"><span class="glyphicon glyphicon-warning-sign"></span><span class="error"></span></div>
+                        <div class="form-component-row">
+                            <label class="control-label"><span class="form-component-label">Address Line 1</span></label>
+                        </div>
+                        <input type="text" name="Line1" data-form-required="true" class="form-control input-sm form-text-input" value="@Model.Line1" />
+                    </div>
+                </div>
+                <div class="row form-panel-row">
+                    <div class="col-sm-12 col-md-8 col-lg-6 form-component">
+                        <div class="form-component-error" style="display:none;" id="Line2Error"><span class="glyphicon glyphicon-warning-sign"></span><span class="error"></span></div>
+                        <div class="form-component-row">
+                            <label class="control-label"><span class="form-component-label">Address Line 2</span></label>
+                        </div>
+                        <input type="text" name="Line2" data-form-required="true" class="form-control input-sm form-text-input" value="@Model.Line2" />
+                    </div>
+                </div>
+                <div class="row form-panel-row">
+                    <div class="col-sm-6 col-md-4 col-lg-3 form-component">
+                        <div class="form-component-error" style="display:none;" id="CityError"><span class="glyphicon glyphicon-warning-sign"></span><span class="error"></span></div>
+                        <div class="form-component-row">
+                            <label class="control-label"><span class="form-component-label">City</span></label>
+                        </div>
+                        <input type="text" name="City" data-form-required="true" class="form-control input-sm form-text-input" value="@Model.City" />
+                    </div>
+                    <div class="col-sm-6 col-md-4 col-lg-3 form-component">
+                        <div class="form-component-error" style="display:none;" id="StateError"><span class="glyphicon glyphicon-warning-sign"></span><span class="error"></span></div>
+                        <div class="form-component-row">
+                            <label class="control-label"><span class="form-component-label">State/Province</span></label>
+                        </div>
+                        <input type="text" name="State" data-form-required="true" class="form-control input-sm form-text-input" value="@Model.State" />
+                    </div>
+
+                </div>
+                <div class="row form-panel-row">
+                    <div class="col-sm-6 col-md-4 col-lg-3 form-component">
+                        <div class="form-component-error" style="display:none;" id="ZipCodeError"><span class="glyphicon glyphicon-warning-sign"></span><span class="error"></span></div>
+                        <div class="form-component-row">
+                            <label class="control-label"><span class="form-component-label">Billing Zip / Postal Code</span></label>
+                        </div>
+                        <input type="text" name="ZipCode" data-form-required="true" class="form-control input-sm form-text-input" value="@Model.ZipCode" />
+                    </div>
+                    <div class="col-sm-6 col-md-4 col-lg-3 form-component">
+                        <div class="form-component-error" style="display:none;" id="CountryError"><span class="glyphicon glyphicon-warning-sign"></span><span class="error"></span></div>
+                        <div class="form-component-row">
+                            <label class="control-label"><span class="form-component-label">Country</span></label>
+                        </div>
+                        <select name="Country" class="form-control input-sm form-select">
+                            <optgroup label="Common">
+                                <option value="US" @(Model.Country == "US" ? "selected=true" : "")>USA</option>
+                            </optgroup>
+                            <optgroup label="All">
+                                @for (var ci = 0; ci < Countries.Names.Length; ci++)
+                                {
+                                    <option value="@Countries.Abbreviations[ci]" @(Model.Country == Countries.Abbreviations[ci] ? "selected=\"true\"" : "")>@Countries.Names[ci]</option>;
+                                }
+                            </optgroup>
+                        </select>
+
+                    </div>
+
+                </div>
+                <div class="row form-panel-row">
+                    <div class="col-sm-6 col-md-4 col-lg-3 form-component">
+                        <div class="form-component-error" style="display:none;" id="PhoneError"><span class="glyphicon glyphicon-warning-sign"></span><span class="error"></span></div>
+                        <div class="form-component-row">
+                            <label class="control-label"><span class="form-component-label">Phone</span></label>
+                        </div>
+                        <input type="text" name="Phone" data-form-required="true" class="form-control input-sm form-text-input" value="@Model.Phone" />
+                    </div>
+
+                </div>
+            }
+            else
+            {
+                <div class="row form-panel-row">
+                    <div class="col-sm-6 col-md-4 col-lg-3 form-component">
+                        <div class="form-component-error" style="display:none;" id="ZipCodeError"><span class="glyphicon glyphicon-warning-sign"></span><span class="error"></span></div>
+                        <div class="form-component-row">
+                            <label class="control-label"><span class="form-component-label">Billing Zip / Postal Code</span></label>
+                        </div>
+                        <input type="text" name="ZipCode" data-form-required="true" class="form-control input-sm form-text-input" value="@Model.ZipCode" />
+                    </div>
+                </div>
+
+            }
+
+        </div>
+    </div>
+
+    <div class="row form-btn-panel">
+        <div class="col-xs-12">
+            <div class="row">
+                <div class="col-sm-6 col-md-4 col-lg-3 form-btn">
+                    <a href="javascript:{}" onclick="$('#registerForm').submit();" class="btn-rs btn-navigation">Process Payment</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>
+
+<!--cvv-->
+<div class="modal fade" id="cvv" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <img style="display: block; width: 100%; max-width: 400px;" src="https://toolkit.regstep.com/images/form/cvv.jpg" alt="CVV directions" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--End CVV-->

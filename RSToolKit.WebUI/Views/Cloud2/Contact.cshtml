@@ -1,0 +1,184 @@
+﻿@using System.Collections;
+@using RSToolKit.Domain.Entities;
+@using RSToolKit.Domain;
+@model Contact
+@{
+    Layout = "~/Views/Shared/_Layout_Cloud.cshtml";
+    var Repository = (FormsRepository)ViewBag.Repository;
+    var CompanyKey = (Guid)ViewBag.Company;
+    var Headers = Repository.Search<ContactHeader>(h => h.CompanyKey == CompanyKey).ToList();
+    var distinctList = Headers.Where(h => h.SavedListKey.HasValue).Distinct().ToList();
+    var itemIndex = -1;
+    var emailIndex = -1;
+}
+@section scripts
+{
+}
+@section styles
+{
+}
+@section title
+{
+    @Model.Email
+}
+@section breadcrumbs {
+@Html.Raw(((User)ViewBag.User).BreadCrumbs.GetBreadTrail(Url))
+}
+@section modals
+{
+}
+@using (Html.BeginForm("Contact", "Cloud", FormMethod.Post, new { @class = "form form-horizontal", role = "form", data_xhr_method = "put", data_xhr_oncomplete = "refresh" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.UId)
+    <div class="col-xs-12">
+        <div class="row add-padding-top">
+            <div class="col-xs-12">
+                <button class="btn btn-default" type="submit">Update</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 col-md-6 col-lg-6 add-padding-vertical-5">
+                <div class="form-group">
+                    <div class="col-sm-12 add-padding-vertical-5 text-center text-bold text-large">
+                        Data
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-group">
+                        <div class="panel-group add-padding-horizontal" id="col_contactData">
+                            <div class="panel panel-default color-grey-2">
+                                <div class="panel-heading">
+                                    <div class="panel-title">
+                                        <a href="#col_item_general" style="width: 100%" data-toggle="collapse" data-parent="#col_contactData">General Headers</a>
+                                    </div>
+                                </div>
+                                <div id="col_item_general" class="panel-collapse collapse in">
+                                    <div class="panel-body">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4">Email:</label>
+                                            <div class="col-md-8">
+                                                @Html.TextBoxFor(m => m.Email, new { @class = "form-control input-sm" })
+                                            </div>
+                                        </div>
+                                        @foreach (var header in Headers.Where(h => !h.SavedListKey.HasValue).OrderBy(h => h.Name).ToList())
+                                        {
+                                            itemIndex++;
+                                            var data = Model.Data.Where(d => d.HeaderKey == header.UId).FirstOrDefault();
+                                            var value = "";
+                                            if (data != null)
+                                            {
+                                                value = data.Value;
+                                            }
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">@header.Name</label>
+                                                <div class="col-md-8">
+                                                    @Html.Hidden("Data[" + itemIndex + "].Key", header.UId)
+                                                    @Html.TextBox("Data[" + itemIndex + "].Value", value, new { @class = "form-control input-sm" })
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            @foreach (var type in distinctList)
+                            {
+                                <div class="panel panel-default color-grey-2">
+                                    <div class="panel-heading">
+                                        <div class="panel-title">
+                                            <a href="#col_item_@type.UId.ToString()" style="width: 100%" data-toggle="collapse" data-parent="#col_contactData">@type.SavedList.Name</a>
+                                        </div>
+                                    </div>
+                                    <div id="col_item_general" class="panel-collapse collapse">
+                                        <div class="panel-body">
+                                            @foreach (var header in Headers.Where(h => h.SavedListKey.HasValue && h.SavedListKey.Value == type.UId).OrderBy(h => h.Name).ToList())
+                                            {
+                                                itemIndex++;
+                                                var data = Model.Data.Where(d => d.HeaderKey == header.UId).FirstOrDefault();
+                                                var value = "";
+                                                if (data != null)
+                                                {
+                                                    value = data.Value;
+                                                }
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">@header.Name</label>
+                                                    <div class="col-md-8">
+                                                        @Html.Hidden("Data[" + itemIndex + "].Key", header.UId)
+                                                        @Html.TextBox("Data[" + itemIndex + "].Value", value, new { @class = "form-control input-sm" })
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-6 add-padding-vertical-5">
+                <div class="form-group">
+                    <div class="col-sm-12 add-padding-vertical-5 text-center text-bold text-large">
+                        Emails
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="panel-group add-padding-horizontal" id="col_emailData">
+                        @foreach (var emailSend in Model.EmailSends.OrderByDescending(e => e.DateSent))
+                        {
+                            emailIndex++;
+                            IEmail email = null;
+                            if (emailSend.EmailKey.HasValue)
+                            {
+                                email = Repository.Search<IEmail>(e => e.UId == emailSend.EmailKey.Value).FirstOrDefault();
+                            }
+                        <div class="panel panel-default color-grey-2">
+                            <div class="panel-heading">
+                                <div class="panel-title">
+                                    <a href="#col_item_@emailIndex" style="width: 100%" data-toggle="collapse" data-parent="#col_emailData">@(email != null ? email.Name : emailSend.EmailDescription) : @Html.UserDate(emailSend.DateSent, "rs_s")</a>
+                                    </div>
+                                </div>
+                                <div id="col_item_@emailIndex" class="panel-collapse collapse@(emailIndex == 0 ? " in" : "")">
+                                    <div class="panel-body">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Date</th>
+                                                    <th>Event</th>
+                                                    <th>Note</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var emailEvent in emailSend.EmailEvents.OrderByDescending(e => e.Date))
+                                                {
+                                                    <tr>
+                                                        <td class="text-nowrap">@Html.UserDate(emailEvent.Date, "rs_s")</td>
+                                                        <td class="text-nowrap">@emailEvent.Event</td>
+                                                        <td>
+                                                            @if (emailEvent.Event == "Clicked")
+                                                            {
+                                                                var t_note = JsonConvert.DeserializeObject<RSToolKit.Domain.Entities.Email.ClickEvent>(emailEvent.Notes);
+                                                                @:@t_note.url.GetElipse(75);
+                                                            }
+                                                            else
+                                                            {
+                                                                @:@emailEvent.Notes
+                                                            }
+                                                        </td>
+
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

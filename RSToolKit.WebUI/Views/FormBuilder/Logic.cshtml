@@ -1,0 +1,361 @@
+﻿@using RSToolKit.Domain.Entities;
+@using RSToolKit.Domain;
+@model RSToolKit.Domain.Entities.Logic
+@{
+    Layout = "~/Views/Shared/_Layout_FormBuilder.cshtml";
+}
+@{
+    var cUId = (Guid)ViewBag.Company;
+    var form = (Form)ViewBag.Form;
+    var Thens = Model.Commands.Where(c => c.CommandType == LogicCommandType.Then).ToList();
+    var Elses = Model.Commands.Where(c => c.CommandType == LogicCommandType.Else).ToList();
+    var companyForms = (List<LogicFormModel>)ViewBag.Forms;
+    var jsonForms = "";
+    using (var context = new EFDbContext())
+    {
+        companyForms = context.Forms.Select(f => new LogicFormModel() { UId = f.UId, Name = f.Name, CompanyKey = f.CompanyKey }).Where(f => f.CompanyKey == cUId).OrderBy(f => f.Name).ToList();
+        jsonForms = JsonConvert.SerializeObject(companyForms);
+    }
+    Model.LogicGroups.Sort();
+    Model.LogicGroups.ForEach(l => l.LogicStatements.Sort((a, b) => a.Order - b.Order));
+}
+@section scripts
+{
+
+    @Scripts.Render("~/toolkit/scripts/sort")
+    <script src="~/Scripts/FormBuilder/EditLogic.js"></script>
+    <script type="text/javascript">
+        var formId = "@form.UId";
+        var companyForms = @Html.Raw(JsonConvert.SerializeObject(companyForms));
+    </script>
+}
+@section styles
+{
+<link href="~/Content/Tool/Logic.min.css" rel="stylesheet" />
+}
+@section title {
+    Edit Content Logic
+}
+@section breadcrumbs {
+    @Html.ActionLink("Forms", "Index", "FormBuilder")
+    <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span> @Html.ActionLink((form.Name.Length < 20 ? form.Name : form.Name.Substring(0, 20)), "Form", "FormBuilder", new { id = form.UId }, null)
+    @if (Model.PageKey.HasValue)
+    {
+        <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span> @Html.ActionLink("Edit Page", "Page", new { id = Model.PageKey })
+        <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span> @Html.ActionLink("Logics", "PageLogics", new { id = Model.ComponentKey, pageLoad = Model.Incoming })
+    }
+    else if (Model.PanelKey.HasValue)
+    {
+        <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span> @Html.ActionLink("Edit Page", "Page", new { id = Model.Panel.PageKey })
+        <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span> @Html.ActionLink("Edit Panel", "Panel", new { id = Model.PanelKey })
+        <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span> @Html.ActionLink("Logics", "PanelLogics", new { id = Model.ComponentKey })
+    }
+    else if (Model.ComponentKey.HasValue)
+    {
+        if (Model.Component is IComponentItem)
+        {
+            var item = (IComponentItem)Model.Component;
+            <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span> @Html.ActionLink("Edit Page", "Page", new { id = item.Parent.Panel.PageKey })
+            <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span> @Html.ActionLink("Edit Panel", "Panel", new { id = item.Parent.PanelKey })
+            <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span> @Html.ActionLink("Edit Component", "Component", new { id = item.ParentKey })
+            <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span> @Html.ActionLink("Edit Component", "Component", new { id = Model.ComponentKey })
+        }
+        else
+        {
+            <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span> @Html.ActionLink("Edit Page", "Page", new { id = Model.Component.Panel.PageKey })
+            <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span> @Html.ActionLink("Edit Panel", "Panel", new { id = Model.Component.PanelKey })
+            <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span> @Html.ActionLink("Edit Component", "Component", new { id = Model.ComponentKey })
+        }
+        <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span> @Html.ActionLink("Logics", "ComponentLogics", new { id = Model.ComponentKey })
+    }
+    else if (Model.LogicBlockKey.HasValue)
+    {
+        <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span> @Html.ActionLink("Content Logics", "ContentLogics", new { id = form.UId })
+        <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span> @Html.ActionLink((Model.LogicBlock.Name.Length < 20 ? Model.LogicBlock.Name : Model.LogicBlock.Name.Substring(0, 20)), "ContentLogic", new { id = Model.LogicBlockKey })
+    }
+    <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span> @Model.Name
+}
+@section modals
+{
+
+}
+@using (Html.BeginForm("Logic", "FormBuilder", FormMethod.Post, new { @class = "form", data_xhr_method = "put" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.UId)
+    @Html.HiddenFor(m => m.Incoming)
+    <div class="col-md-4 col-lg-3 add-padding-vertical">
+        <div class="panel-group" id="accordion">
+
+            <!--Options 1-->
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <span class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#logicActions">
+                            Logic Actions <span class="caret"></span>
+                        </a>
+                    </span>
+                </div>
+                <div id="logicActions" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        <div class="add-padding-vertical-5 text-rsred">
+                            <a href="#" id="addGroup"><span class="glyphicon glyphicon-plus"></span> Logic Group</a>
+                        </div>
+                        <div class="add-padding-vertical-5 text-rsred">
+                            <a href="#" id="addThenCommand"><span class="glyphicon glyphicon-plus"></span> Then Command</a>
+                        </div>
+                        <div class="add-padding-vertical-5 text-rsred">
+                            <a href="#" id="addElseCommand"><span class="glyphicon glyphicon-plus"></span> Else Command</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--End Options 1-->
+            <!--Options 2-->
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <span class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#logicGroup">
+                            Logic Group <span class="caret"></span>
+                        </a>
+                    </span>
+                </div>
+                <div id="logicGroup" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <div class="add-padding-vertical-5 text-rsred">
+                            <a href="#" id="deleteGroup"><span class="glyphicon glyphicon-trash"></span> Delete Group</a>
+                        </div>
+                        <div class="add-padding-vertical-5 text-rsred">
+                            <a href="#" id="addStatement"><span class="glyphicon glyphicon-plus"></span>  Statement</a>
+                        </div>
+                        <div>
+                            <div class="add-padding-vertical-5 form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">Link</div>
+                                    <select class="form-control input-sm" id="groupLinkSelect">
+                                        @foreach (LogicLink link in Enum.GetValues(typeof(LogicLink)))
+                                        {
+                                            <option value="@((int)link)">@link.GetStringValue()</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--End Options 2-->
+            <!--Statement-->
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <span class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#logicStatement">
+                            Logic Statement <span class="caret"></span>
+                        </a>
+                    </span>
+                </div>
+                <div id="logicStatement" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <div class="add-padding-vertical-5 text-rsred">
+                            <a href="#" id="deleteStatement"><span class="glyphicon glyphicon-trash"></span> Delete Statement</a>
+                        </div>
+                        <div class="add-padding-vertical-5 form-group">
+                            <div class="input-group">
+                                <div class="input-group-addon">Form</div>
+                                <select class="form-control input-sm" id="formSelect">
+                                    <option value=""></option>
+                                    @using (var context = new EFDbContext())
+                                    {
+                                        foreach (var sForm in companyForms)
+                                        {
+                                            <option value="@sForm.UId">@sForm.Name</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="add-padding-vertical-5 form-group">
+                            <div class="input-group">
+                                <div class="input-group-addon">Variable</div>
+                                <select class="form-control input-sm" id="variableSelect">
+                                    <option value="">Select a Form</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="add-padding-vertical-5 form-group">
+                            <div class="input-group">
+                                <div class="input-group-addon">Test</div>
+                                <select class="form-control input-sm" id="testSelect">
+                                    @foreach (LogicTest test in Enum.GetValues(typeof(LogicTest)))
+                                    {
+                                        <option value="@((int)test)">@test.GetStringValue()</option>
+                                    }
+                                </select>
+
+                            </div>
+                        </div>
+                        <div class="add-padding-vertical-5 form-group">
+                            <div class="input-group">
+                                <div class="input-group-addon">Value</div>
+                                <input type="text" id="value" class="form-control input-sm" />
+                            </div>
+                        </div>
+                        <div class="add-padding-vertical-5 form-group">
+                            <div class="input-group">
+                                <div class="input-group-addon input-sm">Link</div>
+                                <select class="form-control" id="statementLinkSelect">
+                                    @foreach (LogicLink link in Enum.GetValues(typeof(LogicLink)))
+                                    {
+                                        <option value="@((int)link)">@link.GetStringValue()</option>
+                                    }
+                                </select>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--End Statement-->
+            <!--Options 3-->
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <span class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#logicCommand">
+                            Command <span class="caret"></span>
+                        </a>
+                    </span>
+                </div>
+                <div id="logicCommand" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        @if (!Model.LogicBlockKey.HasValue)
+                        {
+                            <div class="add-padding-vertical-5 text-rsred">
+                                <a href="#" id="deleteCommand"><span class="glyphicon glyphicon-trash"></span> Delete Command</a>
+                            </div>
+                        }
+                        <div class="add-padding-vertical-5 form-group">
+                            <div class="input-group">
+                                <div class="input-group-addon">Command</div>
+                                <select class="form-control input-sm" id="commandSelect">
+                                    <option>Select Command</option>
+                                    @if (Model.LogicBlockKey.HasValue)
+                                    {
+                                        <option value="@((int)LogicWork.DisplayText)">Display Text</option>
+                                    }
+                                    else
+                                    {
+                                        foreach (LogicWork work in Enum.GetValues(typeof(LogicWork)))
+                                        {
+                                            if (work != LogicWork.DisplayText && work != LogicWork.SendEmail)
+                                            {
+                                                <option value="@((int)work)">@work.GetStringValue()</option>
+                                            }
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="add-padding-vertical-5 form-group" id="commandParameters">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--End Options 3-->
+        </div>
+    </div>
+    <!--Logic View-->
+    <div class="col-md-8 col-lg-9">
+        <div class="add-padding-bottom-5 text-medium text-color-2">
+            Logic
+        </div>
+        <div class="add-padding-vertical-2em logic-groups">
+            <div class="logic-label">if</div>
+            @for (int i = 0; i < Model.LogicGroups.Count; i++)
+            {
+                <div class="logic-group" id="@Model.LogicGroups[i].UId">
+                    <div class="logic-group-label">Logic Group @(i + 1)</div>
+                    @Html.Hidden("LogicGroups[" + i + "].UId", Model.LogicGroups[i].UId, new { @class = "logic-group-uid" })
+                    @Html.Hidden("LogicGroups[" + i + "].Link", Model.LogicGroups[i].Link, new { @class = "logic-group-link" })
+                    @Html.Hidden("LogicGroups[" + i + "].Order", Model.LogicGroups[i].Order, new { @class = "logic-group-order" })
+                    <div class="logic-statements">
+                        @for (int si = 0; si < Model.LogicGroups[i].LogicStatements.Count; si++)
+                        {
+                            <div class="logic-statement" id="@Model.LogicGroups[i].LogicStatements[si].UId">
+                                <input type="hidden" name="LogicGroups[@i].LogicStatements[@si].UId" value="@Model.LogicGroups[i].LogicStatements[si].UId" class="logic-statement-uid" />
+                                <input type="hidden" name="LogicGroups[@i].LogicStatements[@si].Value" value="@Model.LogicGroups[i].LogicStatements[si].Value" class="logic-statement-value" />
+                                <input type="hidden" name="LogicGroups[@i].LogicStatements[@si].Variable" value="@Model.LogicGroups[i].LogicStatements[si].Variable" class="logic-statement-variable" />
+                                <input type="hidden" name="LogicGroups[@i].LogicStatements[@si].FormKey" value="@Model.LogicGroups[i].LogicStatements[si].FormKey" class="logic-statement-formkey" />
+                                <input type="hidden" name="LogicGroups[@i].LogicStatements[@si].Test" value="@Model.LogicGroups[i].LogicStatements[si].Test" class="logic-statement-test" />
+                                <input type="hidden" name="LogicGroups[@i].logicStatements[@si].Link" value="@Model.LogicGroups[i].LogicStatements[si].Link" class="logic-statement-link" />
+                                <input type="hidden" name="LogicGroups[@i].logicStatements[@si].Order" value="@Model.LogicGroups[i].LogicStatements[si].Order" class="logic-statement-order">
+                                <span class="logic-statement-variable">@Model.LogicGroups[i].LogicStatements[si].VariableName</span>
+                                <span class="logic-statement-test">@Model.LogicGroups[i].LogicStatements[si].Test.GetStringValue()</span>
+                                <span class="logic-statement-value">@Model.LogicGroups[i].LogicStatements[si].ValueName</span>
+                                <span class="logic-statement-link">@(Model.LogicGroups[i].LogicStatements[si].Link.GetStringValue() == "None" ? "" : Model.LogicGroups[i].LogicStatements[si].Link.GetStringValue())</span>
+                            </div>
+                        }
+                    </div>
+                    <span class="logic-group-link">@(Model.LogicGroups[i].Link.GetStringValue() == "None" ? "" : Model.LogicGroups[i].Link.GetStringValue())</span>
+                </div>
+            }
+        </div>
+        <div class="add-padding-vertical-2em logic-commands">
+            <div class="logic-label">Then</div>
+            <div class="logic-commands-then">
+                @{ var ci = 0; }
+                @for (int i = 0; i < Thens.Count; i++)
+                {
+                    <div id="@Thens[i].UId" class="logic-command">
+                        @Html.Hidden("Commands[" + ci + "].UId", Thens[i].UId, new { @class = "logic-command-uid" })
+                        @Html.Hidden("Commands[" + ci + "].Command", (int)Thens[i].Command, new { @class = "logic-command-command" })
+                        @Html.Hidden("Commands[" + ci + "].CommandType", (int)Thens[i].CommandType, new { @class = "logic-command-commandType" })
+                        <span class="logic-command-command">@Thens[i].Command.GetStringValue()</span>
+                        <span class="logic-command-parameters">
+                            @{ var pi = 0; }
+                            @foreach (var p in Thens[i].Parameters)
+                            {
+                                <span class="logic-command-parameter" data-key="@p.Key">
+                                    @Html.Hidden("Commands[" + ci + "].Parameters[" + pi + "].Key", p.Key, new { @class = "logic-command-parameter-key" })
+                                    @Html.Hidden("Commands[" + ci + "].Parameters[" + pi + "].Value", p.Value, new { @class = "logic-command-parameter-value" })
+                                    <span class="logic-command-parameter-view">@(p.Key + ": " + RSHtml.GetFamiliarName(p.Value))</span>
+                                </span>
+                                pi++;
+                            }
+                        </span>
+                    </div>
+                    ci++;
+                }
+            </div>
+            <div class="logic-commands-else">
+                <div class="logic-label">Else</div>
+                @for (int i = 0; i < Elses.Count; i++)
+                {
+                    <div id="@Elses[i].UId" class="logic-command">
+                        @Html.Hidden("Commands[" + ci + "].UId", Elses[i].UId, new { @class = "logic-command-uid" })
+                        @Html.Hidden("Commands[" + ci + "].Command", (int)Elses[i].Command, new { @class = "logic-command-command" })
+                        @Html.Hidden("Commands[" + ci + "].CommandType", (int)Elses[i].CommandType, new { @class = "logic-command-commandType" })
+                        <span class="logic-command-command">@Elses[i].Command.GetStringValue()</span>
+                        <span class="logic-command-parameters">
+                            @{ var pi = 0; }
+                            @foreach (var p in Elses[i].Parameters)
+                            {
+                                <span class="logic-command-parameter" data-key="@p.Key">
+                                    @Html.Hidden("Commands[" + ci + "].Parameters[" + pi + "].Key", p.Key, new { @class = "logic-command-parameter-key" })
+                                    @Html.Hidden("Commands[" + ci + "].Parameters[" + pi + "].Value", p.Value, new { @class = "logic-command-parameter-value" })
+                                    <span class="logic-command-parameter-view">@(p.Key + ": " + RSHtml.GetFamiliarName(p.Value))</span>
+                                </span>
+                                pi++;
+                            }
+                        </span>
+                    </div>
+                    ci++;
+                }
+            </div>
+        </div>
+        <div class="add-padding-vertical">
+            <button type="submit" class="btn btn-default">
+                Save
+            </button>
+        </div>
+    </div>
+}

@@ -1,0 +1,52 @@
+﻿@using RSToolKit.Domain.Entities;
+@model Tag
+@{
+    Layout = "~/Views/Shared/_Layout_FormBuilder.cshtml";
+}
+@section scripts
+{
+    <script type="text/javascript">
+    </script>
+}
+@section styles
+{
+}
+@section title {
+    Edit Tag
+}
+@section breadcrumbs {
+    @Html.ActionLink("Forms", "Index", "FormBuilder")
+    <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span> @Html.ActionLink("Tags", "Tags", "FormBuilder")
+    <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span> @Model.Name
+}
+@section modals
+{
+}
+@using (Html.BeginForm("Tag", "FormBuilder", FormMethod.Post, new { @class = "form", role = "form", data_xhr_method = "put" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.UId)
+
+        <!--Options-->
+        <div class="col-md-6">
+            <div class="add-padding-bottom-5 text-medium text-color-2">
+                Tag Settings
+            </div>
+
+            <!--Options 1-->
+            <div class="add-padding-vertical-5 add-padding-horizontal add-margin-bottom color-grey-2">
+                <div class="add-padding-vertical-5">
+                    <label class="control-label">Display Label:</label>
+                    <input class="form-control input-sm" type="text" id="Description" name="Name" value="@Model.Name" />
+                </div>
+            </div>
+            <!--End Options 1-->
+            <!--Save-->
+            <div class="add-padding-vertical">
+                <button type="submit" class="btn btn-default">
+                    Save
+                </button>
+            </div>
+            <!--End Save-->
+        </div>
+}

@@ -1,0 +1,54 @@
+﻿@model RegistrationHtml
+@{
+    ViewBag.Title = Model.Form.Name;
+    ViewBag.WrapperClass = "form-live";
+    Layout = "~/Views/Shared/_Layout_Registration.cshtml";
+}
+
+@section pageNumber
+{
+    Invalid Survey Email
+}
+@section shoppingCart
+{
+    @Model.RenderShoppingCart()
+}
+@section header
+{
+    @Model.RenderHeader()
+}
+@section footer
+{
+    @Model.RenderFooter()
+}
+@section customStyles
+{
+    @Model.RenderFormStyle()
+}
+@using (Html.BeginForm("Start", "Register", FormMethod.Post, new { id = "form" }))
+{
+    @Model.RenderHiddens()
+    <div class="form-panel row">
+        <div class="col-xs-12">
+            <div class="row form-panel-row">
+                <div class="col-xs-12 form-component form-free-text">
+                    You must use an email that was previoulsy used to register.
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+    //<![CDATA[
+    function get_form(element) {
+        while (element) {
+            element = element.parentNode
+            if (element.tagName.toLowerCase() == "form") {
+                //alert( element ) //debug/test
+                return element
+            }
+        }
+        return 0; //error: no form found in ancestors
+    }
+    //]]>
+    </script>
+}

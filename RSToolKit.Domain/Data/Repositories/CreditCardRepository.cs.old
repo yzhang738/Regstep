@@ -1,0 +1,645 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using RSToolKit.Domain.Entities.MerchantAccount;
+using RSToolKit.Domain.Entities.Clients;
+using System.Data.Entity;
+using System.Linq.Expressions;
+using RSToolKit.Domain.Entities.Clients;
+using System.Security.Principal;
+using RSToolKit.Domain.Entities;
+using RSToolKit.Domain.Security;
+using System.Data.Objects;
+using System.Data.Entity.Infrastructure;
+using RSToolKit.Domain.Exceptions;
+
+namespace RSToolKit.Domain.Data
+{
+    public class CreditCardRepository
+        : IRepository<CreditCard, Guid>, IDisposable
+    {
+        #region Variables and Properties
+
+        protected EFDbContext _context;
+        protected bool _contextInScope;
+        protected ILogger _log;
+
+        /// <summary>
+        /// The context being used for this repository.
+        /// </summary>
+        public EFDbContext Context
+        {
+            get
+            {
+                return this._context;
+            }
+        }
+
+        /// <summary>
+        /// If this context is in scope for this repository.
+        /// </summary>
+        public bool ContextInScope
+        {
+            get
+            {
+                return this._contextInScope;
+            }
+        }
+
+        #endregion
+
+        #region Constructors
+
+        /// <summary>
+        /// Creates a repository with an in scope context and no user information.
+        /// </summary>
+        public CreditCardRepository()
+        {
+            this._context = new EFDbContext();
+            this._context.AddModifiedDelegate(UpdateCreditCard);
+            this._context.AddAddedItemDelegate(AddCreditCard);
+            this._contextInScope = true;
+        }
+
+        /// <summary>
+        /// Creates a repository with an in scope context and user information.
+        /// </summary>
+        /// <param name="user">The user that is accessing the database.</param>
+        /// <param name="principal">The logged in principal for this repository.</param>
+        public CreditCardRepository(User user, IPrincipal principal)
+            : this()
+        {
+            if (user != null && principal != null)
+                _context.SecuritySettings.SetUser(user, principal);
+        }
+
+        /// <summary>
+        /// Creates a repository with an out of scope context.
+        /// </summary>
+        /// <param name="context">The context to use for this database.</param>
+        public CreditCardRepository(EFDbContext context)
+        {
+            this._context = context;
+            this._context.AddModifiedDelegate(UpdateCreditCard);
+            this._context.AddAddedItemDelegate(AddCreditCard);
+            this._contextInScope = false;
+        }
+
+        /// <summary>
+        /// Creates a repository with an out of scope context and user information.
+        /// </summary>
+        /// <param name="context">The context to use for this database.</param>
+        /// <param name="user">The user that is accessing the database.</param>
+        /// <param name="principal">The logged in principal for this repository.</param>
+        public CreditCardRepository(EFDbContext context, User user, IPrincipal principal)
+            : this(context)
+        {
+            if (user != null && principal != null)
+                _context.SecuritySettings.SetUser(user, principal);
+        }
+
+        #endregion
+
+        #region Supporting Methods
+
+        /// <summary>
+        /// Removes non permissives from a set of <code>CreditCard</code>.
+        /// </summary>
+        /// <param name="nodes">The set of registrants to check.</param>
+        /// <param name="accessType">The type of access happening.</param>
+        /// <returns>A set of <code>CreditCard</code> that can be used for the desired access type.</returns>
+        public IEnumerable<CreditCard> RemoveNonPermissive(IEnumerable<CreditCard> nodes, SecurityAccessType accessType)
+        {
+            var creditCards = new List<CreditCard>();
+            foreach (var node in nodes)
+            {
+                if (this._context.CanAccess(node, accessType, nodes.Count() > 1))
+                    creditCards.Add(node);
+            }
+            return creditCards;
+        }
+
+        /// <summary>
+        /// Removes non permissives from a registrant.
+        /// </summary>
+        /// <param name="node">The registrant to check.</param>
+        /// <param name="accessType">The type of access happening.</param>
+        /// <returns>The registrant or null.</returns>
+        public CreditCard RemoveNonPermissive(CreditCard node, SecurityAccessType accessType)
+        {
+            var cc = RemoveNonPermissive(new List<CreditCard>() { node }, accessType).FirstOrDefault();
+            if (cc == null)
+                throw new InsufficientPermissionsException(minor: 61);
+            return cc;
+        }
+
+        /// <summary>
+        /// Removes non permissives from a set of <code>CreditCard</code>.
+        /// </summary>
+        /// <param name="nodes">The set of registrants to check.</param>
+        /// <param name="accessType">The type of access happening.</param>
+        /// <returns>A set of registrants that can be used for the desired access type.</returns>
+        public async Task<IEnumerable<CreditCard>> RemoveNonPermissiveAsync(IEnumerable<CreditCard> nodes, SecurityAccessType accessType)
+        {
+            return await Task.Run(() =>
+            {
+                return RemoveNonPermissive(nodes, accessType);
+            });
+        }
+
+        /// <summary>
+        /// Removes non permissives from a <code>CreditCard</code>.
+        /// </summary>
+        /// <param name="node">The <code>CreditCard</code> to check.</param>
+        /// <param name="accessType">The type of access happening.</param>
+        /// <returns>The <code>CreditCard</code> or null.</returns>
+        public async Task<CreditCard> RemoveNonPermissiveAsync(CreditCard node, SecurityAccessType accessType)
+        {
+            return await RemoveNonPermissiveAsync(node, accessType);
+        }
+
+        /// <summary>
+        /// Upates the <code>CreditCard</code>.
+        /// </summary>
+        /// <param name="nodes">The <code>CreditCard</code> to update.</param>
+        public void UpdateCreditCard(IEnumerable<DbEntityEntry<INode>> nodes)
+        {
+            var updatedRegistrants = new HashSet<Guid>();
+            foreach (var entry in nodes.OfType<DbEntityEntry<Registrant>>())
+            {
+                updatedRegistrants.Add(entry.Entity.UId);
+                UpdateRegistrant(entry);
+            }
+            foreach (var entry in nodes.OfType<DbEntityEntry<IRegistrantItem>>())
+            {
+                if (updatedRegistrants.Contains(entry.Entity.Registrant.UId))
+                    continue;
+                UpdateRegistrant(this._context.Entry<Registrant>(entry.Entity.Registrant));
+            }
+        }
+
+        /// <summary>
+        /// Upates and added <code>CreditCard</code>.
+        /// </summary>
+        /// <param name="nodes">The <code>CreditCard</code> to update.</param>
+        public void UpdateCreditCard(IEnumerable<DbEntityEntry<INode>> nodes)
+        {
+            foreach (var entry in nodes.OfType<DbEntityEntry<CreditCard>>())
+            {
+                var aLog = new AccessLog()
+                {
+                    AccessedItem = entry.Entity.UId,
+                    AccessType = SecureAccessType.Write,
+                    AccessKey = Context.SecuritySettings.AppUser.Id,
+                    AccessTime = DateTimeOffset.Now,
+                    CompanyKey = Context.SecuritySettings.AppUser.GetCurrentCompanyKey()
+                };
+            }
+        }
+
+
+        /// <summary>
+        /// Updates registrant information.
+        /// </summary>
+        /// <param name="regObject">Either an <code>DbEntityEntry\<Registrant\></code> or <code>Registrant</code> object.</param>
+        public void UpdateRegistrant(DbEntityEntry<Registrant> entry)
+        {
+            try
+            {
+                // The registrant in question.
+                Registrant registrant = null;
+                if (entry != null)
+                    registrant = entry.Entity;
+                if (registrant == null)
+                    return;
+                registrant.UpdateAccounts();
+                if (entry == null)
+                    entry = _context.Entry<Registrant>(registrant);
+
+                // Add this registration to the list of registrations completed.
+                // Get the modifier.
+                var modifier = Guid.Empty;
+                if (entry.State == EntityState.Modified)
+                {
+                    // Gets the original values of the registrant.
+                    var origReg = this._context.GetObjectContext().ObjectStateManager.GetObjectStateEntry(registrant);
+                    var origValues = origReg.OriginalValues;
+                    // See if we need to make a change log.
+                    var startChangeLog = false;
+                    if ((origValues["Status"] as RegistrationStatus?).Value == RegistrationStatus.Incomplete && registrant.Status == RegistrationStatus.Submitted)
+                        // We moved the registrant from incomplete to submitted so we start a change log.
+                        startChangeLog = true;
+                    else if (registrant.ModifiedBy != modifier)
+                        // The modifier has changed so we start a change log.
+                        startChangeLog = true;
+                    else if (registrant.DateModified.AddMinutes(30) < DateTimeOffset.Now)
+                        // It has been longer than 30 minutes so we start a change log.
+                        startChangeLog = true;
+                    // If the status is still incomplete, we don't make a change log.
+                    if (registrant.Status == RegistrationStatus.Incomplete)
+                        startChangeLog = false;
+
+                    if (startChangeLog)
+                    {
+                        // We create a change log.
+                        var old = new OldRegistrant();
+                        old.ModifiedBy = registrant.ModifiedBy;
+                        old.DateModified = old.DateCreated = (origValues["DateModified"] as DateTimeOffset?).Value;
+                        old.Email = registrant.Email;
+                        old.Form = registrant.Form;
+                        old.Name = registrant.Name;
+                        old.RSVP = (origValues["RSVP"] as bool?).Value;
+                        old.Status = registrant.Status;
+                        old.Type = registrant.Type;
+                        old.UId = Guid.NewGuid();
+                        old.CurrentRegistration = registrant;
+                        old.Confirmation = registrant.Confirmation;
+                        old.AudienceKey = origValues["AudienceKey"] as Guid?;
+                        this._context.OldRegistrants.Add(old);
+                        foreach (var data in registrant.Data)
+                        {
+                            var state = Context.GetObjectContext().ObjectStateManager.GetObjectStateEntry(data);
+                            var oldData = new OldRegistrantData();
+                            oldData.Registrant = old;
+                            oldData.VariableUId = data.VariableUId;
+                            oldData.Value = data.Value;
+                            oldData.UId = Guid.NewGuid();
+                            oldData.Registrant = old;
+                            Context.OldRegistrantData.Add(oldData);
+                            if (state.State == EntityState.Modified)
+                            {
+                                var origValue = state.OriginalValues["Value"];
+                                oldData.Value = origValue as string;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            { }
+        }
+
+        /// <summary>
+        /// Checks to see if the user can access the registrant.
+        /// </summary>
+        /// <param name="node">The registrant to check access for.</param>
+        /// <param name="accessType">The type of access to check against.</param>
+        /// <returns>True if you can access.</returns>
+        protected bool _CanAccess(Registrant node, SecurityAccessType accessType)
+        {
+            var nodes = RemoveNonPermissive(new List<Registrant>() { node }, accessType);
+            if (nodes.Count() == 0)
+                return false;
+            return true;
+        }
+
+        /// <summary>
+        /// Updates the finances for the registrant.
+        /// </summary>
+        /// <param name="node">The registrant to update.</param>
+        /// <returns>The updated registrant.</returns>
+        protected Registrant _PostProcessing(Registrant node)
+        {
+            node.UpdateAccounts();
+            return node;
+        }
+
+        /// <summary>
+        /// Updates the finances for the registrants.
+        /// </summary>
+        /// <param name="nodes">The registrants to update.</param>
+        /// <returns>The updated registrants.</returns>
+        protected IEnumerable<Registrant> _PostProcessing(IEnumerable<Registrant> nodes)
+        {
+            foreach (var node in nodes)
+                node.UpdateAccounts();
+            return nodes;
+        }
+
+
+        #endregion
+
+        #region Database Methods
+
+        #region Registrant
+
+        /// <summary>
+        /// Finds a registrant by the primary key.
+        /// </summary>
+        /// <param name="key">The primary key for the registrant record.</param>
+        /// <param name="usePermissions">Set to false to skip permission checks.</param>
+        /// <returns>A registrant.</returns>
+        /// <exception cref="RegistrantNotFoundException">Throws if the registrant was not found.</exception>
+        /// <exception cref="InsufficientPermissionsException">Throws if not enough permissions to read registrant.</exception>
+        public Registrant Find(Guid key, bool usePermissions = true)
+        {
+            var registrant = Context.Registrants.Find(key);
+            if (registrant == null)
+                throw new RegistrantNotFoundException();
+            if (usePermissions)
+                return RemoveNonPermissive(registrant, SecurityAccessType.Read);
+            return _PostProcessing(registrant);
+        }
+
+        /// <summary>
+        /// Finds a registrant by the primary key.
+        /// </summary>
+        /// <param name="key">The primary key for the registrant record.</param>
+        /// <param name="usePermissions">Set to false to skip permission checks.</param>
+        /// <returns>A registrant.</returns>
+        /// <exception cref="RegistrantNotFoundException">Throws if the registrant was not found.</exception>
+        /// <exception cref="InsufficientPermissionsException">Throws if not enough permissions to read registrant.</exception>
+        public Registrant First(Expression<Func<Registrant, bool>> search, bool usePermissions = true)
+        {
+            var registrant = Context.Registrants.FirstOrDefault(search);
+            if (registrant == null)
+                throw new RegistrantNotFoundException();
+            if (usePermissions)
+                return _PostProcessing(RemoveNonPermissive(registrant, SecurityAccessType.Read));
+            return _PostProcessing(registrant);
+        }
+
+        /// <summary>
+        /// Finds a registrant by the primary key.
+        /// </summary>
+        /// <param name="key">The primary key for the registrant record.</param>
+        /// <param name="usePermissions">Set to false to skip permission checks.</param>
+        /// <returns>A registrant.</returns>
+        /// <exception cref="RegistrantNotFoundException">Throws if the registrant was not found.</exception>
+        /// <exception cref="InsufficientPermissionsException">Throws if not enough permissions to read registrant.</exception>
+        public async Task<Registrant> FindAsync(Guid key, bool usePermissions = true)
+        {
+            var registrant = await Context.Registrants.FindAsync(key);
+            if (registrant == null)
+                throw new RegistrantNotFoundException();
+            if (usePermissions)
+                return RemoveNonPermissive(registrant, SecurityAccessType.Read);
+            return _PostProcessing(registrant);
+        }
+
+        /// <summary>
+        /// Finds registrants by the supplied search criteria.
+        /// </summary>
+        /// <param name="search">The search to perform on the database.</param>
+        /// <param name="usePermissions">Set to false to skip permission checks.</param>
+        /// <returns>An enumeration of registrants.</returns>
+        public IEnumerable<Registrant> Search(Expression<Func<Registrant, bool>> search, bool usePermissions = true)
+        {
+            var registrants = Context.Registrants.Where(search).ToList().AsEnumerable();
+            if (usePermissions)
+                registrants = RemoveNonPermissive(registrants, SecurityAccessType.Read);
+            return _PostProcessing(registrants);
+        }
+
+        /// <summary>
+        /// Finds registrants by the supplied search criteria.
+        /// </summary>
+        /// <param name="search">The search to perform on the database.</param>
+        /// <param name="usePermissions">Set to false to skip permission checks.</param>
+        /// <returns>An enumeration of registrants.</returns>
+        public async Task<IEnumerable<Registrant>> SearchAsync(Expression<Func<Registrant, bool>> search, bool usePermissions = true)
+        {
+            return await Task.Run(() =>
+            {
+                return Search(search, usePermissions);
+            });
+        }
+
+        /// <summary>
+        /// Removes a registrant from the context.
+        /// </summary>
+        /// <param name="node">The registrant to remove.</param>
+        /// <param name="usePermissions">Set to false to skip permission checks.</param>
+        /// <returns>True if it did.</returns>
+        /// <exception cref="RegistrantNotFoundException">Throws if the registrant was not found.</exception>
+        /// <exception cref="InsufficientPermissionsException">Throws if not enough permissions to read registrant.</exception>
+        public bool Remove(Registrant node, bool usePermissions = true)
+        {
+            if (node == null)
+                throw new RegistrantNotFoundException();
+            if (usePermissions)
+                node = RemoveNonPermissive(node, SecurityAccessType.Write);
+            if (node == null)
+                throw new InsufficientPermissionsException(minor: 64);
+            RemoveRegistrant(node);
+            return true;
+        }
+
+        /// <summary>
+        /// Removes a registrant from the context.
+        /// </summary>
+        /// <param name="node">The registrant to remove.</param>
+        /// <param name="usePermissions">Set to false to skip permission checks.</param>
+        /// <returns>True if it did.</returns>
+        /// <exception cref="RegistrantNotFoundException">Throws if the registrant was not found.</exception>
+        /// <exception cref="InsufficientPermissionsException">Throws if not enough permissions to read registrant.</exception>
+        public async Task<bool> RemoveAsync(Registrant node, bool usePermissions = true)
+        {
+            return await Task.Run(() =>
+            {
+                return Remove(node);
+            });
+        }
+
+        /// <summary>
+        /// Removes a set of registrants from the context.
+        /// </summary>
+        /// <param name="nodes">The set of registrants to remove.</param>
+        /// <param name="usePermissions">Set to false to skip permission checks.</param>
+        /// <returns>True if it did.</returns>
+        public bool RemoveRange(IEnumerable<Registrant> nodes, bool usePermissions = true)
+        {
+            if (usePermissions)
+                nodes = RemoveNonPermissive(nodes, SecurityAccessType.Write);
+            foreach (var registrant in nodes)
+                RemoveRegistrant(registrant);
+            return true;
+        }
+
+        /// <summary>
+        /// Removes a set of registrants from the context.
+        /// </summary>
+        /// <param name="nodes">The set of registrants to remove.</param>
+        /// <param name="usePermissions">Set to false to skip permission checks.</param>
+        /// <returns>True if it did.</returns>
+        public async Task<bool> RemoveRangeAsync(IEnumerable<Registrant> nodes, bool usePermissions = true)
+        {
+            return await Task.Run(() =>
+            {
+                return RemoveRange(nodes);
+            });
+        }
+
+        /// <summary>
+        /// Saves the context to the database.
+        /// </summary>
+        /// <returns>the number of records affected.</returns>
+        public int Commit()
+        {
+            return this._context.SaveChanges();
+        }
+
+        /// <summary>
+        /// Saves the context to the database.
+        /// </summary>
+        /// <returns>the number of records affected.</returns>
+        public async Task<int> CommitAsync()
+        {
+            return await this._context.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Removes a registrant from the context.
+        /// </summary>
+        /// <param name="node">The registrant to remove.</param>
+        protected void RemoveRegistrant(Registrant node)
+        {
+            if (node == null)
+                return;
+            // Let's see if the node is already attached to a database.
+            if (Context.Entry(node).State == EntityState.Detached)
+                // The entity is not attached to the database. We return.
+                return;
+
+            // We need to move throught the registrant and start removing the items that need removed;
+
+            // We start with Transactions.
+            foreach (var transaction in node.TransactionRequests)
+            {
+                // We don't ever want to lose transaction data, so we just remove the key to the registrant.
+                transaction.RegistrantKey = null;
+            }
+
+            // Now we need to remove all the data points.
+            Context.RegistrantData.RemoveRange(node.Data);
+
+            // Now we remove old registrations
+            // We grab all the old registration data.
+            var oldReg_data = node.OldRegistrations.SelectMany(r => r.Data);
+            // And then we remove it.
+            Context.OldRegistrantData.RemoveRange(oldReg_data);
+            // Then we remove all the old registrations.
+            Context.OldRegistrants.RemoveRange(node.OldRegistrations);
+
+            // Now we remove promotion code entries.
+            Context.PromotionCodeEntries.RemoveRange(node.PromotionalCodes);
+
+            // Now we remove email sends.
+            // We grab all email events.
+            var email_events = node.EmailSends.SelectMany(e => e.EmailEvents);
+            // Then we remove them.
+            Context.EmailEvents.RemoveRange(email_events);
+            // Then we remove the sends.
+            Context.EmailSends.RemoveRange(node.EmailSends);
+
+            // Next we remove adjustments.
+            Context.Adjustments.RemoveRange(node.Adjustments);
+
+            // Now we remove all seats
+            Context.Seaters.RemoveRange(node.Seatings);
+            Context.Registrants.Remove(node);
+        }
+
+        /// <summary>
+        /// Removes a set of registrants from the context.
+        /// </summary>
+        /// <param name="nodes">The set of registrants to remove.</param>
+        protected void RemoveRegistrantRange(IEnumerable<Registrant> nodes)
+        {
+            // We need to move throught the registrant and start removing the items that need removed;
+
+            // We start with Transactions.
+            foreach (var transaction in nodes.SelectMany(r => r.TransactionRequests))
+            {
+                // We don't ever want to lose transaction data, so we just remove the key to the registrant.
+                transaction.RegistrantKey = null;
+            }
+
+            // Now we need to remove all the data points.
+            Context.RegistrantData.RemoveRange(nodes.SelectMany(r => r.Data));
+
+            // Now we remove old registrations
+            // We grab all the old registration data.
+            var oldReg_data = nodes.SelectMany(n => n.OldRegistrations).SelectMany(r => r.Data);
+            // And then we remove it.
+            Context.OldRegistrantData.RemoveRange(oldReg_data);
+            // Then we remove all the old registrations.
+            Context.OldRegistrants.RemoveRange(nodes.SelectMany(n => n.OldRegistrations));
+
+            // Now we remove promotion code entries.
+            Context.PromotionCodeEntries.RemoveRange(nodes.SelectMany(n => n.PromotionalCodes));
+
+            // Now we remove email sends.
+            // We grab all email events.
+            var email_events = nodes.SelectMany(n => n.EmailSends).SelectMany(e => e.EmailEvents);
+            // Then we remove them.
+            Context.EmailEvents.RemoveRange(email_events);
+            // Then we remove the sends.
+            Context.EmailSends.RemoveRange(nodes.SelectMany(n => n.EmailSends));
+
+            // Next we remove adjustments.
+            Context.Adjustments.RemoveRange(nodes.SelectMany(n => n.Adjustments));
+
+            // Now we remove all seats
+            Context.Seaters.RemoveRange(nodes.SelectMany(n => n.Seatings));
+
+        }
+
+        /// <summary>
+        /// Adds the specified registrant to the context.
+        /// </summary>
+        /// <param name="node">The registrant to add.</param>
+        /// <param name="userPermissions">Set to false to skip permission checks.</param>
+        public void Add(Registrant node, bool userPermissions = true)
+        {
+            node = RemoveNonPermissive(node, SecurityAccessType.Write);
+            if (node == null)
+                return;
+            this._context.Registrants.Add(node);
+        }
+
+        #endregion
+
+        #region Transaction
+
+        /// <summary>
+        /// Finds the adjustment by the specified id.
+        /// </summary>
+        /// <param name="id">The id of the adjustment in either the long or Guid form.</param>
+        /// <returns>The adjustment.</returns>
+        /// <exception cref="AdjustmentNotFoundException">Throws if the adjustment was not found.</exception>
+        /// <exception cref="InsufficientPermissionsException">Throws if not enough permissions to read registrant.</exception>
+        public RSToolKit.Domain.Entities.MerchantAccount.Adjustment FindAdjustment(object id)
+        {
+            RSToolKit.Domain.Entities.MerchantAccount.Adjustment adjustment = null;
+            if (id is long)
+                adjustment = _context.Adjustments.FirstOrDefault(a => a.SortingId == (long)id);
+            else if (id is Guid)
+                adjustment = _context.Adjustments.FirstOrDefault(a => a.UId == (Guid)id);
+            if (adjustment == null)
+                throw new AdjustmentNotFoundException();
+            RemoveNonPermissive(adjustment.Registrant, SecurityAccessType.Read);
+            return adjustment;
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Interfacing
+
+        #region IDisposable
+
+        void IDisposable.Dispose()
+        {
+            if (this._contextInScope)
+                this._context.Dispose();
+        }
+
+        #endregion
+
+        #endregion
+    }
+}

@@ -1,0 +1,87 @@
+﻿@using RSToolKit.Domain.Entities.Email;
+@using RSToolKit.Domain.Entities;
+@using RSToolKit.Domain;
+@using System.Linq;
+@model List<IEmailHolder>
+@{
+    ViewBag.Title = "Email Builder - RegStep";
+    Layout = "~/Views/Shared/_Layout_Email.cshtml";
+}
+@section styles
+{
+    <link href="~/Content/Email/Index.css" rel="stylesheet" />
+}
+@section scripts
+{
+    <script src="~/Scripts/Email/Index.js"></script>
+}
+@section title
+{
+    Email Builder
+}
+@section breadcrumbs
+{
+
+}
+<div class="col-xs-12">
+    <div class="row add-padding-vertical-5 color-grey-2">
+        <div class="col-xs-12 col-sm-12 col-lg-12">
+            <div class="add-padding-vertical-5">
+                <a href="@Url.Action("NewEmailCampaign", "Email")"><span class="glyphicon glyphicon-plus-sign"></span> New Email Campaign</a>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!--List Options-->
+<!--Display-->
+<div class="row add-padding-vertical-2em">
+    <div id="mainHolder" class="col-xs-12 text-small">
+        <!--End List Options-->
+        <p class="h3">Email Campaigns</p>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Email Campaign</th>
+                    <th>Description</th>
+                    <th>Date Created</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var hold in Model.OfType<EmailCampaign>().OrderByDescending(f => f.DateCreated))
+                    {
+                        var description = hold.Description.Length > 75 ? hold.Description.Substring(0, 75) + "..." : hold.Description;
+                    <tr>
+                        <td><a href="@Url.Action("EditEmailCampaign", "Email", new { id = hold.UId })"><span class="glyphicon glyphicon-edit"></span> @hold.Name</a></td>
+                        <td>@description</td>
+                        <td>@ToolHelper.ConvertDate_String(hold.DateCreated, ViewBag.User)</td>
+                    </tr>
+                    }
+            </tbody>
+
+        </table>
+        <section>
+            <p class="h3">Form Emails</p>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Form</th>
+                        <th>Description</th>
+                        <th>Open Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var hold in Model.OfType<Form>().OrderByDescending(f => f.Open))
+                    {
+                        var description = hold.Description.Length > 75 ? hold.Description.Substring(0, 75) + "..." : hold.Description;
+                        <tr>
+                            <td><a href="@Url.Action("FormEmails", "Email", new { id = hold.UId })"><span class="glyphicon glyphicon-edit"></span> @hold.Name</a></td>
+                            <td>@description</td>
+                            <td>@ToolHelper.ConvertDate_String(hold.Open, ViewBag.User)</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </section>
+    </div>
+</div>

@@ -1,0 +1,44 @@
+﻿@model RegistrationHtml
+@{
+    ViewBag.Title = Model.Form.Name;
+    ViewBag.WrapperClass = "form-live";
+    Layout = "~/Views/Shared/_Layout_Registration.cshtml";
+}
+@section pageNumber
+{
+    Cancelled
+}
+@section shoppingCart
+{
+}
+@section header
+{
+    @Model.RenderHeader()
+}
+@section footer
+{
+    @Model.RenderFooter()
+}
+@section customStyles
+{
+    @Model.RenderFormStyle()
+}
+@section errorMessage{
+}
+<div class="form-panel row">
+    <div class="col-xs-12">
+        <div class="row form-panel-row">
+            <div class="col-xs-12 form-component form-free-text">
+                <h2>
+                    Registration Cancelled
+                </h2>
+                <p>
+                    Your registration has been cancelled. Please contact the event coordinator to activate your registration.
+                </p>
+                @Model.Form.CoordinatorName
+                <br />@Model.Form.CoordinatorPhone
+                <br /><a href="mailto:@Model.Form.CoordinatorEmail" target="_blank">@Model.Form.CoordinatorEmail</a> 
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,106 @@
+﻿@model Tuple<RegistrationHtml, bool>
+@{
+    ViewBag.Title = Model.Item1.Form.Name;
+    ViewBag.WrapperClass = "form-live";
+    Layout = "~/Views/Shared/_Layout_Registration.cshtml";
+    var allHeaders = Model.Item1.Form.Company.ContactHeaders;
+    var loginHeaders = new List<Tuple<long, string>>();
+    foreach (var h_id in Model.Item1.Form.LoginHeaders)
+    {
+        if (h_id == -1)
+        {
+            loginHeaders.Add(new Tuple<long, string>(-1, "Email"));
+            continue;
+        }
+        var t_cH = allHeaders.FirstOrDefault(c => c.SortingId == h_id);
+        if (t_cH != null)
+        {
+            loginHeaders.Add(new Tuple<long, string>(t_cH.SortingId, t_cH.Name));
+        }
+    }
+    var ind = 0;
+}
+
+@section pageNumber
+{
+    Start
+}
+@section shoppingCart
+{
+    @Model.Item1.RenderShoppingCart()
+}
+@section header
+{
+    @Model.Item1.RenderHeader()
+}
+@section footer
+{
+    @Model.Item1.RenderFooter()
+}
+@section customStyles
+{
+    @Model.Item1.RenderFormStyle()
+}
+@using (Html.BeginForm("CustomLogin", "Register", FormMethod.Post, new { id = "form", @class = "form-horizontal" }))
+{
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="live" value="@Model.Item2.ToString()" />
+    <input type="hidden" name="formId" value="@Model.Item1.Form.SortingId" />
+    <div class="row form-panel">
+        <div class="col-xs-12">
+            <div class="row form-panel-row">
+                <div class="col-xs-12 form-component">
+                    Please enter your credentials below.
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row form-panel">
+        <div class="col-xs-12">
+            <div class="row form-panel-row">
+                <div class="col-sm-6 col-md-4 form-component required-component">
+                    @if (ViewBag.Error != null)
+                    {
+                        <div class="form-component-error" style="color: red;">@((string)ViewBag.Error)</div>
+                    }
+                    @foreach (var header in loginHeaders)
+                    {
+                        <div class="form-group">
+                            <div class="form-component-row">
+                                <label class="control-label"><span class="form-component-label">@header.Item2</span></label>
+                            </div>
+                            <input type="hidden" name="loginData[@ind].Key" value="@header.Item1" />
+                            <input type="text" class="form-control input-sm fomt-text-input" name="loginData[@ind].Value" />
+                            @{ind++;}
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row form-btn-panel">
+        <div class="col-xs-12">
+            <div class="row">
+                <div class="col-sm-6 col-md-4 col-lg-3 form-btn">
+                    <a class="btn-rs btn-navigation" href="" onclick="get_form(this).submit(); return false;">
+                        Validate
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        //<![CDATA[
+        function get_form(element) {
+            while (element) {
+                element = element.parentNode
+                if (element.tagName.toLowerCase() == "form") {
+                    //alert( element ) //debug/test
+                    return element
+                }
+            }
+            return 0; //error: no form found in ancestors
+        }
+        //]]>
+    </script>
+}

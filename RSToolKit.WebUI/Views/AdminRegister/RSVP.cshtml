@@ -1,0 +1,59 @@
+﻿@using RSToolKit.WebUI.Models.Views.Register;
+@model RSVPView
+@{
+    Layout = "~/Views/Shared/_L_AdminRegister.cshtml";
+}
+
+@section pageNumber
+{
+    RSVP
+}
+@section shoppingCart
+{
+    @Model.ShoppingCart
+}
+@section header
+{
+    @Model.Header
+}
+@section footer
+{
+    @Model.Footer
+}
+@section styles
+{
+    @Model.Styles
+}
+@section scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#rsvpAccept').on('click', function () {
+                $('#RSVP').val('true');
+                $('#registerForm').submit();
+            });
+            $('#rsvpDecline').on('click', function () {
+                $('#RSVP').val('false');
+                $('#registerForm').submit();
+            });
+        });
+    </script>
+}
+<div style="position: fixed; top: 0; left: 0; width: 100%; background-color: rgba(0, 0, 0, .5); color: #fc3333; font-size: 14pt;" class="text-center">Admin Registration</div>
+@using (Html.BeginForm("RSVP", "AdminRegister", FormMethod.Post, new { id = "registerForm" }))
+{
+    @Model.HiddenInputs
+    <div class="form-panel row">
+        <div class="col-xs-12">
+            <div class="row form-panel-row">
+                <div class="col-xs-12 form-component form-free-text">
+                    @Model.Notice
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-btn-panel">
+        @Model.RSVP
+    </div>
+   
+}

@@ -1,0 +1,86 @@
+﻿@using RSToolKit.Domain.Entities;
+@using System.Linq;
+@using System.Data.Entity;
+@model List<DefaultFormStyle>
+@{
+    Layout = "~/Views/Shared/_Layout_SystemAdministration.cshtml";
+}
+@section scripts
+{
+    <script src="~/Scripts/Bootstrap/Plugins/1%20colorpicker-color.js"></script>
+    <script src="~/Scripts/Bootstrap/Plugins/2%20colorpicker.js"></script>
+    <script src="~/Scripts/Bootstrap/Plugins/Forms/formPlugin.js"></script>
+    <script src="~/Scripts/FormBuilder/EditStyles.js"></script>
+}
+@section styles
+{
+    <link href="~/Content/Bootstrap/colorpicker.min.css" rel="stylesheet" />
+}
+@section title {
+    Edit Default Form Styles
+}
+@section breadcrumbs {
+}
+@section modals
+{
+}
+@using (Html.BeginForm("Styles", "SystemAdministration", FormMethod.Post, new { @class = "form", role = "form", data_xhr_method = "put" }))
+{
+    @Html.AntiForgeryToken()
+        <!--Style-->
+    <div class="col-md-12 add-padding-bottom-2em">
+        <div class="add-padding-bottom-5 text-medium text-color-2">
+            Form Style <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+        <!--Accordion-->
+        <div class="panel-group" id="accordion">
+            @{
+                var groups = Model.Select(s => s.Sort).Where(s => !String.IsNullOrWhiteSpace(s)).Distinct().OrderBy(s => s);
+                Model.Sort((a, b) => a.Name.CompareTo(b.Name));
+            }
+            @foreach (var sort in groups)
+            {
+                var subSorts = Model.Where(s => s.Sort == sort && !String.IsNullOrWhiteSpace(s.SubSort)).Select(s => s.SubSort).Distinct().OrderBy(s => s);
+                var group = Model.Where(s => s.Sort == sort).First().GroupName;
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <span class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#options-@(sort.Replace(' ', '_'))">
+                                @sort [@group]<span class="caret"></span>
+                            </a>
+                        </span>
+                    </div>
+                    <div id="options-@(sort.Replace(' ', '_'))" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <div class="row">
+                                @foreach (var style in Model.Where(s => s.Sort == sort && String.IsNullOrEmpty(s.SubSort)).ToList())
+                                {
+                                    <div class="style-item">
+                                        <label class="control-label">@style.Name</label>
+                                        @Html.TextBox(style.UId.ToString(), style.Value, new { @class = "form-control input-sm", data_type = style.Type })
+                                    </div>
+                                }
+                            </div>
+                            @foreach (var subSort in subSorts)
+                            {
+                                <div class="row">
+                                    <div class="col-xs-12 style-subsort-title">@subSort</div>
+                                    @foreach (var style in Model.Where(s => s.Sort == sort && s.SubSort == subSort))
+                                    {
+                                        <div class="style-item">
+                                            <label class="control-label">@style.Name</label>
+                                            @Html.TextBox(style.UId.ToString(), style.Value, new { @class = "form-control input-sm", data_type = style.Type })
+                                        </div>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <!--Accordion-->
+    </div>
+        <!--End Style-->
+        <!--End Default Layouts-->
+}

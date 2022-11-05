@@ -1,0 +1,39 @@
+﻿@using RSToolKit.WebUI.Models.Views.Register;
+@model PageView
+@{
+    Layout = "~/Views/Shared/_L_AdminRegister.cshtml";
+}
+
+@section pageNumber
+{
+    @Model.PageNumber
+}
+@section shoppingCart
+{
+    @Model.ShoppingCart
+}
+@section header
+{
+    @Model.Header
+}
+@section footer
+{
+    @Model.Footer
+}
+@section styles
+{
+    @Model.Styles
+}
+@section scripts
+{
+}
+<div style="position: fixed; top: 0; left: 0; width: 100%; background-color: rgba(0, 0, 0, .5); color: #fc3333; font-size: 14pt;" class="text-center">Admin Registration</div>
+@using (Html.BeginForm("Page", "AdminRegister", FormMethod.Post, new { id = "registerForm" }))
+{
+    @Model.HiddenInputs
+    foreach (var panel in Model.PanelHtml)
+    {
+        @panel
+    }
+    @Html.Partial("P_AdminRegisterNavigation")
+}

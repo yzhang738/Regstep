@@ -1,0 +1,207 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout_Help_Cloud.cshtml";
+}
+@section scripts {
+    <script>
+        $(function () {
+            $("#popover-new").popover({
+                html: true,
+                placement: 'top',
+                trigger: 'focus',
+                title: 'New Report',
+                content: function () {
+                    return $('#popover-new-content').html();
+                }
+            });
+            $("#popover-name").popover({
+                html: true,
+                placement: 'top',
+                trigger: 'focus',
+                title: 'Report',
+                content: function () {
+                    return $('#popover-name-content').html();
+                }
+            });
+            $("#popover-edit").popover({
+                html: true,
+                placement: 'top',
+                trigger: 'focus',
+                title: 'Edit Report',
+                content: function () {
+                    return $('#popover-edit-content').html();
+                }
+            });
+            $("#popover-delete").popover({
+                html: true,
+                placement: 'top',
+                trigger: 'focus',
+                title: 'Delete Report',
+                content: function () {
+                    return $('#popover-delete-content').html();
+                }
+            });
+            $("#popover-view").popover({
+                html: true,
+                placement: 'top',
+                title: 'View Report',
+                content: function () {
+                    return $('#popover-view-content').html();
+                }
+            });
+        });
+    </script>
+}
+
+<div class="add-padding-vertical-5 add-border-bottom">
+    <div class="help-breadcrumb">
+        <a href="~/Help/Cloud">Cloud</a> <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span>
+        <a href="~/Help/CloudFormReports">Registration Report List</a> <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span>
+        <a href="~/Help/CloudFormReport">View Registration Report</a> <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span>
+        Custom Report List <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span>
+        <a href="~/Help/CloudSingleFormReport">Edit Custom Report</a> | <a href="~/Help/CloudViewSingleFormReport">View Custom Report</a>
+    </div>
+</div>
+
+<div class="add-padding-top help-text">
+    <h2 class="add-padding-bottom-5">
+        Custom Reports
+    </h2>
+    <p>
+        Select from the list of Custom reports your team has created.
+    </p>
+    <p>
+        Click on <a class="text-color-2" href="~/Help/CloudSingleFormReport">Edit</a> to modify the filters that create the report.
+    </p>
+    <p>
+        Click on <a class="text-color-2" href="~/Help/CloudViewSingleFormReport">View</a> to see the report results.
+    </p>
+    <p>
+        Click <span class="glyphicon glyphicon-info-sign text-color-1"></span> below for more details.
+    </p>
+</div>
+
+<div class="add-padding-vertical-2em">
+    <div class="screen-shot">
+        <div class="screen-shot-text screen-shot-header">
+            User Interface
+        </div>
+        <div class="screen-shot-body">
+            <!--UI Markup-->
+            <div class="container-fluid color-white add-padding-vertical">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <!--Page Title-->
+                        <div class="row add-padding-bottom" id="page-title">
+                            <div class="col-sm-6">
+                                <h2 class="text-color-1">
+                                    Annual Conference
+                                </h2>
+                            </div>
+                            <div class="col-sm-6 text-align-right">
+                                <div class="btn-group btn-group-help">
+                                    <button type="button" class="btn btn-default btn-help dropdown-toggle" data-toggle="dropdown">
+                                        Help & Training <span class="caret"></span>
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!--End Page Title-->
+                        <!--Breadcrumb-->
+                        <div id="breadcrumb" class="row add-padding-vertical-5 add-border-vertical border-color-grey-2">
+                            <div class="col-xs-12">
+                                <a>Cloud Dashboard</a> <span class="glyphicon glyphicon-chevron-right"></span>
+                                <a>Registration Reports</a> <span class="glyphicon glyphicon-chevron-right"></span>
+                                <a>Registration Report</a> <span class="glyphicon glyphicon-chevron-right"></span>
+                                Custom Reports
+                            </div>
+                        </div>
+                        <!--End Breadcrumb-->
+                        <!--Work Area-->
+                        <div class="row add-padding-vertical">
+                            <div class="col-xs-12">
+                                <!--Options-->
+                                <div class="add-padding-bottom-5 text-medium text-color-2">
+                                    Custom Reports
+                                </div>
+                                <div class="row add-padding-vertical-5 color-grey-2">
+                                    <div class="col-xxs-12 col-xs-6 col-md-3">
+                                        <div class="add-padding-vertical-5">
+                                            <a><span class="glyphicon glyphicon-plus"></span> New Custom Report</a> <a tabindex="0" id="popover-new" tab-index="0" class="help-info help-info-rsred"><span class="glyphicon glyphicon-info-sign"></span></a>
+                                        </div>
+                                        <div id="popover-new-content" style="display: none;">
+                                            Create a new Custom Report
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--End Options-->
+                                <!--Data-->
+                                <div id="mainHolder" class="row add-padding-vertical-2em">
+                                    <table class="table table-striped">
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    Exhibitors <a tabindex="0" id="popover-name" class="help-info help-info-rsred"><span class="glyphicon glyphicon-info-sign"></span></a>
+                                                    <div id="popover-name-content" style="display: none;">
+                                                        Each Custom Report is listed by name.
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <a><span class="glyphicon glyphicon-edit"></span> Edit</a> <a tabindex="0" id="popover-edit" class="help-info help-info-rsred"><span class="glyphicon glyphicon-info-sign"></span></a>
+                                                    <div id="popover-edit-content" style="display: none;">
+                                                        <p>
+                                                            Links to the editing view where you can set the fields and filters that create the report.
+                                                        </p>
+                                                        <a href="~/Help/CloudSingleFormReport">Go to edit view.</a>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <a><span class="glyphicon glyphicon-trash"></span> Delete</a> <a tabindex="0" id="popover-delete" class="help-info help-info-rsred"><span class="glyphicon glyphicon-info-sign"></span></a>
+                                                    <div id="popover-delete-content" style="display: none;">
+                                                        Deletes the report.
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <a><span class="glyphicon glyphicon-eye-open"></span> View Report</a> <a tabindex="0" id="popover-view" class="help-info help-info-rsred"><span class="glyphicon glyphicon-info-sign"></span></a>
+                                                    <div id="popover-view-content" style="display: none;">
+                                                        <p>
+                                                            Links to the page that displays the records for that report.
+                                                        </p>
+                                                        <a href="~/Help/CloudViewSingleFormReport">Go to View Report page.</a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Sponsors</td>
+                                                <td><a><span class="glyphicon glyphicon-edit"></span> Edit</a></td>
+                                                <td><a><span class="glyphicon glyphicon-trash"></span> Delete</a></td>
+                                                <td><a><span class="glyphicon glyphicon-eye-open"></span> View Report</a></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!--End Data-->
+                            </div>
+                        </div>
+                        <!--End Work Area-->
+                    </div>
+                </div>
+            </div>
+            <!--End UI Markup-->
+        </div>
+        <div class="screen-shot-text screen-shot-footer">
+            Click on <span class="glyphicon glyphicon-info-sign"></span> to read more about each section and function.
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+

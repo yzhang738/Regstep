@@ -1,0 +1,20 @@
+﻿@model TrailModel
+@if (Model != null)
+{
+    var enumerator = Model.GetEnumerator();
+    var keepEnumerating = true;
+    enumerator.MoveNext();
+    do
+    {
+        var item = enumerator.Current;
+        <span class="trail-item" id="@item.Id"><a href="@Url.RouteUrl(item.RVD())">@item.Label</a></span>
+        if (!enumerator.MoveNext())
+        {
+            keepEnumerating = false;
+        }
+        else
+        {
+            <span class="glyphicon glyphicon-chevron-right"></span>
+        }
+    } while (keepEnumerating);
+}

@@ -1,0 +1,48 @@
+﻿div.logic-group {
+  cursor: pointer;
+  z-index: 31;
+}
+div.logic-group:hover {
+  background-color: #a94442;
+}
+div.logic-group div.logic-statements {
+  padding-left: 25px;
+  font-family: Courier New, Courier, monospace;
+  background-color: black;
+  color: white;
+}
+div.logic-group div.logic-statements div.logic-statement {
+  cursor: pointer;
+  z-index: 41;
+}
+div.logic-group div.logic-statements div.logic-statement:hover {
+  background-color: gray;
+}
+div.logic-group div.logic-statements div.logic-statement span.logic-statement-variable,
+div.logic-group div.logic-statements div.logic-statement span.logic-statement-test,
+div.logic-group div.logic-statements div.logic-statement span.logic-statement-value {
+  margin-right: 10px;
+}
+div.logic-commands {
+  cursor: pointer;
+  z-index: 31;
+}
+div.logic-commands div.logic-command {
+  background-color: black;
+  padding-left: 25px;
+  font-family: Courier New, Courier, monospace;
+  color: white;
+}
+div.logic-commands div.logic-command:hover {
+  background-color: gray;
+}
+div.logic-commands div.logic-command span.logic-command-parameters::before {
+  content: "(";
+}
+div.logic-commands div.logic-command span.logic-command-parameters::after {
+  content: ")";
+}
+div.logic-commands div.logic-command span.logic-command-parameters .logic-command-parameter:nth-last-child(n+2) span.logic-command-parameter-view::after {
+  content: ", ";
+}
+/*# sourceMappingURL=Logic.css.map */

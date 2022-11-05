@@ -1,0 +1,1134 @@
+﻿using Newtonsoft.Json;
+using RSToolKit.Domain;
+using RSToolKit.Domain.Data;
+using RSToolKit.Domain.Entities;
+using RSToolKit.Domain.Entities.Components;
+using RSToolKit.Domain.Security;
+using RSToolKit.WebUI.Infrastructure;
+using RSToolKit.WebUI.Models;
+using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Web.Mvc;
+using RSToolKit.Domain.Entities.MerchantAccount;
+using System.IO;
+using System.Net.Mail;
+using System.Net;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using iTextSharp.text.html;
+using iTextSharp.text.html.simpleparser;
+using RSToolKit.Domain.Entities.Email;
+using RSToolKit.Domain.Entities;
+using RSToolKit.Domain.JItems;
+using RSToolKit.Domain.Engines;
+
+namespace RSToolKit.WebUI.Controllers
+{
+    [Authorize(Roles = "Super Administrators,Administrators,Cloud Users,Cloud+ Users,Programmers")]
+    public class OldAdminRegisterController : RSController
+    {
+        #region Contructors
+
+        private readonly Dictionary<string, string[]> AllowedTypes = new Dictionary<string, string[]>()
+        {
+            {
+                "picture", new string[]
+                {
+                    "image/jpeg",
+                    "image/bmp",
+                    "image/gif",
+                    "image/tiff",
+                    "image/png"
+                }
+            },
+            {
+                "pdf", new string[]
+                {
+                    "application/pdf"
+                }
+            },
+            {
+                "text", new string[]
+                {
+                    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                    "application/msword",
+                    "text/richtext",
+                    "text/plain",
+                    "application/msword",
+                    "application/x-iwork-pages-sffpages"
+                }
+            }
+        };
+
+        public OldAdminRegisterController(EFDbContext context)
+            : base(context)
+        {
+            iLog.LoggingMethod = "AdminRegisterController";
+        }
+
+        #endregion
+
+        #region Starting
+
+        [HttpGet]
+        public ActionResult Start(Guid formKey, string email = "")
+        {
+            var form = Repository.Search<Form>(f => f.UId == formKey).FirstOrDefault();
+            if (form == null)
+                return View("InvalidForm");
+            ViewBag.Form = form;
+            var model = new RegistrationHtml(form, null, null, Repository);
+            ViewBag.Email = email;
+            return View(model);       
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Start(AdminRegStart model)
+        {
+            if (!model.FormKey.HasValue)
+                return View("InvalidForm");
+            var form = Repository.Search<Form>(f => f.UId == model.FormKey.Value).FirstOrDefault();
+            if (form == null)
+                return View("InvalidForm");
+            ViewBag.Form = form;
+            var edit = false;
+            var registrant = Repository.Search<Registrant>(r => r.Email.ToLower() == model.Email.ToLower() && r.FormKey == model.FormKey.Value && r.Type == RegistrationType.Live).FirstOrDefault();
+            if (registrant != null)
+                edit = true;
+            ViewBag.First = !edit;
+            model.Email = model.Email ?? "";
+            model.Email = model.Email.ToLower();
+            var n_model = new RegistrationHtml(form, registrant, form.Pages.Where(p => p.Type == PageType.RSVP).First(), Repository);
+            try
+            {
+                var mailAddress = new MailAddress(model.Email);
+            }
+            catch (Exception)
+            {
+                ModelState.AddModelError("Email", "You must provide a valid email.");
+                return View(model);
+            }
+            registrant = registrant ?? Registrant.New(Repository, form, model.Email, rsvp: false, type: RegistrationType.Live);
+            n_model.Registrant = registrant;
+            Contact contact = form.Company.Contacts.FirstOrDefault(c => model.Email.ToLower().In(c.GetEmails().ToArray()));
+            if (contact != null && !edit)
+            {
+                foreach (var page in form.Pages)
+                {
+                    foreach (var panel in page.Panels)
+                    {
+                        foreach (var component in panel.Components)
+                        {
+                            if (component.MappedTo == null)
+                                continue;
+                            var c_data = contact.Data.Where(d => d.HeaderKey == component.MappedTo.UId).FirstOrDefault();
+                            if (c_data == null)
+                                continue;
+                            if (component is Input)
+                            {
+                                var r_data = RegistrantData.New(Repository, registrant, component, c_data.Value);
+                            }
+                            else if (component is CheckboxGroup)
+                            {
+                                var cbg = (CheckboxGroup)component;
+                                var r_items = c_data.Value.Split(',');
+                                var c_items = new List<CheckboxItem>();
+                                foreach (var r_item in r_items)
+                                {
+                                    var r_t_item = r_item.Trim().ToLower();
+                                    var c_item = cbg.Items.FirstOrDefault(i => i.LabelText.ToLower() == r_t_item);
+                                    if (c_item == null)
+                                        c_item = cbg.Items.FirstOrDefault(i => Regex.Replace(i.LabelText.ToLower(), @"\s", "") == Regex.Replace(r_t_item, @"\s", ""));
+                                    if (c_item == null)
+                                        c_item = cbg.Items.FirstOrDefault(i => i.UId.ToString().ToLower() == r_t_item);
+                                    if (c_item != null)
+                                        c_items.Add(c_item);
+                                }
+                                var r_data = RegistrantData.New(Repository, registrant, component, JsonConvert.SerializeObject(c_items.Select(i => i.UId)));
+                            }
+                            else if (component is DropdownGroup)
+                            {
+                                var ddg = (DropdownGroup)component;
+                                var c_item = ddg.Items.FirstOrDefault(i => i.LabelText.ToLower() == c_data.Value.ToLower());
+                                if (c_item == null)
+                                    c_item = ddg.Items.FirstOrDefault(i => i.UId.ToString().ToLower() == c_data.Value.ToLower());
+                                if (c_item != null)
+                                {
+                                    var r_data = RegistrantData.New(Repository, registrant, component, c_item.UId.ToString());
+                                }
+                            }
+                            else if (component is RadioGroup)
+                            {
+                                var rg = (RadioGroup)component;
+                                var c_item = rg.Items.FirstOrDefault(i => i.LabelText.ToLower() == c_data.Value.ToLower());
+                                if (c_item == null)
+                                    c_item = rg.Items.FirstOrDefault(i => i.UId.ToString().ToLower() == c_data.Value.ToLower());
+                                if (c_item != null)
+                                {
+                                    var r_data = RegistrantData.New(Repository, registrant, component, c_item.UId.ToString());
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            else if (!edit)
+            {
+                // Set mapped values blank
+                foreach (var page in form.Pages)
+                {
+                    foreach (var panel in page.Panels)
+                    {
+                        foreach (var component in panel.Components)
+                        {
+                            if (component.MappedTo == null)
+                                continue;
+                            if (component is Input)
+                            {
+                                var r_data = RegistrantData.New(Repository, registrant, component, "");
+                            }
+                            else if (component is CheckboxGroup)
+                            {
+                                var cbg = (CheckboxGroup)component;
+                                var c_items = new List<Guid>();
+                                    var r_data = RegistrantData.New(Repository, registrant, component, JsonConvert.SerializeObject(c_items));
+                            }
+                            else if (component is DropdownGroup)
+                            {
+                                var ddg = (DropdownGroup)component;
+                                    var r_data = RegistrantData.New(Repository, registrant, component, "");
+                            }
+                            else if (component is RadioGroup)
+                            {
+                                var rg = (RadioGroup)component;
+                                    var r_data = RegistrantData.New(Repository, registrant, component, "");
+                            }
+                        }
+                    }
+                }
+            }
+            Repository.Commit();
+            if (n_model.Page.Enabled)
+            {
+                ViewBag.Form = form;
+                return View("RSVP", n_model);
+            }
+            n_model.Page = form.Pages.Where(p => p.Type == PageType.Audience).First();
+            if (n_model.Page.Enabled && n_model.Form.Audiences.Count > 0)
+                if ((registrant.RSVP && n_model.Page.RSVP == RSVPType.Decline) || (!registrant.RSVP && n_model.Page.RSVP == RSVPType.Accept))
+                    return RedirectToAction("Next", new { formKey = model.FormKey, registrantKey = registrant.UId, pageNumber = 3 });
+                else
+                {
+                    ViewBag.RSVPEnabled = form.Pages.Where(p => p.Type == PageType.RSVP).First().Enabled;
+                    ViewBag.Form = form;
+                    return View("Audience", n_model);
+                }
+            return RedirectToAction("Next", new { formKey = model.FormKey, registrantKey = registrant.UId, pageNumber = 3 });
+        }
+
+        [HttpGet]
+        public ActionResult Cancel(Guid RegistrantKey)
+        {
+            var registrant = Repository.Search<Registrant>(r => r.UId == RegistrantKey).FirstOrDefault();
+            if (registrant == null)
+                return RedirectToAction("InvalidRegistrant");
+            var form = registrant.Form;
+            ViewBag.Form = form;
+            if (User.IsInRole("Super Administrators") || User.IsInRole("Administrators"))
+                registrant.Status = RegistrationStatus.CanceledByAdministrator;
+            else
+                registrant.Status = RegistrationStatus.CanceledByCompany;
+            registrant.StatusDate = DateTime.UtcNow;
+            var viewModel = new RegistrationHtml(form, registrant, null, Repository);
+            Repository.Commit();
+            return View(viewModel);
+        }
+
+        #endregion
+
+        #region RSVP and Audience
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult RSVP(AdminRegRSVP model)
+        {
+            if (!model.RegistrantKey.HasValue)
+                return View("InvalidRegistrant");
+            var registrant = Repository.Search<Registrant>(r => r.UId == model.RegistrantKey).FirstOrDefault();
+            if (registrant == null)
+                return View("InvalidRegistrant");
+            var form = registrant.Form;
+            if (form == null)
+                return View("InvalidForm");
+            ViewBag.Form = form;
+            registrant.RSVP = model.RSVP;
+            Repository.Commit();
+            var n_model = new RegistrationHtml(form, registrant, form.Pages.Where(p => p.Type == PageType.Audience).First(), Repository);
+            if (n_model.Page.Enabled && n_model.Form.Audiences.Count > 0)
+                if ((registrant.RSVP && n_model.Page.RSVP == RSVPType.Decline) || (!registrant.RSVP && n_model.Page.RSVP == RSVPType.Accept))
+                    return RedirectToAction("Next", new { formKey = registrant.FormKey, registrantKey = model.RegistrantKey.Value, pageNumber = 3 });
+                else
+                    return View("Audience", model);
+            return RedirectToAction("Next", new { formKey = registrant.FormKey, registrantKey = model.RegistrantKey.Value, pageNumber = 3 });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Audience(AdminRegAudience model)
+        {
+            if (!model.RegistrantKey.HasValue)
+                return View("InvalidRegistrant");
+            var registrant = Repository.Search<Registrant>(r => r.UId == model.RegistrantKey).FirstOrDefault();
+            if (registrant == null)
+                return View("InvalidRegistrant");
+            var form = registrant.Form;
+            if (form == null)
+                return View("InvalidForm");
+            ViewBag.Form = form;
+            registrant.AudienceKey = model.Audience;
+            Repository.Commit();
+            return RedirectToAction("Next", new { registrantKey = registrant.UId, pageNumber = 3 });
+        }
+
+        #endregion
+
+        #region Next and Back
+
+        [HttpGet]
+        public ActionResult Next(Guid registrantKey, int pageNumber)
+        {
+            var registrant = Repository.Search<Registrant>(r => r.UId == registrantKey).FirstOrDefault();
+            if (registrant == null)
+                return View("InvalidRegistrant");
+            var form = registrant.Form;
+            if (form == null)
+                return View("InvalidForm");
+            ViewBag.Form = form;
+            var model = new RegistrationHtml(form, registrant, form.Pages.Where(p => p.PageNumber == pageNumber).FirstOrDefault(), Repository);
+            if (model.Page == null)
+            {
+                if (pageNumber != int.MaxValue)
+                {
+                    return View("Review", new RegistrationHtml(form, registrant, null, Repository));
+                }
+                if (form.DisableShoppingCart)
+                {
+                    return RedirectToAction("Confirmation", new { formKey = registrant.FormKey, registrantKey = registrantKey });
+                }
+                var skipPayment = registrant.Data.Where(d => d.Component.Variable.Value == "__SkipPayment" && d.Value == "true").Count() == 1;
+                var due = registrant.Fees + registrant.Adjustings - registrant.Transactions;
+                var owesMoney = due > 0m;
+                var noPromo = registrant.Data.Where(d => d.Component.Variable.Value == "__NoPromo" && d.Value == "true").Count() > 0;
+                if (noPromo)
+                    registrant.PromotionalCodes.Clear();
+                if (form.PromotionalCodes.Count > 0 && owesMoney && !noPromo)
+                {
+                    return RedirectToAction("PromotionCodes", new { registrantKey = registrantKey });
+                }
+                //We reached the end of the form. First thing we do is check if there is a balanced owed.
+                if (due > 0.00m && !skipPayment)
+                {
+                    return RedirectToAction("ShoppingCart", new { registrantKey = registrantKey });
+                }
+                return RedirectToAction("Confirmation", new { registrantKey = registrantKey });
+            }
+
+            bool skip = false;
+
+            if (!model.Page.Enabled)
+                skip = true;
+            if ((registrant.RSVP && model.Page.RSVP == RSVPType.Decline) || (!registrant.RSVP && model.Page.RSVP == RSVPType.Accept))
+                skip = true;
+            if (model.Page.Audiences.Count > 0 && (registrant.Audience == null || !model.Page.Audiences.Contains(registrant.Audience)))
+                skip = true;
+
+            /*
+            if (model.Page.Type == PageType.RSVP)
+                return View("RSVP", model);
+            else if (model.Page.Type == PageType.Audience && model.Form.Audiences.Count > 0)
+                return View("Audience", model);
+            //*/
+
+            skip = skip || model.Page.IsBlank(registrant, Repository, true);
+
+            var commands = LogicEngine.RunLogic(model.Page, Repository, registrant: registrant);
+            foreach (var command in commands)
+            {
+                switch (command.Command)
+                {
+                    case JLogicWork.PageSkip:
+                        skip = true;
+                        break;
+                    case JLogicWork.SetVar:
+                        if (skip)
+                            continue;
+                        if (Guid.Parse(command.Parameters["Form"]) == registrant.FormKey)
+                        {
+                            Guid variableUId;
+                            var variable = command.Parameters["Variable"];
+                            var value = command.Parameters["Value"];
+                            RegistrantData dataPoint;
+                            bool exit = false;
+                            switch (variable.ToLower())
+                            {
+                                case "email":
+                                    registrant.Email = value;
+                                    exit = true;
+                                    break;
+                                case "RSVP":
+                                    registrant.RSVP = bool.Parse(value);
+                                    exit = true;
+                                    break;
+                                case "Audience":
+                                    registrant.Audience = form.Audiences.Where(a => a.UId == Guid.Parse(value)).First();
+                                    exit = true;
+                                    break;
+                                case "Status":
+                                    registrant.Status = (RegistrationStatus)Int32.Parse(variable);
+                                    exit = true;
+                                    break;
+                            }
+                            if (exit)
+                                break;
+                            variableUId = Guid.Parse(variable);
+                            dataPoint = registrant.Data.Where(d => d.VariableUId == variableUId).FirstOrDefault();
+                            if (dataPoint == null)
+                            {
+                                dataPoint = new RegistrantData()
+                                {
+                                    VariableUId = variableUId,
+                                    Value = value,
+                                };
+                                dataPoint.Component = Repository.Search<Component>(c => c.UId == variableUId).First();
+                                registrant.Data.Add(dataPoint);
+                            }
+                            dataPoint.Value = value;
+                        }
+                        else
+                        {
+                            Guid variableUId;
+                            var c_form = Repository.Search<Form>(f => f.UId == Guid.Parse(command.Parameters["Form"])).First();
+                            var c_registrant = Repository.Search<Registrant>(r => r.FormKey == c_form.UId && r.Email == registrant.Email).FirstOrDefault();
+                            if (c_registrant == null)
+                                break;
+                            var variable = command.Parameters["Variable"];
+                            var value = command.Parameters["Value"];
+                            RegistrantData dataPoint;
+                            bool exit = false;
+                            switch (variable.ToLower())
+                            {
+                                case "email":
+                                    c_registrant.Email = value;
+                                    exit = true;
+                                    break;
+                                case "RSVP":
+                                    c_registrant.RSVP = bool.Parse(value);
+                                    exit = true;
+                                    break;
+                                case "Audience":
+                                    c_registrant.Audience = c_form.Audiences.Where(a => a.UId == Guid.Parse(value)).First();
+                                    exit = true;
+                                    break;
+                                case "Status":
+                                    c_registrant.Status = (RegistrationStatus)Int32.Parse(variable);
+                                    exit = true;
+                                    break;
+                            }
+                            if (exit)
+                                break;
+                            variableUId = Guid.Parse(variable);
+                            dataPoint = c_registrant.Data.Where(d => d.VariableUId == variableUId).FirstOrDefault();
+                            if (dataPoint == null)
+                            {
+                                dataPoint = new RegistrantData()
+                                {
+                                    VariableUId = variableUId,
+                                    Value = value
+                                };
+                                dataPoint.Component = Repository.Search<Component>(c => c.UId == variableUId).First();
+                            }
+                            dataPoint.Value = value;
+                        }
+                        break;
+                }
+            }
+
+            if (skip)
+            {
+                SetPageValuesBlank(model.Page, registrant);
+                return RedirectToAction("Next", new { registrantKey = registrantKey, pageNumber = ++pageNumber });
+            }
+            var viewModel = new RegistrationHtml(form, registrant, form.Pages.Where(p => p.PageNumber == pageNumber).FirstOrDefault(), Repository);
+            registrant.UpdateAccounts();
+            Repository.Commit();
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [JsonValidateAntiForgeryToken]
+        public ActionResult Next(RegistrationModel model)
+        {
+            #region Initialization
+            var formData = Request.Form;
+            var registrant = Repository.Search<Registrant>(r => r.UId == model.RegistrantKey).FirstOrDefault();
+            if (registrant == null)
+                return RedirectToAction("InvalidRegistrant");
+            var errors = new List<SetDataError>();
+            var form = registrant.Form;
+            if (form == null)
+                return RedirectToAction("InvalidForm");
+
+            ViewBag.Form = form;
+
+            #endregion
+
+            #region Run through uploaded files
+
+            foreach (var fileKey in Request.Files.AllKeys)
+            {
+                Guid fUId;
+                if (!Guid.TryParse(fileKey, out fUId))
+                    continue;
+                var fileComponent = Repository.Search<Component>(c => c.UId == fUId).OfType<Input>().FirstOrDefault();
+                if (fileComponent == null)
+                    continue;
+                var f_dp = registrant.Data.FirstOrDefault(d => d.VariableUId == fUId);
+                if (f_dp == null)
+                {
+                    f_dp = new RegistrantData()
+                    {
+                        VariableUId = fUId,
+                        Value = "",
+                        Registrant = registrant,
+                        RegistrantKey = registrant.UId
+                    };
+                    registrant.Data.Add(f_dp);
+                }
+                f_dp.Component = fileComponent;
+                if (Request.Files[fileKey].ContentLength < 1)
+                {
+                    continue;
+                }
+                var file = Request.Files[fileKey];
+                var fileSize = file.ContentLength;
+                if (fileSize > 2097152)
+                {
+                    errors.Add(new SetDataError(fUId.ToString(), "Your file cannot exceed 2 Mb."));
+                    continue;
+                }
+                var mimeType = file.ContentType;
+                if (!AllowedTypes[fileComponent.FileType].Contains(mimeType))
+                {
+                    errors.Add(new SetDataError(fUId.ToString(), "Unauthorized file type. The file must be a " + fileComponent.FileType + "."));
+                    continue;
+                }
+                var stream = file.InputStream;
+                if (f_dp.File == null)
+                    f_dp.File = new RegistrantFile()
+                    {
+                        FileType = mimeType,
+                        Extension = Path.GetExtension(file.FileName),
+                        BinaryData = new byte[fileSize]
+                    };
+                stream.Read(f_dp.File.BinaryData, 0, file.ContentLength);
+                f_dp.Value = "UPLOADED";
+            }
+
+            #endregion
+
+            #region Run through non file components
+
+            //First we run through wait listings
+            foreach (var kvp in model.Waitlistings)
+            {
+                // Lets grab the component
+                var component = Repository.Search<Component>(c => c.UId == kvp.Key).FirstOrDefault();
+                if (component == null || component.Seating == null)
+                    continue;
+                if (component.Seating.Waitlistable)
+                {
+                    // It is wait listing
+                    if (kvp.Value)
+                    {
+                        if (component.Seating.Seaters.Where(s => s.ComponentKey == component.UId && s.RegistrantKey == registrant.UId && s.Seated == false).Count() < 1)
+                        {
+                            // Not currently wait listing.
+                            var t_seat = Seater.New(component.Seating, registrant, component, false);
+                        }
+                    }
+                    else
+                    {
+                        var seater = component.Seating.Seaters.Where(s => s.ComponentKey == component.UId && s.RegistrantKey == registrant.UId && s.Seated == false).FirstOrDefault();
+                        if (seater != null)
+                            Repository.Remove(seater); // Remove wait listing if previously was.
+                    }
+                }
+            }
+
+            //First thing we do is iterate over the components sent to us.
+            foreach (var kvp in model.Components)
+            {
+                var result = registrant.SetData(kvp.Key.ToString(), kvp.Value, ignoreValidation: false, ignoreRequired: true, resetValueOnError: false, ignoreCapacity: true);
+                result.Errors.ForEach(e => errors.Add(e));
+            }
+            #endregion
+
+            #region Run page advance logic
+
+            var page = form.Pages.Where(p => p.PageNumber == model.PageNumber).First();
+            var commands = LogicEngine.RunLogic(page, Repository, registrant: registrant, onLoad: false);
+            foreach (var command in commands)
+            {
+                switch (command.Command)
+                {
+                    case JLogicWork.FormHalt:
+                        errors.Add(new SetDataError(Guid.Empty.ToString(), command.Parameters["Text"]));
+                        break;
+                    case JLogicWork.PageHalt:
+                        var message = command.Parameters["Text"];
+                        errors.Add(new SetDataError(Guid.Empty.ToString(), message));
+                        break;
+                }
+            }
+            #endregion
+
+            //Check for form errors.  If there are, it halts the advancement and returns the form again.
+            if (errors.Count > 0)
+            {
+                var errorModel = new RegistrationHtml(form, registrant, form.Pages.Where(p => p.PageNumber == model.PageNumber).First(), Repository, errors);
+                //var errorModel = new RegistrationHtml(form, registrant, form.Pages.Where(p => p.PageNumber == model.PageNumber).First(), Repository, errors);
+                return View(errorModel);
+            }
+            Repository.Commit();
+            return RedirectToAction("Next", new { registrantKey = registrant.UId, pageNumber = (model.PageNumber + 1) });
+        }
+
+        [HttpGet]
+        public ActionResult Back(Guid registrantKey, int pageNumber)
+        {
+            var registrant = Repository.Search<Registrant>(r => r.UId == registrantKey).FirstOrDefault();
+            if (registrant == null)
+                return RedirectToAction("InvalidRegistrant");
+
+            var form = Repository.Search<Form>(f => f.UId == registrant.FormKey).FirstOrDefault();
+            if (form == null)
+                return RedirectToAction("InvalidForm");
+
+            ViewBag.Form = form;
+            bool live = registrant.Type == RegistrationType.Live;
+
+            var model = new RegistrationHtml(form, registrant, form.Pages.Where(p => p.PageNumber == (pageNumber - 1)).FirstOrDefault(), Repository);
+            if (model.Page == null)
+            {
+                model.Page = form.Pages.Where(p => p.Type == PageType.RSVP).First();
+                if (model.Page.Enabled)
+                    return View("RSVP", model);
+                model.Page = form.Pages.Where(p => p.Type == PageType.Audience).First();
+                if (model.Page.Audiences.Count == 0)
+                    if (!((model.Page.RSVP == RSVPType.Decline && !registrant.RSVP) || (model.Page.RSVP == RSVPType.Accept && registrant.RSVP)))
+                        return RedirectToAction("Next", new { registrantKey = registrant.UId, pageNumber = 3 });
+                return View("Audience", model);
+            }
+
+
+            if (!model.Page.Enabled)
+                return RedirectToAction("Back", new { registrantKey = registrant.UId, pageNumber = (pageNumber - 1) });
+            if ((registrant.RSVP && model.Page.RSVP == RSVPType.Decline) || (!registrant.RSVP && model.Page.RSVP == RSVPType.Accept))
+                return RedirectToAction("Back", new { registrantKey = registrant.UId, pageNumber = (pageNumber - 1) });
+            if (model.Page.Audiences.Count != 0 && (registrant.Audience != null && !model.Page.Audiences.Contains(registrant.Audience)))
+                return RedirectToAction("Back", new { registrantKey = registrant.UId, pageNumber = (pageNumber - 1) });
+
+            var commands = LogicEngine.RunLogic(model.Page, Repository, registrant: registrant);
+            foreach (var command in commands)
+            {
+                switch (command.Command)
+                {
+                    case JLogicWork.PageSkip:
+                        return RedirectToAction("Back", new { id = registrant.UId, pageNumber = (pageNumber - 1) });
+                }
+            }
+
+            if (model.Page.Type == PageType.Audience)
+            {
+                if (model.Page.Enabled && model.Form.Audiences.Count > 0)
+                    if ((registrant.RSVP && model.Page.RSVP == RSVPType.Decline) || (!registrant.RSVP && model.Page.RSVP == RSVPType.Accept))
+                        return RedirectToAction("Back", new { registrantKey = registrant.UId, pageNumber = (pageNumber - 1) });
+                    else
+                        return View("Audience", model);
+                else
+                    return RedirectToAction("Back", new { registrantKey = registrant.UId, pageNumber = (pageNumber - 1) });
+            }
+            else if (model.Page.Type == PageType.RSVP)
+                return View("RSVP", model);
+
+            if (model.Page.IsBlank(registrant, Repository, true))
+            {
+                return RedirectToAction("Back", new { registrantKey = registrant.UId, pageNumber = (pageNumber - 1) });
+            }
+
+            return RedirectToAction("Next", new { registrantKey = registrant.UId, pageNumber = (pageNumber - 1) });
+        }
+
+        #endregion
+
+        #region Confirmation
+
+        [HttpGet]
+        public ActionResult Confirmation(Guid registrantKey, bool changeStatus = true)
+        {
+            var registrant = Repository.Search<Registrant>(r => r.UId == registrantKey).FirstOrDefault();
+            if (registrant == null)
+                return RedirectToAction("InvalidRegistrant");
+            var form = registrant.Form;
+            if (form == null)
+                return RedirectToAction("InvalidForm");
+
+            ViewBag.Form = form;
+            if (changeStatus)
+                registrant.Status = RegistrationStatus.Submitted;
+            registrant.StatusDate = DateTimeOffset.UtcNow;
+            var model = new RegistrationHtml(form, registrant, form.Pages.Where(p => p.Type == PageType.Confirmation).First(), Repository);
+            registrant.UpdateAccounts();
+            Repository.Commit();
+            return View(model);
+        }
+
+        [HttpGet]
+        public ActionResult PromotionCodes(Guid registrantKey)
+        {
+            var registrant = Repository.Search<Registrant>(r => r.UId == registrantKey).FirstOrDefault();
+            if (registrant == null)
+                return RedirectToAction("InvalidRegistrant");
+
+            var form = Repository.Search<Form>(f => f.UId == registrant.FormKey).FirstOrDefault();
+            if (form == null)
+                return RedirectToAction("InvalidForm");
+
+            ViewBag.Form = form;
+            if (form.PromotionalCodes.Count == 0)
+            {
+                return RedirectToAction("ShoppingCart", new { registrantKey = registrantKey });
+            }
+            var model = new RegistrationHtml(form, registrant, null, Repository);
+            return View(model);
+        }
+
+        [HttpPost]
+        public JsonNetResult AddPromotionCode(Guid registrantKey, string codeEntered)
+        {
+            var registrant = Repository.Search<Registrant>(r => r.UId == registrantKey).FirstOrDefault();
+            if (registrant == null)
+                return new JsonNetResult()
+                {
+                    Data = new { Success = false, Message = "Invalid Registrant." },
+                    JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                };
+            var form = registrant.Form;
+            if (form == null)
+                return new JsonNetResult()
+                {
+                    Data = new { Success = false, Message = "Invalid Form." },
+                    JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                };
+
+            var code = Repository.Search<PromotionCode>(c => c.Code == codeEntered && c.FormKey == form.UId).FirstOrDefault();
+            if (code == null)
+                return new JsonNetResult()
+                {
+                    Data = new { Success = false, Message = "Invalid Code." },
+                    JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                };
+            var userCode = registrant.PromotionalCodes.Where(c => c.CodeKey == code.UId).FirstOrDefault();
+            if (userCode != null)
+                return new JsonNetResult()
+                {
+                    Data = new { Success = false, Message = "Code Used." },
+                    JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                };
+            var entry = PromotionCodeEntry.New(Repository, code, registrant);
+            return new JsonNetResult()
+            {
+                Data = new { Success = true, Message = code.Description },
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
+
+        #endregion
+
+        #region Merchant
+
+        [HttpGet]
+        public ActionResult CreditCard(Guid registrantKey)
+        {
+            var registrant = Repository.Search<Registrant>(r => r.UId == registrantKey).FirstOrDefault();
+            if (registrant == null)
+                return View("InvalidRegistrant");
+            var form = registrant.Form;
+            ViewBag.Form = form;
+            var forceBillMe = registrant.Data.Where(d => d.Component.Variable != null && d.Component.Variable.Value == "__ForceBillMe" && d.Value == "true").Count() == 1;
+            if (forceBillMe)
+                return RedirectToAction("BillMe", new { id = registrant.UId });
+            var model = new CreditCardModel()
+            {
+                RegistrantKey = registrant.UId,
+                FormKey = registrant.FormKey
+            };
+            model.Desc = form.MerchantAccount.Descriminator;
+            ViewBag.RegHtml = new RegistrationHtml(form, registrant, null, Repository);
+            if (registrant.TotalOwed < 0.00m)
+            {
+                return RedirectToAction("Confirmation", new { registrantKey = registrant.UId });
+            }
+            return View(model);
+        }
+
+        [HttpPost]
+        [JsonValidateAntiForgeryToken]
+        public ActionResult CreditCard(CreditCardModel model)
+        {
+            #region Initialization
+            var formData = Request.Form;
+            var errors = new Dictionary<Guid, string>();
+            var form = Repository.Search<Form>(f => f.UId == model.FormKey).FirstOrDefault();
+            if (form == null)
+                return RedirectToAction("InvalidForm");
+
+            var registrant = Repository.Search<Registrant>(r => r.UId == model.RegistrantKey && r.FormKey == form.UId).FirstOrDefault();
+            if (registrant == null)
+                return RedirectToAction("InvalidRegistrant");
+
+            #endregion
+
+            ViewBag.Form = form;
+            var ammount = registrant.Fees + registrant.Adjustings - registrant.Transactions;
+
+            if (form.MerchantAccount == null)
+                return RedirectToAction("Confirmation", new { FormKey = registrant.FormKey, RegistrantKey = registrant.UId, Confirmation = registrant.Confirmation, Live = registrant.Type == RegistrationType.Live });
+            IMerchantAccount<TransactionRequest> gateway = form.MerchantAccount.GetGateway();
+            model.Desc = form.MerchantAccount.Descriminator;
+            //Now we build the transaction Request.
+            var request = new TransactionRequest()
+            {
+                Zip = model.ZipCode,
+                Ammount = ammount,
+                CVV = model.CardCode,
+                CardNumber = model.CardNumber,
+                NameOnCard = model.NameOnCard,
+                ExpMonthAndYear = model.ExpMonth + model.ExpYear,
+                Cart = JsonConvert.SerializeObject(registrant.GetShoppingCartItems().ToCart()),
+                CompanyKey = form.CompanyKey,
+                MerchantAccountKey = form.MerchantAccountKey,
+                FormKey = form.UId,
+                Form = form,
+                RegistrantKey = registrant.UId,
+                Registrant = registrant,
+                TransactionType = TransactionType.AuthorizeCapture,
+                Mode = (registrant.Type == RegistrationType.Live ? ServiceMode.Live : ServiceMode.Test),
+                LastFour = model.CardNumber.GetLast(4),
+                DateCreated = DateTimeOffset.UtcNow,
+                DateModified = DateTimeOffset.UtcNow,
+                Currency = form.Currency,
+                Address = model.Line1,
+                Address2 = model.Line2,
+                City = model.City,
+                Country = model.Country,
+                State = model.State,
+                Phone = model.Phone
+            };
+            if (form.MerchantAccount.Descriminator == "paypal")
+            {
+                request.CardType = model.CardType;
+            }
+            var names = model.NameOnCard.Split(' ');
+            if (names.Length < 2)
+            {
+                model.Errors.Add("NameOnCard", "You must supply a first and last name.");
+                request.FirstName = "";
+                request.LastName = model.NameOnCard;
+            }
+            else
+            {
+                request.FirstName = names[0];
+                request.LastName = names[1];
+            }
+            TransactionDetail td;
+            if (registrant.Type == RegistrationType.Live)
+            {
+                request.Mode = ServiceMode.Live;
+                if (String.IsNullOrEmpty(model.CardNumber))
+                    model.Errors["CardNumber"] = "Invalid credit card number.";
+                if (!CCHelper.ValidateCard(model.CardNumber))
+                    model.Errors["CardNumber"] = "Invalid credit card number.";
+                if (String.IsNullOrEmpty(model.CardCode))
+                    model.Errors["CardCode"] = "Invalid card code entered.";
+                if (!Regex.IsMatch(model.CardCode, @"^[0-9]+$"))
+                    model.Errors["CardCode"] = "Invalid card code entered.";
+                if (String.IsNullOrWhiteSpace(model.NameOnCard))
+                    model.Errors["NameOnCard"] = "You must enter a name.";
+                if (String.IsNullOrWhiteSpace(model.ZipCode))
+                    model.Errors["ZipCode"] = "You must enter a zip code.";
+                if (errors.Count > 0)
+                {
+                    ViewBag.RegHtml = new RegistrationHtml(form, registrant, null, Repository);
+                    return View(model);
+                }
+                td = gateway.AuthorizeCapture(request);
+            }
+            else
+            {
+                td = new TransactionDetail()
+                {
+                    Approved = true,
+                    Ammount = request.Ammount,
+                    AuthorizationCode = "TEST",
+                    FormKey = request.FormKey,
+                    Message = "Success",
+                    TransactionType = TransactionType.AuthorizeCapture,
+                    TransactionID = "__TEST__" + Guid.NewGuid().ToString()
+                };
+            }
+            if (!registrant.TransactionRequests.Contains(request))
+                registrant.TransactionRequests.Add(request);
+            if (!request.Details.Contains(td))
+                request.Details.Add(td);
+            Repository.Add(request);
+            registrant.UpdateAccounts();
+            Repository.Commit();
+            ViewBag.RegHtml = new RegistrationHtml(form, registrant, null, Repository);
+
+            if (td.Approved)
+            {
+                ViewBag.Test = request.Mode == ServiceMode.Live;
+                return RedirectToAction("Confirmation", new { registrantKey = registrant.UId });
+            }
+            else
+            {
+                model.Errors[""] = "The charge was declined by the credit card company.";
+                return View(model);
+            }
+        }
+        
+        [HttpPost]
+        [JsonValidateAntiForgeryToken]
+        public ActionResult ChargeConfirmation(AdminRegChargeConfirmation model)
+        {
+            var registrant = Repository.Search<Registrant>(r => r.UId == model.RegistrantKey).FirstOrDefault();
+            if (registrant == null)
+                return RedirectToAction("InvalidRegistrant");
+            var form = registrant.Form;
+            ViewBag.Form = form;
+            ViewBag.RegHtml = new RegistrationHtml(form, registrant, null, Repository);
+            return RedirectToAction("Confirmation", new { registrantKey = registrant.UId });
+        }
+
+        [HttpGet]
+        public ActionResult BillMe(Guid registrantKey)
+        {
+            var registrant = Repository.Search<Registrant>(r => r.UId == registrantKey).FirstOrDefault();
+            if (registrant == null)
+                return View("InvalidRegistrant");
+            var form = registrant.Form;
+            ViewBag.Form = form;
+            ViewBag.RegHtml = new RegistrationHtml(form, registrant, null, Repository);
+            registrant.UpdateAccounts();
+            Repository.Commit();
+            return View(registrant);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult BillMe(AdminRegBillMe model)
+        {
+            var registrant = Repository.Search<Registrant>(r => r.UId == model.RegistrantKey).FirstOrDefault();
+            if (registrant == null)
+                return RedirectToAction("InvalidRegistrant");
+            var form = registrant.Form;
+            registrant.PayingAgentNumber = model.PayingAgentNumber;
+            registrant.PayingAgentName = model.PayingAgentName;
+            ViewBag.Form = form;
+            ViewBag.RegHtml = new RegistrationHtml(form, registrant, null, Repository);
+            return RedirectToAction("Confirmation", new { registrantKey = registrant.UId });
+        }
+
+        [HttpGet]
+        public ActionResult ShoppingCart(Guid registrantKey)
+        {
+            var registrant = Repository.Search<Registrant>(r => r.UId == registrantKey).FirstOrDefault();
+            if (registrant == null)
+                return View("InvalidRegistrant");
+            var form = registrant.Form;
+            if (form == null)
+                return View("InvalidForm");
+
+            ViewBag.Form = form;
+
+            var skipPayment = registrant.Data.Where(d => d.Component.Variable != null && d.Component.Variable.Value == "__SkipPayment" && d.Value == "true").Count() == 1;
+            if (skipPayment)
+                return RedirectToAction("Confirmation", new { registrantKey = registrantKey });
+            var billMeOnly = registrant.Data.Where(d => d.Component.Variable != null && d.Component.Variable.Value == "__BillMe" && d.Value == "true").Count() == 1;
+            ViewBag.BillMeOnly = billMeOnly;
+            if (registrant.TotalOwed < 0)
+            {
+                return RedirectToAction("Confirmation", new { registrantKey = registrantKey });
+            }
+            var model = new RegistrationHtml(form, registrant, null, Repository);
+            registrant.UpdateAccounts();
+            Repository.Commit();
+            return View(model);
+        }
+
+        #endregion
+    
+        [HttpGet]
+        public FileContentResult Invoice(Guid id)
+        {
+            var registrant = Repository.Search<Registrant>(r => r.UId == id).First();
+            var binaryData = new byte[0];
+            using (var m_stream = new MemoryStream())
+            {
+                var titleFont = FontFactory.GetFont("Arial", 18, Font.BOLD);
+                var subTitleFont = FontFactory.GetFont("Arial", 14, Font.BOLD);
+                var boldTableFont = FontFactory.GetFont("Arial", 12, Font.BOLD);
+                var endingMessageFont = FontFactory.GetFont("Arial", 10, Font.ITALIC);
+                var bodyFont = FontFactory.GetFont("Arial", 12, Font.NORMAL);
+                var document = new Document(PageSize.A4, 40, 25, 40, 65);
+                PdfWriter.GetInstance(document, m_stream);
+                document.Open();
+                document.Add(new Paragraph(registrant.Form.Name + ": Invoice/Reciept", titleFont));
+                var table = new Table(4);
+                table.DefaultHorizontalAlignment = 0;
+                table.DefaultCellBorder = 0;
+                table.WidthPercentage = 100;
+                table.SpaceInsideCell = 5;
+                table.Border = 0;
+                table.AddCell(new Phrase("Item", boldTableFont));
+                table.AddCell(new Phrase("Price", boldTableFont));
+                table.AddCell(new Phrase("Quantity", boldTableFont));
+                table.AddCell(new Phrase("Total", boldTableFont));
+
+                var shoppingCart = registrant.GetShoppingCartItems();
+                var runningTotal = 0.00m;
+                
+                foreach (var item in shoppingCart.Items)
+                {
+                    var total = (decimal)item.Quanity * item.Ammount;
+                    runningTotal += total;
+                    table.AddCell(new Phrase(item.Name, bodyFont));
+                    table.AddCell(new Phrase(Math.Round(item.Ammount).ToString("c", registrant.Form.Culture), bodyFont));
+                    table.AddCell(new Phrase(item.Quanity.ToString(), bodyFont));
+                    table.AddCell(new Phrase(Math.Round(total).ToString("c", registrant.Form.Culture), bodyFont));
+                }
+                table.AddCell(new Phrase(""));
+                table.AddCell(new Phrase(""));
+                table.AddCell(new Phrase("Total Fees:", boldTableFont));
+                table.AddCell(new Phrase(Math.Round(runningTotal).ToString("c", registrant.Form.Culture), boldTableFont));
+
+                foreach (var code in registrant.PromotionalCodes.Where(c => c.Code.Action == RSToolKit.Domain.Entities.ShoppingCartAction.Add))
+                {
+                    runningTotal += code.Code.Amount;
+                    table.AddCell(new Phrase(code.Code.Code, bodyFont));
+                    table.AddCell(new Phrase("Add", bodyFont));
+                    table.AddCell(new Phrase(Math.Round(code.Code.Amount).ToString("c", registrant.Form.Culture), bodyFont));
+                    table.AddCell(new Phrase(Math.Round(runningTotal).ToString("c", registrant.Form.Culture), bodyFont));
+                }
+                foreach (var code in registrant.PromotionalCodes.Where(c => c.Code.Action == RSToolKit.Domain.Entities.ShoppingCartAction.Subtract))
+                {
+                    runningTotal -= code.Code.Amount;
+                    table.AddCell(new Phrase(code.Code.Code, bodyFont));
+                    table.AddCell(new Phrase("Subtract", bodyFont));
+                    table.AddCell(new Phrase(Math.Round(code.Code.Amount).ToString("c", registrant.Form.Culture), bodyFont));
+                    table.AddCell(new Phrase(Math.Round(runningTotal).ToString("c", registrant.Form.Culture), bodyFont));
+                }
+                foreach (var code in registrant.PromotionalCodes.Where(c => c.Code.Action == RSToolKit.Domain.Entities.ShoppingCartAction.Multiply))
+                {
+                    var workingTotal = runningTotal;
+                    runningTotal *= code.Code.Amount;
+                    table.AddCell(new Phrase(code.Code.Code, bodyFont));
+                    table.AddCell(new Phrase("Percentage (" + ((1 - code.Code.Amount).ToString("p", registrant.Form.Culture)) + ")", bodyFont));
+                    table.AddCell(new Phrase(Math.Round((workingTotal * (1 - code.Code.Amount))).ToString("c", registrant.Form.Culture), bodyFont));
+                    table.AddCell(new Phrase(Math.Round(runningTotal).ToString("c", registrant.Form.Culture), bodyFont));
+                }
+                if (registrant.PromotionalCodes.Count > 0)
+                {
+                    table.AddCell(new Phrase(""));
+                    table.AddCell(new Phrase(""));
+                    table.AddCell(new Phrase("Less Discounts:", boldTableFont));
+                    table.AddCell(new Phrase(Math.Round(runningTotal).ToString("c", registrant.Form.Culture), boldTableFont));
+                }
+                if (registrant.Form.Tax.HasValue)
+                {
+                    runningTotal += shoppingCart.Taxes();
+                    table.AddCell(new Phrase(registrant.Form.TaxDescription, bodyFont));
+                    table.AddCell(new Phrase(""));
+                    table.AddCell(new Phrase(registrant.Form.Tax.Value.ToString("p", registrant.Form.Culture), bodyFont));
+                    table.AddCell(new Phrase(Math.Round(shoppingCart.Taxes()).ToString("c", registrant.Form.Culture), bodyFont));
+
+                    table.AddCell(new Phrase(""));
+                    table.AddCell(new Phrase(""));
+                    table.AddCell(new Phrase("Total:", boldTableFont));
+                    table.AddCell(new Phrase(Math.Round(runningTotal).ToString("c", registrant.Form.Culture), boldTableFont));
+                }
+                foreach (var detail in registrant.Details())
+                {
+                    var charge = (detail.TransactionType == RSToolKit.Domain.Entities.MerchantAccount.TransactionType.AuthorizeCapture || detail.TransactionType == RSToolKit.Domain.Entities.MerchantAccount.TransactionType.Capture);
+                    if (charge)
+                    {
+                        runningTotal -= detail.Ammount;
+                    }
+                    else
+                    {
+                        runningTotal += detail.Ammount;
+                    }
+                    table.AddCell(new Phrase(charge ? "Payment" : "Refund", bodyFont));
+                    table.AddCell(new Phrase(detail.DateCreated.LocalDateTime.ToString(registrant.Form.Culture), bodyFont));
+                    table.AddCell(new Phrase(""));
+                    table.AddCell(new Phrase((charge ? "-" : "") + Math.Round(detail.Ammount).ToString("c", registrant.Form.Culture), bodyFont));
+                }
+                table.AddCell(new Phrase(""));
+                table.AddCell(new Phrase(""));
+                table.AddCell(new Phrase("Grand Total:", boldTableFont));
+                table.AddCell(new Phrase(Math.Round(registrant.TotalOwed).ToString("c", registrant.Form.Culture), boldTableFont));
+
+                document.Add(table);
+
+                document.Close();
+                binaryData = m_stream.ToArray();
+            }
+
+            return File(binaryData, "application/pdf", "invoice.pdf");
+        }
+
+        private void SetPageValuesBlank(Page page, Registrant registrant)
+        {
+            if (page.AdminOnly)
+                return;
+            foreach (var panel in page.Panels)
+            {
+                if (panel.AdminOnly)
+                    continue;
+                foreach (var component in panel.Components)
+                {
+                    if (component.AdminOnly || component is FreeText || component is CheckboxItem || component is RadioItem || component is DropdownItem)
+                        continue;
+                    var data = registrant.Data.FirstOrDefault(d => d.VariableUId == component.UId);
+                    if (data == null)
+                    {
+                        data = new RegistrantData()
+                        {
+                            VariableUId = component.UId,
+                            Component = component
+                        };
+                        registrant.Data.Add(data);
+                    }
+                    data.Value = null;
+                }
+            }
+            Repository.Commit();
+        }
+
+    }
+}

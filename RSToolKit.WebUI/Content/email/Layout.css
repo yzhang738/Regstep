@@ -1,0 +1,15 @@
+﻿nav.navbar-utility li.mail > a {
+  background: white;
+  color: #3E3E3E;
+}
+nav.navbar-utility li.mail > a:hover {
+  background: white;
+  color: #3E3E3E;
+}
+nav.navbar-utility ul > li.mail > ul {
+  background: white;
+}
+.newAreaLink {
+  cursor: pointer;
+}
+/*# sourceMappingURL=Layout.css.map */

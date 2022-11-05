@@ -1,0 +1,189 @@
+﻿@using System.Collections;
+@using RSToolKit.Domain.Entities;
+@using RSToolKit.Domain.Entities.MerchantAccount;
+@using RSToolKit.Domain;
+@using System.Globalization;
+@using RSToolKit.WebUI.Infrastructure;
+@model TransactionRequest
+@{
+    Layout = "~/Views/Shared/_Layout-Cloud.cshtml";
+    var total = Model.TotalAmount();
+    var failed = false;
+    if (Model.Details.Where(d => d.CaptureKey == null && d.Approved).Count() == 0)
+    {
+        failed = true;
+    }
+    var user = (User)ViewBag.User;
+}
+@section scripts
+{
+    <script src="~/Scripts/Transaction/transaction.js"></script>
+}
+@section styles
+{
+}
+@section title
+{
+    <div class="row">
+        <div class="col-xs-12">
+            <span style="font-size: 80%">Transaction Balance: @(failed ? Html.Raw("<span color=\"red\">FAILED</span> <span style=\"text-decoration: line-through;\">" + (total.HasValue ? total.Value.ToString("c", new CultureInfo(Model.Currency.GetCurrencyFormat())) : Model.Ammount.ToString("c", new CultureInfo(Model.Currency.GetCurrencyFormat()))) + "</span>") : Html.Raw(total.Value.ToString("c", new CultureInfo(Model.Currency.GetCurrencyFormat()))))</span>
+        </div>
+    </div>
+    @if (Model.Registrant != null)
+    {
+        <div class="row">
+            <div class="col-xs-12">
+                <span style="font-size: 70%">Registrant: Total Owed: @(Model.Registrant.TotalOwed.ToString("c", new CultureInfo(Model.Currency.GetCurrencyFormat())))</span>
+            </div>
+        </div>
+    }
+}
+@section crumbs
+{
+    @if (Model.Registrant != null)
+    {
+        <a href="@Url.Action("Get", "Registrant", new { id = Model.Registrant.SortingId })"><span class="glyphicon glyphicon-chevron-left"></span> To Registrant</a>
+    }
+}
+<input type="hidden" id="transactionId" value="@Model.SortingId" />
+<div class="col-xs-12">
+    @if (total > 0)
+    {
+        <div class="add-padding-bottom-5 text-medium text-color-2">
+            Options
+        </div>
+        <div class="row add-padding-vertical-5 color-grey-2">
+            <div class="col-sm-6 col-md-4 col-lg-3">
+                <div class="add-padding-vertical-5">
+                    <a class="modal-link" id="refundBalance" href="@Url.Action("RefundBalance", "Cloud", null, Request.Url.Scheme)" >
+                        <span class="glyphicon glyphicon-usd"></span> Refund Balance
+                    </a>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-4 col-lg-3">
+                <div class="add-padding-vertical-5">
+                    <a class="modal-link" data-toggle="modal" data-target="#partialRefund">
+                        <span class="glyphicon glyphicon-usd"></span> Partial Refund
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+
+    <div class="row">
+        <div class="col-md-5 col-lg-4 add-padding-bottom text-small">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th class="registrant-header" colspan="2">Original Transaction</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Date:</td>
+                        <td>@Model.Date.UserDateString(user)</td>
+                    </tr>
+                    <tr>
+                        <td>Amount:</td>
+                        <td>@Model.Ammount.ToString("c", new CultureInfo(Model.Currency.GetCurrencyFormat()))</td>
+                    </tr>
+                    <tr>
+                        <td>Transaction Type:</td>
+                        <td>@Model.TransactionType.GetStringValue()</td>
+                    </tr>
+                    <tr>
+                        <td>Last Four:</td>
+                        <td>@Model.LastFour</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-md-7 col-lg-8 text-small">
+            <table class="table table-striped text-nowrap">
+                <thead>
+                    <tr>
+                        <th class="registrant-header" colspan="4">
+                            Transaction Balance
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>Date</th>
+                        <th>Type</th>
+                        <th>Transaction Id</th>
+                        <th>Status</th>
+                        <th style="text-align: right;">Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var detail in Model.Details.Where(d => d.CaptureKey == null).ToList())
+                    {
+                        <tr>
+                            <td>@detail.DateCreated.UserDateString(user)</td>
+                            <td>@detail.TransactionType.GetStringValue()</td>
+                            <td>@(detail.Approved ? detail.TransactionID : detail.CVVResponse)</td>
+                            <td>@(detail.Approved ? "Completed" : "Failed")</td>
+                            <td style="text-align: right;">
+                                @if (detail.TransactionType == TransactionType.Credit || detail.TransactionType == TransactionType.Void)
+                                {
+                                    <span>-</span>
+                                }
+                                <span @(!detail.Approved ? Html.Raw("style=\"text-decoration: line-through\"") : Html.Raw(""))>@detail.Ammount.ToString("c", new CultureInfo(Model.Currency.GetCurrencyFormat()))</span>
+                            </td>
+                        </tr>
+                        foreach (var credit in detail.Credits)
+                        {
+
+                            <tr>
+                                <td>@Html.UserDate(credit.DateCreated, "M/d/yy h:mm")</td>
+                                <td>@credit.TransactionType.GetStringValue()</td>
+                                <td>@(credit.Approved ? detail.TransactionID : credit.CVVResponse)</td>
+                                <td>@(credit.Approved ? "Completed" : "Failed")</td>
+                                <td style="text-align: right;">
+                                    @if (credit.TransactionType == TransactionType.Credit || credit.TransactionType == TransactionType.Void)
+                                    {
+                                        <span>-</span>
+                                    }
+                                    <span @(!credit.Approved ? Html.Raw("style=\"text-decoration: line-through\"") : Html.Raw(""))>@credit.Ammount.ToString("c", new CultureInfo(Model.Currency.GetCurrencyFormat()))</span>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="4"><span class="text-bold">Balance:</span></td>
+                        <td style="text-align: right;"><span class="text-bold">@(new MvcHtmlString(total.HasValue ? total.Value.ToString("c", new CultureInfo(Model.Currency.GetCurrencyFormat())) : "<s>failed</s>"))</span></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+@section modals
+{
+    <div class="modal fade" id="partialRefund" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3 class="modal-title">Partial Refund</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <span id="amountToRefundError"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="control-label col-sm-3">Amount</label>
+                    <div class="col-sm-9">
+                        <input class="form-control input-sm" type="text" id="amountToRefund" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#partialRefund">Cancel</button>
+                <button type="button" class="btn btn-default" id="refund">Refund</button>
+            </div>
+        </div>
+    </div>
+}

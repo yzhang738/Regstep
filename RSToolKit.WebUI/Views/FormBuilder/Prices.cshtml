@@ -1,0 +1,57 @@
+﻿@using RSToolKit.Domain.Entities;
+@using RSToolKit.Domain;
+@using System.Text.RegularExpressions;
+@using RSToolKit.Domain.Entities.Components;
+@model RSToolKit.Domain.Entities.PriceGroup
+@{
+    Layout = "~/Views/Shared/_Layout_FormBuilder.cshtml";
+    var AudienceList = (List<Audience>)ViewBag.AudienceList;
+    var Seatings = (List<Seating>)ViewBag.Seatings;
+}
+@section scripts
+{
+    <script type="text/javascript">
+        var formId = "@Model.UId";
+    </script>
+}
+@section styles
+{
+}
+@section title {
+    Price Group
+}
+@section breadcrumbs {
+    @Html.Raw(((User)ViewBag.User).BreadCrumbs.GetBreadTrail(Url))
+}
+@section modals
+{
+}
+@using (Html.BeginForm("Prices", "FormBuilder", FormMethod.Post, new { @class = "form", role = "form", data_xhr_method = "put" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.UId)
+    <div class="col-xs-12">
+        <div class="add-padding-bottom-5 text-medium text-color-2">
+            Price Lists
+        </div>
+        <div class="row add-padding-vertical-5 color-grey-2">
+            <div class="col-xs-12">
+                <a href="@Url.Action("Price", "FormBuilder", null, Request.Url.Scheme)" data-xhr-method="post" data-xhr-options='{ "id": "@Model.UId" }'><span class="glyphicon glyphicon-plus"></span> Price List</a>
+            </div>            
+        </div>
+        <div class="row">
+            <table class="table table-striped">
+                <tbody>
+                    @foreach (var price in Model.Prices)
+                    {
+                        <tr>
+                            <td>@price.Name</td>
+                            <td><a href="@Url.Action("Price", new { id = price.UId })"><span class="glyphicon glyphicon-edit"></span> Edit</a></td>
+                            <td><a href="@Url.Action("Price", "FormBuilder", null, Request.Url.Scheme)" data-xhr-method="delete" data-xhr-options='{ "id": "@price.UId" }'><span class="glyphicon glyphicon-trash"></span> Delete</a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}

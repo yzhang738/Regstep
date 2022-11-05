@@ -1,0 +1,70 @@
+﻿@using RSToolKit.Domain.Entities.Components;
+@using RSToolKit.Domain.Engines;
+@model RegistrationHtml
+@{
+    ViewBag.Title = Model.Form.Name;
+    ViewBag.WrapperClass = Model.Registrant.Type == RSToolKit.Domain.Entities.RegistrationType.Test ? "form-test" : "form-live";
+    Layout = "~/Views/Shared/_Layout_Registration.cshtml";
+    var first = ViewBag.First != null ? (bool)ViewBag.First : false;
+}
+
+@section pageNumber
+{
+    RSVP
+}
+@section shoppingCart
+{
+    @Model.RenderShoppingCart()
+}
+@section header
+{
+    @Model.RenderHeader()
+}
+@section footer
+{
+    @Model.RenderFooter()
+}
+@section customStyles
+{
+    @Model.RenderFormStyle()
+}
+@section scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var rsvp = null;
+            $('form').on('submit', function () {
+                if (rsvp === null) {
+                    return false;
+                }
+                return true;
+            });
+            $('#rsvpAccept').on('click', function () {
+                rsvp = true;
+                $('#RSVP').val('true');
+                $('#form').submit();
+            });
+            $('#rsvpDecline').on('click', function () {
+                rsvp = false;
+                $('#RSVP').val('false');
+                $('#form').submit();
+            });
+        });
+    </script>
+}
+@using (Html.BeginForm("RSVP", "Register", FormMethod.Post, new { id = "form" }))
+{
+    @Html.AntiForgeryToken()
+    @Model.RenderHiddens()
+    <div class="row form-panel">
+        <div class="col-xs-12">
+            <div class="row form-panel-row">
+                @Html.Raw(Model.Registrant.Parse(Model.Render(Model.Page.Panels[0].Components.OfType<FreeText>().First())))
+            </div>
+        </div>
+    </div>
+    <div class="form-btn-panel">
+        @Model.RenderRsvp(first)
+    </div>
+   
+}

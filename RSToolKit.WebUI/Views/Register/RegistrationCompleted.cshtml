@@ -1,0 +1,81 @@
+﻿@using RSToolKit.Domain.Entities.Components;
+@model RegistrationHtml
+@{
+    ViewBag.Title = Model.Form.Name;
+    ViewBag.WrapperClass = "form-live";
+    Layout = "~/Views/Shared/_Layout_Registration.cshtml";
+}
+
+@section pageNumber
+{
+    Registration Complete
+}
+@section shoppingCart
+{
+}
+@section header
+{
+    @Model.RenderHeader()
+}
+@section footer
+{
+    @Model.RenderFooter()
+}
+@section customStyles
+{
+    @Model.RenderFormStyle()
+}
+@section scripts
+{
+    <script src="~/Scripts/Bootstrap/Plugins/processing.js"></script>
+    <script src="~/Scripts/Tool/extensions.js"></script>
+    <script src="~/Scripts/Tool/restful.js"></script>
+}
+@Html.AntiForgeryToken()
+<div class="row form-panel">
+    <div class="col-xs-12">
+        <div class="row">
+            <div class="col-xs-12 form-component">
+                <h2>
+                    Record Complete
+                </h2>
+                <p>
+                    Your record has been submitted. To access your confirmation, please click the link below to resend your Confirmation email.
+                </p>
+                <p>
+                    If you do not receive the email, please check your SPAM folder. If you cannot locate the email, please contact the event coordinator to gain access to your confirmation.
+                </p>
+                @Model.Form.CoordinatorName
+                <br />@Model.Form.CoordinatorPhone
+                <br /><a href="mailto:@Model.Form.CoordinatorEmail" target="_blank">@Model.Form.CoordinatorEmail</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row form-btn-panel">
+    <div class="col-xs-12">
+        <div class="row">
+            <!--Button Nav Back-->
+            <div class="col-sm-4 col-md-3 col-lg-2 form-btn">
+                <a class="btn-rs btn-navigation" href="@Url.Action("RegistrationCompleted", "Register", null, Request.Url.Scheme)" data-xhr-method="post" data-xhr-options='{"Token":"@ViewBag.Token"}' data-xhr-failmessage="Email could not be sent.">
+                    Resend Email
+                </a>
+            </div>
+            <!--End Button Nav Back-->
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="processingModal" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" style="background: white;">
+        <div class="modal-header">
+            <h3>Processing...</h3>
+        </div>
+        <div class="modal-body">
+            <div class="progress">
+                <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                    <span class="sr-only">Processing</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,20 @@
+namespace RSToolKit.Domain.Migrations
+{
+    using System;
+    using System.Data.Entity.Migrations;
+    
+    public partial class log_removeuid : DbMigration
+    {
+        public override void Up()
+        {
+            DropIndex("dbo.Logs", new[] { "UId" });
+            DropColumn("dbo.Logs", "UId");
+        }
+        
+        public override void Down()
+        {
+            AddColumn("dbo.Logs", "UId", c => c.Guid());
+            CreateIndex("dbo.Logs", "UId");
+        }
+    }
+}

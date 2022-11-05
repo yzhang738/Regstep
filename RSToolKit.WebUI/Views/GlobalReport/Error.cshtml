@@ -1,0 +1,39 @@
+﻿@using System.Collections;
+@using RSToolKit.Domain.Entities;
+@using RSToolKit.Domain;
+@using Newtonsoft.Json;
+@using RSToolKit.Domain.Data;
+@using RSToolKit.Domain.Entities.Components;
+@using RSToolKit.Domain.Engines;
+@model Tuple<string, string>
+@{
+    ViewBag.Title = "RS Cloud - RegStep Technologies";
+    Layout = "~/Views/Shared/_L_Cloud.cshtml";
+    var Repository = (FormsRepository)ViewBag.Repository;
+}
+@section scripts
+{
+}
+@section styles
+{
+}
+@section title
+{
+    RegScript Engine Syntax Error
+}
+@section crumbs {
+    @Html.Partial("P_Trail", new TrailModel(ViewBag.Trail))
+}
+@section modals
+{
+}
+<div class="col-xs-12">
+    <div class="row add-padding-vertical">
+        <div class="col-xs-12">
+            <h3>@Model.Item1</h3>
+            <p>
+                @Html.Raw(Model.Item2)
+            </p>
+        </div>
+    </div>
+</div>

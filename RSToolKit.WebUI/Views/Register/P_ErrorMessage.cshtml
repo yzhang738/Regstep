@@ -1,0 +1,4 @@
+﻿@model FormRegError
+<div class="form-error-warning" @(Model.hide ? new MvcHtmlString("style=\"display: none\"") : new MvcHtmlString(""))>
+    <span class="glyphicon glyphicon-warning-sign"></span> @Model.message
+</div>

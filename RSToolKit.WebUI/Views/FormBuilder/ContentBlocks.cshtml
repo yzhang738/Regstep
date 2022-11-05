@@ -1,0 +1,63 @@
+﻿@using RSToolKit.Domain.Entities;
+@model RSToolKit.Domain.Entities.Form
+@{
+    Layout = "~/Views/Shared/_Layout_FormBuilder.cshtml";
+}
+@section scripts
+{
+    @Scripts.Render("~/toolkit/scripts/cke")
+    <script type="text/javascript">
+        var formId = "@Model.UId";
+    </script>
+}
+@section styles
+{
+}
+@section title {
+    Content Blocks
+}
+@section breadcrumbs {
+    @Html.ActionLink("Forms", "Index", "FormBuilder")
+    <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span> @Html.ActionLink((Model.Name.Length < 20 ? Model.Name : Model.Name.Substring(0, 20)), "Form", "FormBuilder", new { id = Model.UId }, null)
+    <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span> Content Blocks
+}
+@section modals
+{
+}
+@Html.AntiForgeryToken()
+
+    <div class="col-xs-12">
+        <div class="add-padding-bottom-5 text-medium text-color-2">
+            Content Blocks
+        </div>
+
+        <div class="row add-padding-vertical-5 color-grey-2">
+            <div class="col-xs-12">
+                <a href="@Url.Action("ContentBlock", "FormBuilder", null, Request.Url.Scheme)" data-xhr-method="post" data-xhr-options='{ "id": "@Model.UId" }'><span class="glyphicon glyphicon-plus"></span> Add Content Block</a>
+            </div>
+        </div>
+
+        <div class="row">
+            <table class="table table-striped table-formbuilder">
+                @foreach (var ct in Model.CustomTexts)
+                {
+                    <tr>
+                        <td>
+                            @ct.Name
+                        </td>
+                        <td>
+                            <span class="modal-link">
+                                <a href="@Url.Action("ContentBlock", "FormBuilder", new { id = ct.UId })"><span class="glyphicon glyphicon-edit"></span> Edit</a>
+                            </span>
+                        </td>
+                        <td>
+                            <a href="@Url.Action("ContentBlock", "FormBuilder", null, Request.Url.Scheme)" data-xhr-method="delete" data-xhr-options='{ "id": "@ct.UId" }' data-xhr-oncomplete="refresh"><span class="glyphicon glyphicon-trash"></span> Delete</a>
+                        </td>
+                    </tr>
+
+                }
+            </table>
+
+        </div>
+    </div>
+</div>

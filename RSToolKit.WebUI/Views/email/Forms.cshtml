@@ -1,0 +1,52 @@
+﻿@using RSToolKit.Domain.Entities.Email;
+@using RSToolKit.Domain.Entities;
+@using RSToolKit.Domain;
+@using System.Linq;
+@model List<Form>
+@{
+    ViewBag.Title = "Email Builder - RegStep";
+    Layout = "~/Views/Shared/_Layout_Email.cshtml";
+}
+@section styles
+{
+    <link href="~/Content/Email/Index.css" rel="stylesheet" />
+}
+@section scripts
+{
+    <script src="~/Scripts/Email/Index.js"></script>
+}
+@section title
+{
+    Email Builder: Forms
+}
+@section breadcrumbs
+{
+
+}
+<!--Display-->
+<div class="row add-padding-vertical-2em">
+    <div id="mainHolder" class="col-xs-12 text-small">
+        <!--End List Options-->
+        <p class="h3">Forms</p>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Form</th>
+                    <th>Description</th>
+                    <th>Date Created</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var form in Model)
+                {
+                    <tr>
+                        <td><a href="@Url.Action("FormEmails", "Email", new { id = form.UId }, Request.Url.Scheme)"><span class="glyphicon glyphicon-edit"></span> @form.Name</a></td>
+                        <td>@form.Name.GetElipse(20)</td>
+                        <td>@ToolHelper.ConvertDate_String(form.DateCreated, ViewBag.User)</td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+    </div>
+</div>

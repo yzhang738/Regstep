@@ -1,0 +1,69 @@
+﻿@using RSToolKit.WebUI.Models.Views.Register;
+@model BaseRegisterView
+@{
+    Layout = "~/Views/Shared/_L_AdminRegister.cshtml";
+}
+@section pageNumber
+{
+    Bill Me
+}
+@section shoppingCart
+{
+}
+@section header
+{
+    @Model.Header
+}
+@section footer
+{
+    @Model.Footer
+}
+@section styles
+{
+    @Model.Styles
+}
+@section errorMessage{
+}
+<link href="~/Content/Registration/TransactionPrint.min.css" rel="stylesheet" />
+<div style="position: fixed; top: 0; left: 0; width: 100%; background-color: rgba(0, 0, 0, .5); color: #fc3333; font-size: 14pt;" class="text-center">Admin Registration</div>
+
+<form action="~/AdminRegister/BillMe" method="post" id="registerForm">
+    @Model.HiddenInputs
+    <div class="row form-panel">
+        <div class="col-xs-12">
+            <p>
+                If you have a Purchase Order number for this payment, please enter it below.
+            </p>
+        </div>
+        <div class="col-sm-6 col-md-4 col-lg-3 form-component print print-panel">
+            <div class="form-component-row">
+                <label class="control-label"><span class="form-component-label">PO Number:</span></label>
+            </div>
+            <input name="PayingAgentNumber" type="text" class="input-sm form-control form-component-input" />
+        </div>
+    </div>
+
+    <div class="row form-panel">
+        <div class="col-xs-12">
+            <p>
+                If you need to send a copy of your invoice to your accounting department or supervisor, please enter the email of the person to copy below.
+            </p>
+        </div>
+        <div class="col-sm-6 col-md-4 col-lg-3 form-component print print-panel">
+            <div class="form-component-row">
+                <label class="control-label"><span class="form-component-label">Copy email to:</span></label>
+            </div>
+            <input name="Email" type="text" class="input-sm form-control form-component-input" />
+        </div>
+    </div>
+    
+    <div class="row form-btn-panel">
+        <div class="col-xs-12">
+            <div class="row">
+                <div class="col-sm-6 col-md-4 col-lg-3 form-btn">
+                    <a class="btn-rs btn-navigation" href="javascript:{}" onclick="$('#registerForm').submit();">Next</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,66 @@
+﻿@using RSToolKit.Domain.Entities;
+@model RSToolKit.Domain.Entities.Form
+@{
+    Layout = "~/Views/Shared/_Layout_FormBuilder.cshtml";
+}
+@section scripts
+{
+    <script type="text/javascript">
+        var formId = "@Model.UId";
+    </script>
+}
+@section styles
+{
+}
+@section title {
+    Promotion Codes
+}
+@section breadcrumbs {
+    @Html.ActionLink("Forms", "Index", "FormBuilder")
+    <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span> @Html.ActionLink((Model.Name.Length < 20 ? Model.Name : Model.Name.Substring(0, 20)), "Form", "FormBuilder", new { id = Model.UId }, null)
+    <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span> Promotion Codes
+}
+@section modals
+{
+}
+@Html.AntiForgeryToken()
+
+    <!--List-->
+    <div class="col-xs-12">
+        <div class="add-padding-bottom-5 text-medium text-color-2">
+            Promotion Codes
+        </div>
+
+        <div class="row add-padding-vertical-5 color-grey-2">
+            <div class="col-xs-12">
+                <a href="@Url.Action("PromotionCode", "FormBuilder", null, Request.Url.Scheme)" data-xhr-method="post" data-xhr-options='{ "id": "@Model.UId" }'><span class="glyphicon glyphicon-plus"></span> Add Promotion Code</a>
+            </div>
+        </div>
+
+        <div class="row">
+            <table class="table table-striped">
+                @foreach (var pc in Model.PromotionalCodes)
+                {
+                    <tr>
+                        <td>
+                            @pc.Code
+                        </td>
+                        <td>
+                            <span class="modal-link">
+                                <a href="@Url.Action("PromotionCode", "FormBuilder", new { id = pc.UId })"><span class="glyphicon glyphicon-edit"></span> Edit</a>
+                            </span>
+                        </td>
+                        <td>
+                            @if (pc.Entries.Count == 0)
+                            {
+                                <a href="@Url.Action("PromotionCode", "FormBuilder", null, Request.Url.Scheme)" data-xhr-method="delete" data-xhr-oncomplete="refresh" data-xhr-message="Failed to delete the promotion code." data-xhr-options='{ "id": "@pc.UId" }'><span class="glyphicon glyphicon-trash"></span> Delete</a>
+                            }
+                        </td>
+                    </tr>
+
+                }
+            </table>
+
+        </div>
+    </div>
+

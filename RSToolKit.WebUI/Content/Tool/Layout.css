@@ -1,0 +1,339 @@
+﻿body {
+    font-family: 'Carme', sans-serif;
+    font-size: 14px;
+    margin: 0;
+    padding: 0;
+}
+a:link {
+    color: #7A0202;
+    text-decoration: none;
+}
+a:visited {
+    color: #7A0202;
+    text-decoration: none;
+}
+a:active {
+    color: #7A0202;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+
+
+/************/
+/* MastHead */
+/************/
+header.MastHead {
+    margin: 0 auto;
+    min-width: 960px;
+    width: 100%;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    overflow: hidden;
+    height: 25px;
+    z-index: 1000;
+}
+    header.MastHead section.Content {
+        margin: 0 auto;
+        width:  960px;
+        text-align: right;
+        padding-right: 0.25em;
+    }
+    header.MastHead * ul {
+        list-style-type: none;
+        width: 100%;
+        padding: 0.25em 0;
+        margin: 0px;
+    }
+        header.MastHead * ul li {
+            display: inline;
+            margin-left: 70px;
+            font-size: 85%;
+        }
+    header.MastHead a:link {
+        color: white;
+        font-weight: bold !Important;
+        text-decoration: none !Important;
+    }
+    header.MastHead a:active {
+        color: white;
+        font-weight: bold !Important;
+        text-decoration: none !Important;
+    }
+    header.MastHead a:visited {
+        color: white;
+        font-weight: bold !Important;
+        text-decoration: none !Important;
+    }
+    header.MastHead a:hover {
+        text-decoration: underline !Important;
+    }
+
+/****************/
+/* MastHeadLogo */
+/****************/
+header.MastHeadLogo {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    min-width: 960px;
+    margin: 0 auto;
+}
+    header.MastHeadLogo section.Content {
+        margin: 0 auto;
+        width: 960px;
+    }
+    header.MastHeadLogo * img.Logo {
+        height: 60px;
+    }
+    header.MastHeadLogo * a {
+        border: none !Important;
+        text-decoration: none !Important;
+    }
+    header.MastHeadLogo * section.SocialContent {
+        padding-left: 20px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+    header.MastHeadLogo * img.Social {
+        height: 40px;
+    }
+
+/**************/
+/* Navigation */
+/**************/
+nav.Stick {
+    position: fixed !Important;
+    top: 0px;
+    left: 0px;
+}
+nav.Navigation {
+    margin: 0 auto;
+    min-width: 960px;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    height: 25px;
+    margin-bottom: 15px;
+}
+    nav.Navigation section.Content {
+        margin: 0 auto;
+        width: 960px;
+    }
+    nav.Navigation * ul {
+        list-style-type: none;
+        width: 100%;
+        padding: 0.25em 0;
+        margin: 0px;
+    }
+        nav.Navigation * ul li {
+            display: inline;
+            margin-right: 40px;
+            font-size: 85%;
+        }
+    nav.Navigation a:link {
+        color: white;
+        font-weight: bold !Important;
+        text-decoration: none !Important;
+    }
+    nav.Navigation a:active {
+        color: white;
+        font-weight: bold !Important;
+        text-decoration: none !Important;
+    }
+    nav.Navigation a:visited {
+        color: white;
+        font-weight: bold !Important;
+        text-decoration: none !Important;
+    }
+    nav.Navigation a:hover {
+        text-decoration: underline !Important;
+    }
+
+/************/
+/* ViewArea */
+/************/
+div.ViewBox {
+    border: 2px solid #3E3E3E;
+    border-radius: 4px;
+    padding: 0px !Important;
+    margin-bottom: 15px;
+}
+
+    div.ViewBox > header {
+        background-color: #3E3E3E;
+        font-size: 110%;
+        font-weight: bold;
+        text-align: center;
+        padding: 15px;
+        color: #FFFFFF;
+    }
+
+    div.ViewBox > div {
+        padding: 15px;
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+
+    div.ViewBox > footer {
+        background-color: #3E3E3E;
+        font-size: 95%;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 0px;
+        padding: 15px;
+    }
+
+/******************/
+/* Quick Commands */
+/******************/
+.QuickCommands {
+    border: 2px solid #3E3E3E;
+    border-radius: 4px;
+    width: 100%;
+    margin-bottom: 10px;
+}
+    .QuickCommands header {
+        font-size: 1.1em;
+        text-align: center;
+        vertical-align: middle;
+        padding: 10px 10px;
+    }
+    .QuickCommands section {
+        text-align: left;
+        padding: 10px 10px;
+    }
+    .QuickCommands * ul {
+        list-style: none;
+        padding: 0px;
+        margin: 0px;
+    }
+
+
+/*********************/
+/* Universal Classes */
+/*********************/
+.RSRedBackground {
+    background: none repeat scroll 0 0 #7A0202;
+}
+.RSGreyBackground {
+    background: none repeat scroll 0 0 #3E3E3E;
+}
+
+.NoPadding {
+    padding: 0px !Important;
+}
+
+.FloatRight {
+    float: right;
+}
+.FloatLeft {
+    float: left;
+}
+
+.TextCenter {
+    text-align: center !Important;
+}
+.TextRight {
+    text-align: right !Important;
+}
+.TextLeft {
+    text-align: left !Important;
+}
+
+.TextRSRed {
+    color: #7A0202;
+}
+
+.SubText {
+    font-size: .65em;
+}
+
+.TextBold {
+    font-weight: bold;
+}
+.TextBlack {
+    color: black;
+}
+.TextWhite {
+    color: white;
+}
+.TextLink {
+    text-decoration: none;
+    font-weight: normal;
+    cursor: pointer;
+}
+    .TextLink:hover {
+        text-decoration: underline;
+    }
+
+.Hidden {
+    display: none;
+}
+.Show {
+    display: block;
+}
+
+.NoPadding {
+    padding: 0px 0px 0px 0px;
+}
+
+.ErrorBubbleHeader {
+    border-radius: 8px;
+    background-color: #FFFFFF;
+    margin: 2px;
+    padding: 2px;
+    color: #7A0202;
+    font-size: 6pt;
+}
+
+/**********/
+/* LEGACY */
+/**********/
+
+/***************/
+/* Grid Layout */
+/***************/
+table.LayoutGrid {
+    border: none;
+    width: 100%;
+}
+    table.LayoutGrid > tbody > td {
+        vertical-align: top;
+        padding: 0px 10px;
+    }
+
+/*****************/
+/* Table Classes */
+/*****************/
+
+table.Center {
+    margin: 0 auto;
+}
+
+/************/
+/* ViewPort */
+/************/
+section.ViewPort {
+    border: 2px solid #3E3E3E;
+    width: 1000px;
+    margin: auto;
+    border-radius: 4px;
+}
+    section.ViewPort header {
+        font-size: 1.01em;
+        text-align: center;
+        vertical-align: middle;
+        padding: 10px 10px;
+        padding: 5px;
+    }
+    section.ViewPort section {
+        text-align: left;
+        padding: 10px 10px;
+    }
+    section.ViewPort footer {
+        text-align: left;
+        padding: 10px 10px;
+    }

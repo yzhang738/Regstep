@@ -1,0 +1,238 @@
+﻿.report-work-area {
+    min-height: 600px;
+    min-width: 95%;
+    max-width: 95%;
+    margin: auto;
+    background-color: #3E3E3E;
+    border-style: inset;
+    border-width: 3px;
+    border-color: #7A0202;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.table-report-preview {
+    z-index: 61;
+    position: absolute;
+    left: 20px;
+    top: 20px;
+}
+
+.table-report-headers {
+    white-space: nowrap;
+}
+
+.save-sprite {
+    width: 63px;
+    height: 40px;
+    background: url("../../Images/CssImages/sprite-cloud-save.png") no-repeat;
+    
+    -webkit-animation: save .4s steps(5) infinite;
+       -moz-animation: save .4s steps(5) infinite;
+        -ms-animation: save .4s steps(5) infinite;
+         -o-animation: save .4s steps(5) infinite;
+            animation: save .4s steps(5) infinite;
+}
+
+@-webkit-keyframes save {
+   from { background-position:    0px; }
+     to { background-position: -315px; }
+}
+
+@-moz-keyframes save {
+   from { background-position:    0px; }
+     to { background-position: -315px; }
+}
+
+@-ms-keyframes save {
+   from { background-position:    0px; }
+     to { background-position: -315px; }
+}
+
+@-o-keyframes save {
+   from { background-position:    0px; }
+     to { background-position: -315px; }
+}
+
+@keyframes save {
+   from { background-position:    0px; }
+     to { background-position: -315px; }
+}
+
+.saved-sprite {
+    width: 63px;
+    height: 40px;
+    background: url("../../Images/CssImages/sprite-cloud-save.png") no-repeat;
+    background-position: -315px 0px;
+    -webkit-animation: saved .4s steps(6) 1 forwards;
+       -moz-animation: saved .4s steps(6) 1 forwards;
+        -ms-animation: saved .4s steps(6) 1 forwards;
+         -o-animation: saved .4s steps(6) 1 forwards;
+            animation: saved .4s steps(6) 1 forwards;
+}
+
+@-webkit-keyframes saved {
+   from { background-position:    -315px; }
+     to { background-position: -693px; }
+}
+
+@-moz-keyframes saved {
+   from { background-position:    -315px; }
+     to { background-position: -693px; }
+}
+
+@-ms-keyframes saved {
+   from { background-position:    -315px; }
+     to { background-position: -693px; }
+}
+
+@-o-keyframes saved {
+   from { background-position:    -315px; }
+     to { background-position: -693px; }
+}
+
+@keyframes saved {
+   from { background-position:    -315px; }
+     to { background-position: -693px; }
+}
+
+.error-sprite {
+    width: 63px;
+    height: 40px;
+    background: url("../../Images/CssImages/sprite-cloud-save.png") no-repeat;
+    background-position: -756px 0px;
+    -webkit-animation: error .4s steps(6) 1 forwards;
+       -moz-animation: error .4s steps(6) 1 forwards;
+        -ms-animation: error .4s steps(6) 1 forwards;
+         -o-animation: error .4s steps(6) 1 forwards;
+            animation: error .4s steps(6) 1 forwards;
+}
+
+@-webkit-keyframes error {
+   from { background-position:    -756px; }
+     to { background-position: -1134px; }
+}
+
+@-moz-keyframes error {
+   from { background-position:    -756px; }
+     to { background-position: -1134px; }
+}
+
+@-ms-keyframes error {
+   from { background-position:    -756px; }
+     to { background-position: -1134px; }
+}
+
+@-o-keyframes error {
+   from { background-position:    -756px; }
+     to { background-position: -1134px; }
+}
+
+@keyframes error {
+    from { background-position: -756px; }
+    to { background-position: -1134px; }
+}
+
+.report-table {
+    border: solid 2px white;
+    background-color: #7A0202;
+    min-height: 30px;
+    min-width: 150px;
+    display: inline-block;
+    position: absolute;
+    left: 20px;
+    top: 20px;
+    z-index: 20;
+    font-size: 18px;
+    line-height: 20px;
+    padding: 2px;
+    cursor: pointer;
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+    color: white;
+}
+    
+    .report-table:hover {
+        z-index: 21;
+    }
+    
+    .report-table:hover .table-title {
+        text-decoration: underline;
+    }
+
+.report-work-align-left {
+    border: solid 2px white;
+    background-color: #7A0202;
+    width: 150px;
+    display: inline-block;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    z-index: 20;
+    font-weight: bold;
+    font-size: 12px;
+    line-height: 20px;
+    padding: 2px;
+    cursor: pointer;
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+div.table-report-view {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background-color: #FFFFFF;
+    border: 2px solid #7A0202 !important;
+}
+
+.remove-preview {
+    position: absolute;
+    right: 2px;
+    top: 2px;
+    font-size: 12pt;
+}
+
+table.table-report-view {
+    background-color: white;
+}
+
+.report-work-preview {
+    border: solid 2px white;
+    background-color: #7A0202;
+    width: 150px;
+    display: inline-block;
+    position: absolute;
+    right: 10px;
+    top: 40px;
+    z-index: 20;
+    font-weight: bold;
+    font-size: 12px;
+    line-height: 20px;
+    padding: 2px;
+    cursor: pointer;
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+
+.report-table-header-editable {
+    cursor: pointer;
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+    .report-table-header-editable:hover {
+        background-color: #808080 !Important;
+    }

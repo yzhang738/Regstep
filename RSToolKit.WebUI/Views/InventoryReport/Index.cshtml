@@ -1,0 +1,180 @@
+﻿@using System.Collections;
+@using RSToolKit.Domain.Entities;
+@using RSToolKit.Domain;
+@using Newtonsoft.Json;
+@using RSToolKit.Domain.Data;
+@using RSToolKit.Domain.Entities.Components;
+@model AdvancedInventoryReport
+@{
+    ViewBag.Title = "RS Cloud - RegStep Technologies";
+    Layout = "~/Views/Shared/_L_Cloud.cshtml";
+    var Repository = (FormsRepository)ViewBag.Repository;
+}
+@section scripts
+{
+}
+@section styles
+{
+}
+@section title
+{
+    @Model.Name <a href="@Url.Action("Permissions", "Security", new { id = Model.UId })"><span class="glyphicon glyphicon-cog"></span></a>
+}
+@section crumbs {
+    @Html.Partial("P_Trail", new TrailModel(ViewBag.Trail))
+}
+@section modals
+{
+}
+@using (Html.BeginForm("Put", "InventoryReport", FormMethod.Post, new { @class = "form form-horizontal", role = "form", data_xhr_method = "put" }))
+{
+    @Html.HiddenFor(m => m.UId)
+    <div class="col-xs-12">
+        <!--Options-->
+        <div class="row add-padding-vertical">
+            <div class="col-md-10 col-md-offset-1">
+                <div class="row color-grey-2 add-padding-bottom-5">
+                    <div class="col-xs-12 color-2 text-color-white add-padding-vertical-5">
+                        Options
+                    </div>
+                    <div class="col-md-6">
+                        <div class="add-padding-vertical-5">
+                            <label class="control-label">Report Name:</label>
+                            <input type="text" name="Name" value="@Model.Name" class="form-control input-sm" />
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="add-padding-vertical-5">
+                            <div class="checkbox">
+                                <label>@Html.CheckBoxFor(m => m.Favorite) Mark as favorite</label>
+                            </div>
+                        </div>
+                        <div class="add-padding-vertical-5">
+                            <div class="checkbox">
+                                <a href="@Url.Action("View", "InventoryReport", new { id = Model.SortingId }, Request.Url.Scheme)"><span class="glyphicon glyphicon-eye-open"></span> View Report</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="add-padding-vertical">
+                            <button type="submit" class="btn btn-default">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--End Options-->
+        <!--Directions-->
+        <div class="row add-padding-vertical">
+            <div class="col-md-10 col-md-offset-1">
+                <div class="panel-group" id="accordion">
+                    <div class="panel">
+                        <div class="panel-heading">
+                            <span class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#directions">
+                                    Directions <span class="caret"></span>
+                                </a>
+                            </span>
+                        </div>
+                        <div id="directions" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <div class="add-padding-bottom" style="border-bottom: 1px solid #bbb;">
+                                    <h4>Variables</h4>
+                                    <p>
+                                        Declare variables in this format
+                                        <br />var <i>varName</i> = select <i>count/fields</i> where <i>conditions</i>;
+                                    </p>
+                                    <p>
+                                        To get quantities
+                                        <br />var <i>varName</i> = select count(*) where <i>conditions</i>;
+                                        <br />You can use any arithmetic symbols (+ - * /) with quantity variables
+                                        <br />var <i>varName3</i> = <i>varName1</i> + <i>varName2</i>;
+                                        <br />var <i>varName3</i> = <i>varName1</i> * 2;
+                                    </p>
+                                    <p>
+                                        To pull information
+                                        <br />var <i>varName</i> = [<i>fieldName</i>] where <i>conditions</i>;
+                                        <br />Use "+" and space and/or punctionation inside "" to separate fields
+                                        <br />var <i>varName</i> = [FirstName] + " " + [LastName] + ", " + [Title]  where <i>conditions</i>;
+                                    </p>
+                                    <p>
+                                        All statements must end in ";"
+                                        <br />All fields must be enclosed in "[]"
+                                        <br />You can create reports that combine quantity columns and information columns
+                                    </p>
+                                </div>
+                                <div class="add-padding-vertical" style="border-bottom: 1px solid #bbb;">
+                                    <h4>Conditions</h4>
+                                    <p>
+                                        Set the conditions after "where" in variable statements
+                                        <br />where [<i>fieldName</i>] <i>operator</i> <i>value</i>
+                                    </p>
+                                    <p>
+                                        Operators
+                                        <br />equal to: =
+                                        <br />not equal to: !=
+                                        <br />contains *=
+                                        <br />does not contain !*=
+                                        <br />starts with ^=
+                                        <br />does not start with !^=
+                                        <br />ends with $=
+                                        <br />does not end with !$=
+                                    </p>
+                                    <p>
+                                        Use contains/does not contain to see if text is included in an entry OR to see if a value is included in a checkbox group which may have more than one value
+                                    </p>
+                                    <p>
+                                        RSVP values: use "true" for Accept and "false" for Decline
+                                    </p>
+                                    <p>
+                                        Use "and", "or", and "()" to join and group statements
+                                    </p>
+                                    <p>
+                                        where [RSVP] = "true" and [Email] ^= "j"
+                                        <br />where [Audience] = "Employee" or ([Company] = "X Corp" and [Title] = "Employee")
+                                    </p>
+                                </div>
+                                <div class="add-padding-vertical" style="border-bottom: 1px solid #bbb;">
+                                    <h4>Variable Statement Examples</h4>
+                                    <p>
+                                        var Jan12 = select count(*) where [ArriveDate] <= "2015-1-12" AND [DepartDate] > "2015-1-12" AND [RSVP] = true;
+                                        <br />var corp = select count(*) where [AttendeeType] = "Corporate";
+                                        <br />var advfs = select count(*) where [AttendeeType] = "Advisor" and [PoloSize] = "Female Small" and [RSVP] = "true";
+                                    </p>
+                                    <p>
+                                        Form with guest option totalling attendees per day:
+                                        <br />var g20 = select count(*) where [CheckInDate] <= "2015-02-20" AND [CheckOutDate] > "2015-02-20" and [BringingGuest] = "Yes" and [RSVP] = "true";
+                                        <br />var m20 = g20 * 2;
+                                        <br />var s20 = select count(*) where [CheckInDate] <= "2015-02-20" AND [CheckOutDate] > "2015-02-20" and [BringingGuest] = "No" and [RSVP] = "true";
+                                        <br />var t20 = m20 + s20;
+                                    </p>
+                                </div>
+                                <div class="add-padding-top">
+                                    <h4>Headers</h4>
+                                    <p>
+                                        Create the report by creating report headers and assigning variables
+                                        <br />header <i>headerName</i> is <i>varName</i>;
+                                    </p>
+                                    <p>
+                                        header "Group 1" is g1;
+                                    </p>
+                                    <p>
+                                        Header statements must end in ";"
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--End Directions-->
+        <!--Report-->
+        <div class="row add-padding-vertical">
+            <div class="col-md-10 col-md-offset-1">
+                <textarea name="Script" class="form-component" style="min-height: 400px; width: 100%; height:100%">@Model.Script</textarea>
+            </div>
+        </div>
+        <!--End Report-->
+    </div>
+}

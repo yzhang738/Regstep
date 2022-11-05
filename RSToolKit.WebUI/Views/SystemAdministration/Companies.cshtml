@@ -1,0 +1,33 @@
+﻿@model List<Company>
+@{
+    Layout = "~/Views/Shared/_Layout_SystemAdministration.cshtml";
+}
+@section title {
+    Companies
+}
+@section breadcrumbs {
+    Home <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span>
+    Companies
+}
+@section scripts {
+    <script src="~/Scripts/SystemAdministration/company.js"></script>
+}
+<div class="color-grey-2 add-padding-vertical-10 col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 col-sm-12 col-sm-offset-0">
+    <button class="btn btn-default" id="newCompany"><span class="glyphicon glyphicon-plus"></span> Company</button>
+</div>
+<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 col-sm-12 col-sm-offset-0">
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <tbody>
+                @foreach (var company in Model)
+                {
+                    <tr>
+                        <td>@company.Name</td>
+                        <td><a href="@Url.Action("Company", "SystemAdministration", new { id = company.UId })"><span class="glyphicon glyphicon-edit"></span> Edit</a></td>
+                        <td><a href="@Url.Action("Company", "SystemAdministration", null, Request.Url.Scheme)" data-xhr-method="delete" data-xhr-options='{"id":"@company.UId"}'><span class="glyphicon glyphicon-trash"></span> Delete</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,65 @@
+﻿@using System.Collections;
+@using RSToolKit.Domain.Entities;
+@using RSToolKit.Domain;
+@using Newtonsoft.Json;
+@using RSToolKit.Domain.Data;
+@using System.Data.Entity;
+@model List<SavedList>
+@{
+    Layout = "~/Views/Shared/_Layout_Cloud.cshtml";
+    var Repository = (FormsRepository)ViewBag.Repository;
+    var CompanyKey = (Guid)ViewBag.Company;
+}
+@section scripts
+{
+}
+@section breadcrumbs {
+@Html.Raw(((User)ViewBag.User).BreadCrumbs.GetBreadTrail(Url))
+}
+@section styles
+{
+    <link href="~/Content/Bootstrap/bootstrap-datetimepicker-custom.min.css" rel="stylesheet" />
+    <style>
+        .dateTimePicker {
+            z-index: 1500 !important;
+        }
+
+        .bootstrap-datetimepicker-widget {
+            z-index: 1500;
+        }
+    </style>
+}
+@section title
+{
+    Static Lists
+}
+@section modals
+{
+@Html.ActionLink("Cloud Dashboard", "Index", "Cloud") <span class="glyphicon glyphicon-chevron-right glyphicon-small"></span>
+Static Lists
+}
+<div class="col-xs-12">
+    <div class="add-padding-bottom-5 text-medium text-color-2">
+        Available Lists
+    </div>
+    <!--Data-->
+    <div id="mainHolder" class="row">
+        <section>
+            <table class="table table-striped filter-table">
+                <tbody id="contactData">
+                    @foreach (var list in Model)
+                    {
+                        <tr>
+                            <td>@list.Name</td>
+                            <td><a href="@Url.Action("SavedList", "Cloud", new { id = list.UId }, Request.Url.Scheme)"><span class="glyphicon glyphicon-edit"></span> Edit</a></td>
+                            <td><a href="@Url.Action("SavedList", "Cloud", null, Request.Url.Scheme)" data-xhr-method="delete" data-xhr-options='{"id":"@list.UId"}' data-xhr-oncomplete="refresh"><span class="glyphicon glyphicon-trash"></span> Delete</a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </section>        
+    </div>
+    <!--End Data-->
+</div>
+<script type="text/javascript">
+</script>

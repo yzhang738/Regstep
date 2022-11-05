@@ -1,0 +1,20 @@
+﻿@using RSToolKit.Domain.Identity;
+@model Exception
+@if (User.HasGlobalPermissions())
+{
+    <div class="row">
+        <div class="col-sm-12 text-center">
+            <h2>Exception Information</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 text-center">
+            <h3>@Model.Message</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 text-center">
+            <pre>@Model.StackTrace</pre>
+        </div>
+    </div>
+}
